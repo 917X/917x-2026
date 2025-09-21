@@ -1,19 +1,38 @@
 #include "main.h"
+#include "config.hpp"
 
 /////
 // For installation, upgrading, documentations, and tutorials, check out our website!
 // https://ez-robotics.github.io/EZ-Template/
 /////
 
-// Chassis constructor
+// runtime variables
+double forwards;
+double turning;
+float up;
+float down;
+bool clamped = false;
+bool lifted = false;
+int autoSelector = 0;
+
+void arcadeCurve(pros::controller_analog_e_t power, pros::controller_analog_e_t turn, pros::Controller mast, float f) {
+    up = mast.get_analog(power);
+    down = mast.get_analog(turn);
+    forwards = (exp(-f / 10) + exp((fabs(up) - 127) / 10) * (1 - exp(-f / 10))) * up;
+    turning = -1 * down;
+    
+    leftMotors.move(forwards * 0.95 - turning);
+    rightMotors.move(forwards * 0.95 + turning);
+}
+
 ez::Drive chassis(
     // These are your drive motors, the first motor is used for sensing!
-    {1, 2, 3},     // Left Chassis Ports (negative port will reverse it!)
-    {-4, -5, -6},  // Right Chassis Ports (negative port will reverse it!)
+    {15, -14, 13},     // Left Chassis Ports (negative port will reverse it!)
+    {-18, 19, -17},  // Right Chassis Ports (negative port will reverse it!)
 
-    7,      // IMU Port
-    4.125,  // Wheel Diameter (Remember, 4" wheels without screw holes are actually 4.125!)
-    343);   // Wheel RPM = cartridge * (motor gear / wheel gear)
+    21,      // IMU Port
+    2.75,  // Wheel Diameter (Remember, 4" wheels without screw holes are actually 4.125!)
+    600);  // Wheel RPM = cartridge * (motor gear / wheel gear)
 
 // Uncomment the trackers you're using here!
 // - `8` and `9` are smart ports (making these negative will reverse the sensor)
@@ -239,15 +258,39 @@ void ez_template_extras() {
  * operator control task will be stopped. Re-enabling the robot will restart the
  * task, not resume it from where it left off.
  */
+
+// void init_seperation(Ball::Color color) {
+//   topRoller.motor_set_encoder_units(pros::E_MOTOR_ENCODER_DEGREES);
+//   colorSort.set_led_pwm(100);
+  
+// }
+
+
 void opcontrol() {
   // This is preference to what you like to drive on
   chassis.drive_brake_set(MOTOR_BRAKE_COAST);
+  
 
   while (true) {
     // Gives you some extras to make EZ-Template ezier
     ez_template_extras();
-
-    chassis.opcontrol_tank();  // Tank control
+    arcadeCurve(pros::E_CONTROLLER_ANALOG_LEFT_Y, pros::E_CONTROLLER_ANALOG_RIGHT_X, master, 5);  // Curved arcade  
+    if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+      indexerMotor.move(127); //scoring upper
+      topRoller.move(127);
+      middleRoller.move(127);
+      frontRoller.move(127);
+    } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
+      indexerMotor.move(-127);  //scoring lower
+      topRoller.move(127);
+      middleRoller.move(127);
+      frontRoller.move(127);
+    } else {
+      indexerMotor.move(0);
+      topRoller.move(0);
+      middleRoller.move(0);
+      frontRoller.move(0);
+    }
     // chassis.opcontrol_arcade_standard(ez::SPLIT);   // Standard split arcade
     // chassis.opcontrol_arcade_standard(ez::SINGLE);  // Standard single arcade
     // chassis.opcontrol_arcade_flipped(ez::SPLIT);    // Flipped split arcade

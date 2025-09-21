@@ -1,0 +1,18 @@
+#pragma once
+#include "main.h"
+#include "pros/distance.hpp"
+#include "pros/motor_group.hpp"
+#include "pros/motors.hpp"
+
+extern pros::Controller controller;
+
+extern pros::Motor indexerMotor;
+extern pros::Motor frontRoller;
+extern pros::Motor middleRoller;
+extern pros::Motor topRoller;
+
+extern pros::Optical colorSort;
+extern pros::Imu imu;
+extern pros::MotorGroup rightMotors;
+extern pros::MotorGroup leftMotors;
+extern pros::Distance distance;
