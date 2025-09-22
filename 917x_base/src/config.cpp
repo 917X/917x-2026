@@ -13,16 +13,16 @@ constexpr int LEFT_M = -14;
 constexpr int LEFT_B = 13;
 
 
-constexpr int INDEXER = -2;
-constexpr int TOP_ROLLER= 12;
+constexpr int INDEXER = -11;
+constexpr int TOP_ROLLER= 7;
 constexpr int MIDDLE_ROLLER = -8;
-constexpr int FRONT_ROLLER = 7;
+constexpr int FRONT_ROLLER = 16;
 
 constexpr int DISTANCE = 1;
 
-constexpr int WALLSTAKE1 = -1;
-constexpr int WALLSTAKE2 = 4;
-constexpr int WALLSTAKE_ROT = 3;
+constexpr int WALLSTAKE1 = 69;
+constexpr int WALLSTAKE2 = 69;
+constexpr int WALLSTAKE_ROT = 69;
 
 constexpr char CLAMP = 'A';
 constexpr char HOOK = 'B';

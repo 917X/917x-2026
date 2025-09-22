@@ -51,7 +51,7 @@ ez::Drive chassis(
 void initialize() {
   // Print our branding over your terminal :D
   ez::ez_template_print();
-
+  indexerMotor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
   pros::delay(500);  // Stop the user from doing anything while legacy ports configure
 
   // Look at your horizontal tracking wheel and decide if it's in front of the midline of your robot or behind it
@@ -290,6 +290,18 @@ void opcontrol() {
       topRoller.move(0);
       middleRoller.move(0);
       frontRoller.move(0);
+    }
+
+    if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) { 
+      topRoller.move(127);
+      middleRoller.move(127);
+      frontRoller.move(127);
+    }
+    if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) { 
+      topRoller.move(-127);
+      middleRoller.move(-127);
+      frontRoller.move(-127);
+      indexerMotor.move(127);
     }
     // chassis.opcontrol_arcade_standard(ez::SPLIT);   // Standard split arcade
     // chassis.opcontrol_arcade_standard(ez::SINGLE);  // Standard single arcade
