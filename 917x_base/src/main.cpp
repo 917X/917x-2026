@@ -1,6 +1,7 @@
 #include "main.h"
 #include "config.hpp"
-
+#include "pros/misc.h"
+#include "subsystem/intake.hpp"
 /////
 // For installation, upgrading, documentations, and tutorials, check out our website!
 // https://ez-robotics.github.io/EZ-Template/
@@ -14,6 +15,7 @@ float down;
 bool clamped = false;
 bool lifted = false;
 int autoSelector = 0;
+int separation_state = 0;
 
 void arcadeCurve(pros::controller_analog_e_t power, pros::controller_analog_e_t turn, pros::Controller mast, float f) {
     up = mast.get_analog(power);
@@ -25,13 +27,32 @@ void arcadeCurve(pros::controller_analog_e_t power, pros::controller_analog_e_t 
     rightMotors.move(forwards * 0.95 + turning);
 }
 
+void init_separation(Intake::Ball ball) {
+  frontRoller.set_encoder_units(pros::E_MOTOR_ENCODER_DEGREES);
+  middleRoller.set_encoder_units(pros::E_MOTOR_ENCODER_DEGREES);
+  bottomRoller.set_encoder_units(pros::E_MOTOR_ENCODER_DEGREES);
+  indexerMotor.set_encoder_units(pros::E_MOTOR_ENCODER_DEGREES);
+  colorSort.set_led_pwm(100);
+  intake.ball = ball;
+  if (intake.ball == Intake::Ball::BLUE){
+    separation_state = 1;
+  }
+  else if (intake.ball == Intake::Ball::RED){
+    separation_state = 0;
+  }
+  else if(intake.ball == Intake::Ball::NONE){
+    separation_state = 2;
+  }
+}
+
+
 ez::Drive chassis(
     // These are your drive motors, the first motor is used for sensing!
     {15, -14, 13},     // Left Chassis Ports (negative port will reverse it!)
     {-18, 19, -17},  // Right Chassis Ports (negative port will reverse it!)
 
     21,      // IMU Port
-    2.75,  // Wheel Diameter (Remember, 4" wheels without screw holes are actually 4.125!)
+    3.25,  // Wheel Diameter (Remember, 4" wheels without screw holes are actually 4.125!)
     600);  // Wheel RPM = cartridge * (motor gear / wheel gear)
 
 // Uncomment the trackers you're using here!
@@ -50,6 +71,11 @@ ez::Drive chassis(
  */
 void initialize() {
   // Print our branding over your terminal :D
+  init_separation(Intake::Ball::NONE);
+  pros::Task task {[=] { intake.intakeControl(); }};
+
+
+
   ez::ez_template_print();
   indexerMotor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
   pros::delay(500);  // Stop the user from doing anything while legacy ports configure
@@ -92,6 +118,7 @@ void initialize() {
       {"Boomerang Pure Pursuit\n\nGo to (0, 24, 45) on the way to (24, 24) then come back to (0, 0, 0)", odom_boomerang_injected_pure_pursuit_example},
       {"Measure Offsets\n\nThis will turn the robot a bunch of times and calculate your offsets for your tracking wheels.", measure_offsets},
   });
+
 
   // Initialize chassis and auton selector
   chassis.initialize();
@@ -137,7 +164,8 @@ void autonomous() {
   chassis.drive_imu_reset();                  // Reset gyro position to 0
   chassis.drive_sensor_reset();               // Reset drive sensors to 0
   chassis.odom_xyt_set(0_in, 0_in, 0_deg);    // Set the current position, you can start at a specific position with this
-  chassis.drive_brake_set(MOTOR_BRAKE_HOLD);  // Set motors to hold.  This helps autonomous consistency
+  chassis.drive_brake_set(MOTOR_BRAKE_HOLD);
+  drive_example();
 
   /*
   Odometry and Pure Pursuit are not magic
@@ -152,7 +180,7 @@ void autonomous() {
   to be consistent
   */
 
-  ez::as::auton_selector.selected_auton_call();  // Calls selected auton from autonomous selector
+  // ez::as::auton_selector.selected_auton_call();  // Calls selected auton from autonomous selector
 }
 
 /**
@@ -259,50 +287,78 @@ void ez_template_extras() {
  * task, not resume it from where it left off.
  */
 
-// void init_seperation(Ball::Color color) {
-//   topRoller.motor_set_encoder_units(pros::E_MOTOR_ENCODER_DEGREES);
-//   colorSort.set_led_pwm(100);
-  
-// }
 
+
+void switchSeparation() {
+    if (controller.get_digital(DIGITAL_UP) && controller.get_digital(pros::E_CONTROLLER_DIGITAL_LEFT)) {
+        separation_state++;
+        if (separation_state > 2) { separation_state = 0; }
+        switch (separation_state) {
+            case 0: intake.setSeparation(Intake::Ball::RED); break;
+            case 1: intake.setSeparation(Intake::Ball::BLUE); break;
+            case 2: intake.setSeparation(Intake::Ball::NONE); break;
+        }
+        pros::delay(500);
+    }
+}
 
 void opcontrol() {
   // This is preference to what you like to drive on
   chassis.drive_brake_set(MOTOR_BRAKE_COAST);
-  
+
 
   while (true) {
+
+    switchSeparation();
+
+    if(!intake.sort) {
+      if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)){
+        intake.set(Intake::IntakeState::TOPSCORING, 127);
+      } else if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)){
+        intake.set(Intake::IntakeState::LOWSCORING, 127);
+      } else if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)){
+        intake.set(Intake::IntakeState::INTAKING, 127);
+      } else if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)){
+        intake.set(Intake::IntakeState::OUTTAKE, 127);
+      } else {
+        intake.set(Intake::IntakeState::STOPPED);
+      }
+    }
+
     // Gives you some extras to make EZ-Template ezier
     ez_template_extras();
     arcadeCurve(pros::E_CONTROLLER_ANALOG_LEFT_Y, pros::E_CONTROLLER_ANALOG_RIGHT_X, master, 5);  // Curved arcade  
-    if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
-      indexerMotor.move(127); //scoring upper
-      topRoller.move(127);
-      middleRoller.move(127);
-      frontRoller.move(127);
-    } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
-      indexerMotor.move(-127);  //scoring lower
-      topRoller.move(127);
-      middleRoller.move(127);
-      frontRoller.move(127);
-    } else {
-      indexerMotor.move(0);
-      topRoller.move(0);
-      middleRoller.move(0);
-      frontRoller.move(0);
-    }
+    // if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+    //   indexerMotor.move(127); //scoring upper
+    //   topRoller.move(127);
+    //   middleRoller.move(127);
+    //   frontRoller.move(127);
+    // } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
+    //   indexerMotor.move(-127);  //scoring lower
+    //   topRoller.move(127);
+    //   middleRoller.move(127);
+    //   frontRoller.move(127);
+    // } else {
+    //   indexerMotor.move(0);
+    //   topRoller.move(0);
+    //   middleRoller.move(0);
+    //   frontRoller.move(0);
+    // }
 
-    if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) { 
-      topRoller.move(127);
-      middleRoller.move(127);
-      frontRoller.move(127);
-    }
-    if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) { 
-      topRoller.move(-127);
-      middleRoller.move(-127);
-      frontRoller.move(-127);
-      indexerMotor.move(127);
-    }
+    // if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) { 
+    //   topRoller.move(127);
+    //   middleRoller.move(127);
+    //   frontRoller.move(127);
+    // }
+    // if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) { 
+    //   topRoller.move(-127);
+    //   middleRoller.move(-127);
+    //   frontRoller.move(-127);
+    //   indexerMotor.move(127);
+    // }
+
+
+
     // chassis.opcontrol_arcade_standard(ez::SPLIT);   // Standard split arcade
     // chassis.opcontrol_arcade_standard(ez::SINGLE);  // Standard single arcade
     // chassis.opcontrol_arcade_flipped(ez::SPLIT);    // Flipped split arcade

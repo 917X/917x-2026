@@ -15,12 +15,12 @@ class Intake {
         void setSeparation(Ball ball);
         void checkForSort();
 
-    private:
+    
         pros::Optical& colorSort;
-        pros::Motor& topRoller;
+        pros::Motor& frontRoller;
         pros::Motor& middleRoller;
         pros::Motor& bottomRoller;
-        pros::Motor& IndexerMotor;
+        pros::Motor& indexerMotor;
         IntakeState state = STOPPED;
         Ball ball = NONE;
 

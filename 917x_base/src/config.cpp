@@ -13,8 +13,8 @@ constexpr int LEFT_M = -14;
 constexpr int LEFT_B = 13;
 
 
-constexpr int INDEXER = -11;
-constexpr int TOP_ROLLER= 7;
+constexpr int INDEXER = -10;
+constexpr int BOTTOM_ROLLER = 7;
 constexpr int MIDDLE_ROLLER = -8;
 constexpr int FRONT_ROLLER = 16;
 
@@ -38,9 +38,11 @@ pros::Controller controller(pros::E_CONTROLLER_MASTER);
 pros::Optical colorSort(TOP_SORT);
 
 pros::Motor indexerMotor(INDEXER);
-pros::Motor topRoller(TOP_ROLLER);
+pros::Motor bottomRoller(BOTTOM_ROLLER);
 pros::Motor middleRoller(MIDDLE_ROLLER);
 pros::Motor frontRoller(FRONT_ROLLER);
+
+Intake intake(indexerMotor, colorSort, frontRoller, middleRoller, bottomRoller);
 
 // drivetrain
 pros::MotorGroup rightMotors({RIGHT_F, RIGHT_M, RIGHT_B}, pros::MotorGearset::blue);
