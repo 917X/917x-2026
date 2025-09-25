@@ -1,4 +1,5 @@
 #include "main.h"
+#include "autons.hpp"
 #include "config.hpp"
 #include "pros/misc.h"
 #include "subsystem/intake.hpp"
@@ -52,7 +53,7 @@ ez::Drive chassis(
     {-18, 19, -17},  // Right Chassis Ports (negative port will reverse it!)
 
     21,      // IMU Port
-    3.25,  // Wheel Diameter (Remember, 4" wheels without screw holes are actually 4.125!)
+    2.75,  // Wheel Diameter (Remember, 4" wheels without screw holes are actually 4.125!)
     600);  // Wheel RPM = cartridge * (motor gear / wheel gear)
 
 // Uncomment the trackers you're using here!
@@ -163,9 +164,9 @@ void autonomous() {
   chassis.pid_targets_reset();                // Resets PID targets to 0
   chassis.drive_imu_reset();                  // Reset gyro position to 0
   chassis.drive_sensor_reset();               // Reset drive sensors to 0
-  chassis.odom_xyt_set(0_in, 0_in, 0_deg);    // Set the current position, you can start at a specific position with this
+  // chassis.odom_xyt_set(138_in, -37_in, -90_deg);    // Set the current position, you can start at a specific position with this
   chassis.drive_brake_set(MOTOR_BRAKE_HOLD);
-  drive_example();
+  redAWP();
 
   /*
   Odometry and Pure Pursuit are not magic

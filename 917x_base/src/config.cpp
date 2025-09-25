@@ -20,9 +20,6 @@ constexpr int FRONT_ROLLER = 16;
 
 constexpr int DISTANCE = 1;
 
-constexpr int WALLSTAKE1 = 69;
-constexpr int WALLSTAKE2 = 69;
-constexpr int WALLSTAKE_ROT = 69;
 
 constexpr char CLAMP = 'A';
 constexpr char HOOK = 'B';

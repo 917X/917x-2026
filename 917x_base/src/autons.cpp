@@ -1,4 +1,7 @@
+#include "EZ-Template/util.hpp"
+#include "config.hpp"
 #include "main.h"
+#include "subsystem/intake.hpp"
 
 /////
 // For installation, upgrading, documentations, and tutorials, check out our website!
@@ -15,19 +18,21 @@ const int SWING_SPEED = 110;
 ///
 void default_constants() {
   // P, I, D, and Start I
-  chassis.pid_drive_constants_forward_set(11.1,0,45);
-  chassis.pid_drive_constants_backward_set(5.7, 0.0, 8);
+  chassis.pid_drive_constants_forward_set(11.2,0,56);  //52
+  chassis.pid_drive_constants_backward_set(5.7, 0.0, 9);
 
-  chassis.pid_heading_constants_set(11.0, 0.0, 20.0);        // Holds the robot straight while going forward without odom
-  chassis.pid_turn_constants_set(3.0, 0.05, 20.0, 15.0);     // Turn in place constants
+  chassis.pid_heading_constants_set(11,0,50.0);        // Holds the robot straight while going forward without odom. 11 40
+
+  chassis.pid_turn_constants_set(2.7, 0, 18, 16.0);     // Turn in place constants
+
   chassis.pid_swing_constants_set(6.0, 0.0, 65.0);           // Swing constants
-  chassis.pid_odom_angular_constants_set(6.5, 0.0, 52.5);    // Angular control for odom motions
+  chassis.pid_odom_angular_constants_set(6.5, 0.0, 60.5);    // Angular control for odom motions
   chassis.pid_odom_boomerang_constants_set(5.8, 0.0, 32.5);  // Angular control for boomerang motions
 
   // Exit conditions
   chassis.pid_turn_exit_condition_set(90_ms, 3_deg, 250_ms, 7_deg, 500_ms, 500_ms); // 90,3_deg,250_ms,7_deg,500_ms,500_ms
   chassis.pid_swing_exit_condition_set(90_ms, 3_deg, 250_ms, 7_deg, 500_ms, 500_ms);
-  chassis.pid_drive_exit_condition_set(90_ms, 0.00001_in, 250_ms, 3_in, 500_ms, 500_ms);
+  chassis.pid_drive_exit_condition_set(90_ms, 1_in, 250_ms, 3_in, 500_ms, 500_ms);
   chassis.pid_odom_turn_exit_condition_set(90_ms, 3_deg, 250_ms, 7_deg, 500_ms, 750_ms);
   chassis.pid_odom_drive_exit_condition_set(90_ms, 1_in, 250_ms, 3_in, 500_ms, 750_ms);
   chassis.pid_turn_chain_constant_set(3_deg);
@@ -37,7 +42,7 @@ void default_constants() {
   // Slew constants
   chassis.slew_turn_constants_set(3_deg, 70);
 
-  chassis.slew_drive_constants_forward_set(2_in, 95);
+  chassis.slew_drive_constants_forward_set(3.5_in, 40);
   chassis.slew_drive_constants_backward_set(0.5_in, 110);
 
   chassis.slew_swing_constants_set(3_in, 80);
@@ -65,7 +70,7 @@ void drive_example() {
   // chassis.pid_drive_set(24_in, DRIVE_SPEED, true);
   // chassis.pid_wait();
 
-  chassis.pid_drive_set(36_in,100,true);
+  chassis.pid_drive_set(24_in,110, true);
   chassis.pid_wait();
 
   // chassis.pid_drive_set(-36_in, 110);
@@ -82,8 +87,8 @@ void turn_example() {
   chassis.pid_turn_set(90_deg, TURN_SPEED);
   chassis.pid_wait();
 
-  chassis.pid_turn_set(45_deg, TURN_SPEED);
-  chassis.pid_wait();
+  // chassis.pid_turn_set(45_deg, TURN_SPEED);
+  // chassis.pid_wait();
 
   chassis.pid_turn_set(0_deg, TURN_SPEED);
   chassis.pid_wait();
@@ -339,7 +344,7 @@ void measure_offsets() {
     chassis.pid_targets_reset();
     chassis.drive_imu_reset();
     chassis.drive_sensor_reset();
-    chassis.drive_brake_set(MOTOR_BRAKE_HOLD);
+    chassis.drive_brake_set(pros::E_MOTOR_BRAKE_HOLD);
     chassis.odom_xyt_set(0_in, 0_in, 0_deg);
     double imu_start = chassis.odom_theta_get();
     double target = i % 2 == 0 ? 90 : 270;  // Switch the turn target every run from 270 to 90
@@ -381,3 +386,58 @@ void measure_offsets() {
 // . . .
 // Make your own autonomous functions here!
 // . . .
+
+void redAWP() {
+  intake.set(Intake::IntakeState::INTAKING, 127);
+  // chassis.odom_xyt_set(54_in, -15_in, -90_deg);
+  // chassis.pid_drive_set(21_in,100,true);//22
+  // chassis.pid_wait_quick();
+  // chassis.pid_swing_set(ez::RIGHT_SWING, -160_deg, 90, 20, true);//90,40   
+  // chassis.pid_wait_quick();
+  // chassis.pid_turn_set(125,90);
+  // chassis.pid_wait_quick();
+  // chassis.pid_odom_set({{55_in, -43_in, 90_deg}, fwd, 110}, true);
+  // intake.set(Intake::IntakeState::STOPPED);
+
+  chassis.odom_xyt_set(45_in,-6_in,-90_deg);
+  // chassis.pid_odom_set({{ 22_in, -19_in,180_deg},fwd,80,{-18_in, -24_in}, fwd, 80}, true);
+  chassis.pid_odom_set({{{22_in,-22_in,-160_deg}, fwd, 90},
+                        {{18_in, -24_in}, fwd, 90}},
+                       true);
+  chassis.pid_wait_quick();
+  chassis.pid_turn_set({50_in,-45_in},fwd,90);
+  chassis.pid_odom_set({{50_in, -45_in}, fwd, 110}, true);
+  chassis.pid_wait_quick_chain();
+  chassis.pid_swing_set(ez::RIGHT_SWING, 90_deg, 90, 0, true);
+
+  pros::delay(2000);
+  chassis.pid_drive_set(-26_in,110,true);
+  chassis.pid_wait();
+  // intake.set(Intake::IntakeState::TOPSCORING,127);
+  pros::delay(1000);
+
+  chassis.pid_drive_set(5_in,110,false,false);
+  chassis.pid_wait_until(2_in);
+  chassis.pid_swing_set(ez::RIGHT_SWING,90_deg,90,30);
+  chassis.pid_wait_quick();
+  intake.set(Intake::IntakeState::INTAKING, 127);
+  chassis.pid_odom_set({{22_in,20_in,0_deg},fwd,110});
+  chassis.pid_wait_quick_chain();
+  
+  chassis.pid_drive_chain_constant_set(6_in);
+  // chassis.pid_swing_set(ez::RIGHT_SWING,-150_deg,90,20,true);
+  chassis.pid_swing_set(ez::RIGHT_SWING,-50_deg,90,20,true);
+  chassis.pid_wait_quick();
+  intake.set(Intake::IntakeState::STOPPED);
+  chassis.pid_turn_set(-140,90);
+  chassis.pid_wait_quick();
+  chassis.pid_drive_set(12_in,50,true,false);
+  chassis.pid_wait_quick();
+  chassis.pid_drive_set(-26_in,110,true,false);
+  chassis.pid_wait_quick_chain();
+  chassis.pid_swing_set(ez::LEFT_SWING,90,90);
+  chassis.pid_wait_quick_chain();
+
+  chassis.pid_drive_set(-10_in,110,true,false);
+  intake.set(Intake::IntakeState::TOPSCORING,127);
+}
