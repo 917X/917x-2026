@@ -1,11 +1,5 @@
 #include "main.h"
 
-/////
-// For installation, upgrading, documentations, and tutorials, check out our website!
-// https://ez-robotics.github.io/EZ-Template/
-/////
-
-// Chassis constructor
 ez::Drive chassis(
     // These are your drive motors, the first motor is used for sensing!
     {-5, -6, -7, -8},  // Left Chassis Ports (negative port will reverse it!)

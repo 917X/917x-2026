@@ -44,3 +44,5 @@ EZ-Template-Example-Project/temp.errors
 EZ-Template-Example-Project/*.ini
 EZ-Template-Example-Project/.d/
 .d/
+
+.vscode/ 
