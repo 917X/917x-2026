@@ -166,7 +166,7 @@ void autonomous() {
   chassis.drive_sensor_reset();               // Reset drive sensors to 0
   // chassis.odom_xyt_set(138_in, -37_in, -90_deg);    // Set the current position, you can start at a specific position with this
   chassis.drive_brake_set(MOTOR_BRAKE_HOLD);
-  redAWP();
+  skills();
 
   /*
   Odometry and Pure Pursuit are not magic

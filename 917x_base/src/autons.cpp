@@ -2,6 +2,7 @@
 #include "config.hpp"
 #include "main.h"
 #include "subsystem/intake.hpp"
+#include "subsystems.hpp"
 
 /////
 // For installation, upgrading, documentations, and tutorials, check out our website!
@@ -440,4 +441,103 @@ void redAWP() {
 
   chassis.pid_drive_set(-10_in,110,true,false);
   intake.set(Intake::IntakeState::TOPSCORING,127);
+}
+
+
+
+
+void skills(){
+//   intake.set(Intake::IntakeState::INTAKING, 127);
+//   chassis.odom_xyt_set(-45_in,6_in,90_deg);
+//   chassis.pid_odom_set({{{-22_in,22_in,40_deg}, fwd, 80},},true);
+//   chassis.pid_wait_quick();
+//   // chassis.pid_turn_set({50_in,-45_in},fwd,90);
+//   chassis.pid_swing_set(ez::RIGHT_SWING, -45_deg, 100, true);//90,40
+//   chassis.pid_wait_quick();
+//   chassis.pid_odom_set({{-37,47}, fwd, 110}, true);
+//   chassis.pid_wait_quick();
+//   intake.set(Intake::IntakeState::STOPPED);
+//   chassis.pid_turn_set(-90_deg, 90);
+//   chassis.pid_wait_quick();
+
+
+  intake.set(Intake::IntakeState::INTAKING, 127);
+  chassis.odom_xyt_set(-53_in,16_in,0_deg);
+  chassis.pid_turn_set({-46,48},fwd,90);
+  chassis.pid_wait_quick_chain();
+  chassis.pid_odom_set({{-46_in,49_in},fwd,120},false);
+  chassis.pid_wait_quick();
+  chassis.pid_turn_set(-90,90);
+  chassis.pid_wait_quick();
+  
+  //include code to intake from load bar
+  pros::delay(2000); //remove once intake coded
+  intake.set(Intake::IntakeState::STOPPED);
+  chassis.pid_drive_set(-20_in,70,true);
+  chassis.pid_wait_quick_chain();
+  intake.set(Intake::IntakeState::TOPSCORING);
+  pros::delay(1500);
+
+  chassis.pid_drive_set(5_in,100,false,false);
+  chassis.pid_wait_quick();
+  chassis.pid_swing_set(ez::LEFT_SWING,90_deg,90,true,clockwise);
+  chassis.pid_wait_quick();
+  intake.set(Intake::IntakeState::INTAKING, 127);
+  
+  //Robot has now turned to go to other side load bar
+
+  // chassis.pid_drive_set(50,110,true);//68
+  // chassis.pid_wait_quick_chain();
+  // intake.set(Intake::IntakeState::INTAKING,127);
+
+  chassis.pid_drive_set(60,110,true);
+  chassis.pid_wait_quick_chain();
+  // chassis.pid_turn_set(158_deg,90);
+  // chassis.pid_wait_quick_chain();
+  // chassis.pid_swing_set(ez::RIGHT_SWING,90_deg,90,30,true);
+  // chassis.pid_wait();
+  chassis.pid_odom_set({{53,48},fwd,110},true);
+  chassis.pid_wait_quick();
+  chassis.pid_turn_set(90,90);
+  chassis.pid_wait_quick();
+  
+  
+  //include code to intake from load bar and prob use a odom move to make sure in case of variable sliding
+  pros::delay(2000); //remove once intake coded
+  intake.set(Intake::IntakeState::STOPPED);
+
+  chassis.pid_turn_set(90,90);
+  chassis.pid_wait();
+  chassis.pid_drive_set(-20_in,70,true,true);
+  chassis.pid_wait_quick_chain();
+  intake.set(Intake::IntakeState::TOPSCORING);
+  pros::delay(1500);
+
+  //scored second preload, going to four ball
+  chassis.pid_drive_set(13_in,100,false,false);
+  chassis.pid_wait_quick();
+  chassis.pid_turn_set(-170_deg,90,true);
+  chassis.pid_wait_quick();
+  intake.set(Intake::IntakeState::INTAKING,127);
+  chassis.pid_odom_set({{{24,24.5,-125},fwd,90},{{18,22},fwd,90}},true);
+  chassis.pid_wait_quick_chain();
+  chassis.pid_swing_set(ez::LEFT_SWING,70,90,true,clockwise);
+  intake.set(Intake::IntakeState::STOPPED);
+
+
+  //SPED IDEA:
+  // chassis.pid_drive_set(5_in,100,false,false);
+  // chassis.pid_wait_quick();
+  // chassis.pid_swing_set(ez::LEFT_SWING,-135_deg,90,true);
+  // chassis.pid_wait_quick();
+  // intake.set(Intake::IntakeState::INTAKING,127);
+  // chassis.pid_drive_set(35,70,true);
+  // chassis.pid_wait_quick();
+  // pros::delay(1000);
+
+  // intake.set(Intake::IntakeState::OUTTAKE);
+  
+
+
+
 }

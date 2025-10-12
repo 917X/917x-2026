@@ -21,12 +21,12 @@ void Intake::checkForSort() {
     } else if (ball == Ball::BLUE) {
         if (colorSort.get_hue() > 200 && colorSort.get_hue() < 270) {
             sort = true;
-            INITIAL_POSITION = frontRoller.get_position();
+            INITIAL_POSITION = middleRoller.get_position();
         }
     } else if (ball == Ball::RED) {
         if (colorSort.get_hue() > 0 && colorSort.get_hue() < 40) {
             sort = true;
-            INITIAL_POSITION = frontRoller.get_position();
+            INITIAL_POSITION = middleRoller.get_position();
         }
     }
 
@@ -38,7 +38,7 @@ void Intake::intakeControl() {
         if (!sort) {
             checkForSort();
         }
-        bool COMPLETED_MOVEMENT = (INITIAL_POSITION + SEPARATION_MOVEMENT) < frontRoller.get_position();
+        bool COMPLETED_MOVEMENT = (INITIAL_POSITION + SEPARATION_MOVEMENT) < middleRoller.get_position();
 
         if (sort && !COMPLETED_MOVEMENT) {
             set(IntakeState::SEPARATE, speed);
@@ -48,6 +48,7 @@ void Intake::intakeControl() {
             sort = false;
             continue;
         }
+
 
 
         switch (state) {
@@ -64,7 +65,7 @@ void Intake::intakeControl() {
                 bottomRoller.move(speed);
                 break;
             case OUTTAKE:
-                indexerMotor.move(0);
+                indexerMotor.move(-speed);
                 frontRoller.move(-speed);
                 middleRoller.move(-speed);
                 bottomRoller.move(-speed);

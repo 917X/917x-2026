@@ -11,6 +11,7 @@ class Intake {
         enum Ball { BLUE , RED , NONE };
 
         void intakeControl();
+        void lowScoring();
         void set(IntakeState state, int speed = 127);
         void setSeparation(Ball ball);
         void checkForSort();
