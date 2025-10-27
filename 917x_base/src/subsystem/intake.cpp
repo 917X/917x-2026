@@ -1,4 +1,6 @@
 #include "subsystem/intake.hpp"
+#include <ctime>
+#include "pros/misc.hpp"
 #include "pros/motors.hpp"
 #include "pros/optical.hpp"
 
@@ -24,7 +26,7 @@ void Intake::checkForSort() {
             INITIAL_POSITION = middleRoller.get_position();
         }
     } else if (ball == Ball::RED) {
-        if (colorSort.get_hue() > 0 && colorSort.get_hue() < 40) {
+        if (colorSort.get_hue() > 0 && colorSort.get_hue() < 20) {
             sort = true;
             INITIAL_POSITION = middleRoller.get_position();
         }
@@ -33,8 +35,15 @@ void Intake::checkForSort() {
 
 }
 
+bool Intake::checkForDelay() {
+    if (waitTime >= 50 && delaying == 0) {
+        return true;
+    }
+    return false;
+}
 void Intake::intakeControl() {
     while (true) {
+        pros::delay(10); 
         if (!sort) {
             checkForSort();
         }
@@ -49,6 +58,30 @@ void Intake::intakeControl() {
             continue;
         }
 
+
+        //LOWSCORE DELAY LOGIC
+        if (state != LOWSCORING && state != LOWSCORE_DELAY) {
+            waitTime += 1;
+            delaying = 0;
+        }
+        
+        if (state == LOWSCORE_DELAY) {
+            delaying += 1;
+            // 30*10 cuz 10 ms per loop iteration
+            if (delaying >= 30) {
+                state = LOWSCORING;
+                delaying = 1;
+                waitTime = 0;
+            }
+        }
+        
+        if (state == LOWSCORING) {
+            waitTime = 0;
+        }
+
+        
+        // //FULLTOP LOGIC
+        // if (state == INTAKING && colorSort.get_proximity()>150){ state = IntakeState::FULLTOP; }
 
 
         switch (state) {
@@ -88,12 +121,41 @@ void Intake::intakeControl() {
                 middleRoller.move(speed);
                 bottomRoller.move(speed);
                 break;
+            case LOWSCORE_DELAY:
+                indexerMotor.move(-speed);
+                frontRoller.move(speed);
+                middleRoller.move(0);
+                bottomRoller.move(speed);
+                break;
+            case FULLTOP:
+                indexerMotor.move(0);
+                frontRoller.move(speed);
+                middleRoller.move(0);
+                bottomRoller.move(speed);
         }
     }
+
     
 }
 
 void Intake::set(IntakeState state, int speed) {
+    // Special handling for LOWSCORING state
+    if (state == LOWSCORING) {
+        // If we're currently in delay, don't override it
+        if (this->state == LOWSCORE_DELAY) {
+            this->speed = speed; // Update speed but keep the delay state
+            return;
+        }
+        // If delay is needed (500ms+ gap), start with LOWSCORE_DELAY
+        if (checkForDelay()) {
+            this->state = LOWSCORE_DELAY;
+            this->delaying = 1;
+            this->speed = speed;
+            return;
+        }
+    }
+    
+    // Normal state setting
     this->state = state;
     this->speed = speed;
 }

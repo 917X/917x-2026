@@ -14,8 +14,8 @@ constexpr int LEFT_B = 13;
 
 
 constexpr int INDEXER = -10;
-constexpr int BOTTOM_ROLLER = 7;
-constexpr int MIDDLE_ROLLER = -8;
+constexpr int MIDDLE_ROLLER = 7;
+constexpr int BOTTOM_ROLLER = -8;
 constexpr int FRONT_ROLLER = 16;
 
 constexpr int DISTANCE = 1;
@@ -24,7 +24,7 @@ constexpr int DISTANCE = 1;
 constexpr char CLAMP = 'A';
 constexpr char HOOK = 'B';
 constexpr char HANG = 'G';
-constexpr char TOP_SORT = 8;
+constexpr char TOP_SORT = 6;
 
 constexpr char IMU = 21;
 

@@ -7,7 +7,7 @@ class Intake {
     public:
 
         Intake(pros::Motor& indexerMotor, pros::Optical& colorSort , pros::Motor& topRoller, pros::Motor& middleRoller, pros::Motor& bottomRoller);
-        enum IntakeState{ STOPPED , INTAKING , OUTTAKE, SEPARATE, TOPSCORING, LOWSCORING };
+        enum IntakeState{ STOPPED , INTAKING , OUTTAKE, SEPARATE, TOPSCORING, LOWSCORING , LOWSCORE_DELAY, FULLTOP};
         enum Ball { BLUE , RED , NONE };
 
         void intakeControl();
@@ -15,6 +15,7 @@ class Intake {
         void set(IntakeState state, int speed = 127);
         void setSeparation(Ball ball);
         void checkForSort();
+        bool checkForDelay();
 
     
         pros::Optical& colorSort;
@@ -29,7 +30,12 @@ class Intake {
         int speed = 127;
 
         double INITIAL_POSITION = 0;
-        double SEPARATION_MOVEMENT = 300;
+        double SEPARATION_MOVEMENT = 30;
         double SEPARATION_WAIT = 0;
         double TIME_TO_COMPLETE_SEP = 100; //45 before
+
+
+        int waitTime = 0;
+        int delaying = 0;
+        int separationTimeout = 0; // Timeout counter for separation
 };

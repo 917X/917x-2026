@@ -70,15 +70,34 @@ ez::Drive chassis(
  * All other competition modes are blocked by initialize; it is recommended
  * to keep execution time for this mode under a few seconds.
  */
+
+void printTelemetry() {
+  while (true) {
+    switch (intake.ball) {
+      case Intake::Ball::BLUE: controller.print(1, 1, "%s", "SEPARATING BLUE"); break;
+      case Intake::Ball::RED: controller.print(1, 1, "%s", "SEPARATING RED"); break;
+      case Intake::Ball::NONE: controller.print(1, 1, "%s", "SEPARATING NONE"); break;
+      default: break;
+    }
+    pros::delay(100);
+  }
+}
+
+
 void initialize() {
   // Print our branding over your terminal :D
+  controller.clear();
   init_separation(Intake::Ball::NONE);
   pros::Task task {[=] { intake.intakeControl(); }};
-
+  pros::Task printOdomTask(printTelemetry);
+  pros::Task task2 {[=] { intake.intakeControl(); }};
 
 
   ez::ez_template_print();
   indexerMotor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+  colorSort.set_led_pwm(100);
+  middleRoller.set_encoder_units(pros::E_MOTOR_ENCODER_DEGREES);
+
   pros::delay(500);  // Stop the user from doing anything while legacy ports configure
 
   // Look at your horizontal tracking wheel and decide if it's in front of the midline of your robot or behind it
@@ -166,7 +185,8 @@ void autonomous() {
   chassis.drive_sensor_reset();               // Reset drive sensors to 0
   // chassis.odom_xyt_set(138_in, -37_in, -90_deg);    // Set the current position, you can start at a specific position with this
   chassis.drive_brake_set(MOTOR_BRAKE_HOLD);
-  skills();
+  // skills();
+  solo_awp();
 
   /*
   Odometry and Pure Pursuit are not magic
@@ -291,7 +311,7 @@ void ez_template_extras() {
 
 
 void switchSeparation() {
-    if (controller.get_digital(DIGITAL_UP) && controller.get_digital(pros::E_CONTROLLER_DIGITAL_LEFT)) {
+    if (controller.get_digital(DIGITAL_UP)) {
         separation_state++;
         if (separation_state > 2) { separation_state = 0; }
         switch (separation_state) {
