@@ -11,7 +11,6 @@ extern pros::Controller controller;
 
 extern pros::adi::DigitalOut intakePiston;
 extern pros::Motor indexerMotor;
-extern pros::Motor indexerMotor;
 extern pros::Motor frontRoller;
 extern pros::Motor middleRoller;
 extern pros::Motor bottomRoller;

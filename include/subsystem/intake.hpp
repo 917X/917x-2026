@@ -15,8 +15,9 @@ class Intake {
         void lowScoring();
         void set(IntakeState state, int speed = 127);
         void setSeparation(Ball ball);
-        void checkForSort();
+        // void checkForSort();  // DISABLED: Color sorting not used
         bool checkForDelay();
+        bool checkIfTopFull();  // Check if top intake is full via optical sensor
 
         pros::Optical& colorSort;
         pros::Motor& frontRoller;
@@ -26,7 +27,7 @@ class Intake {
         IntakeState state = STOPPED;
         Ball ball = NONE;
 
-        bool sort  = false;
+        bool sort  = false;  // DISABLED: Color sorting not currently used
         int speed = 127;
 
         double INITIAL_POSITION = 0;

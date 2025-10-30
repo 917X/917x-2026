@@ -17,23 +17,22 @@ void Intake::setSeparation(Ball ball) {
     this->ball = ball;
 }
 
-void Intake::checkForSort() {
-    if (ball == Ball::NONE) {
-        sort = false;
-    } else if (ball == Ball::BLUE) {
-        if (colorSort.get_hue() > 200 && colorSort.get_hue() < 270) {
-            sort = true;
-            INITIAL_POSITION = middleRoller.get_position();
-        }
-    } else if (ball == Ball::RED) {
-        if (colorSort.get_hue() > 0 && colorSort.get_hue() < 20) {
-            sort = true;
-            INITIAL_POSITION = middleRoller.get_position();
-        }
-    }
-
-
-}
+// DISABLED: Color sorting is not currently used
+// void Intake::checkForSort() {
+//     if (ball == Ball::NONE) {
+//         sort = false;
+//     } else if (ball == Ball::BLUE) {
+//         if (colorSort.get_hue() > 200 && colorSort.get_hue() < 270) {
+//             sort = true;
+//             INITIAL_POSITION = middleRoller.get_position();
+//         }
+//     } else if (ball == Ball::RED) {
+//         if (colorSort.get_hue() > 0 && colorSort.get_hue() < 20) {
+//             sort = true;
+//             INITIAL_POSITION = middleRoller.get_position();
+//         }
+//     }
+// }
 
 bool Intake::checkForDelay() {
     if (waitTime >= 50 && delaying == 0) {
@@ -41,22 +40,30 @@ bool Intake::checkForDelay() {
     }
     return false;
 }
+
+bool Intake::checkIfTopFull() {
+    // Check if optical sensor detects a ball stuck near the middle roller
+    // Proximity value above threshold indicates a ball is present
+    return this->colorSort.get_proximity() > 150;
+}
 void Intake::intakeControl() {
     while (true) {
         pros::delay(10); 
-        if (!sort) {
-            checkForSort();
-        }
-        bool COMPLETED_MOVEMENT = (INITIAL_POSITION + SEPARATION_MOVEMENT) < middleRoller.get_position();
+        
+        // DISABLED: Color sorting logic
+        // if (!sort) {
+        //     checkForSort();
+        // }
+        // bool COMPLETED_MOVEMENT = (INITIAL_POSITION + SEPARATION_MOVEMENT) < middleRoller.get_position();
 
-        if (sort && !COMPLETED_MOVEMENT) {
-            set(IntakeState::SEPARATE, speed);
-            continue;
-        } else if (sort && COMPLETED_MOVEMENT) {
-            set(IntakeState::STOPPED);
-            sort = false;
-            continue;
-        }
+        // if (sort && !COMPLETED_MOVEMENT) {
+        //     set(IntakeState::SEPARATE, speed);
+        //     continue;
+        // } else if (sort && COMPLETED_MOVEMENT) {
+        //     set(IntakeState::STOPPED);
+        //     sort = false;
+        //     continue;
+        // }
 
 
         //LOWSCORE DELAY LOGIC
@@ -80,8 +87,8 @@ void Intake::intakeControl() {
         }
 
         
-        // //FULLTOP LOGIC
-        // if (state == INTAKING && colorSort.get_proximity()>150){ state = IntakeState::FULLTOP; }
+        // Check if top intake is full during intaking
+        bool topFull = (state == INTAKING) && checkIfTopFull();
 
 
         switch (state) {
@@ -94,8 +101,9 @@ void Intake::intakeControl() {
             case INTAKING:
                 indexerMotor.move(0);
                 frontRoller.move(speed);
-                middleRoller.move(speed);
-                bottomRoller.move(speed);
+                // Stop middle roller if top is full to prevent jamming
+                middleRoller.move(topFull ? 0 : speed);
+                bottomRoller.move(topFull ? 0: speed);
                 break;
             case OUTTAKE:
                 indexerMotor.move(-speed);

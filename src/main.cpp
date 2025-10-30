@@ -73,12 +73,13 @@ ez::Drive chassis(
 
 void printTelemetry() {
   while (true) {
-    switch (intake.ball) {
-      case Intake::Ball::BLUE: controller.print(1, 1, "%s", "SEPARATING BLUE"); break;
-      case Intake::Ball::RED: controller.print(1, 1, "%s", "SEPARATING RED"); break;
-      case Intake::Ball::NONE: controller.print(1, 1, "%s", "SEPARATING NONE"); break;
-      default: break;
-    }
+    // DISABLED: Color sorting telemetry
+    // switch (intake.ball) {
+    //   case Intake::Ball::BLUE: controller.print(1, 1, "%s", "SEPARATING BLUE"); break;
+    //   case Intake::Ball::RED: controller.print(1, 1, "%s", "SEPARATING RED"); break;
+    //   case Intake::Ball::NONE: controller.print(1, 1, "%s", "SEPARATING NONE"); break;
+    //   default: break;
+    // }
     pros::delay(100);
   }
 }
@@ -312,18 +313,19 @@ void ez_template_extras() {
 
 
 
-void switchSeparation() {
-    if (controller.get_digital(DIGITAL_UP)) {
-        separation_state++;
-        if (separation_state > 2) { separation_state = 0; }
-        switch (separation_state) {
-            case 0: intake.setSeparation(Intake::Ball::RED); break;
-            case 1: intake.setSeparation(Intake::Ball::BLUE); break;
-            case 2: intake.setSeparation(Intake::Ball::NONE); break;
-        }
-        pros::delay(500);
-    }
-}
+// DISABLED: Color sorting button control
+// void switchSeparation() {
+//     if (controller.get_digital(DIGITAL_UP)) {
+//         separation_state++;
+//         if (separation_state > 2) { separation_state = 0; }
+//         switch (separation_state) {
+//             case 0: intake.setSeparation(Intake::Ball::RED); break;
+//             case 1: intake.setSeparation(Intake::Ball::BLUE); break;
+//             case 2: intake.setSeparation(Intake::Ball::NONE); break;
+//         }
+//         pros::delay(500);
+//     }
+// }
 
 static bool piston_state = false;
 void intake_piston_toggle() {
@@ -345,7 +347,8 @@ void opcontrol() {
 
   while (true) {
 
-    switchSeparation();
+    // DISABLED: Color sorting control
+    // switchSeparation();
 
     if(!intake.sort) {
       if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)){
