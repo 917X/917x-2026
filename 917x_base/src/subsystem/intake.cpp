@@ -67,8 +67,8 @@ void Intake::intakeControl() {
         
         if (state == LOWSCORE_DELAY) {
             delaying += 1;
-            // 30*10 cuz 10 ms per loop iteration
-            if (delaying >= 30) {
+            // 75*10 cuz 10 ms per loop iteration
+            if (delaying >= 75) {
                 state = LOWSCORING;
                 delaying = 1;
                 waitTime = 0;
@@ -124,7 +124,7 @@ void Intake::intakeControl() {
             case LOWSCORE_DELAY:
                 indexerMotor.move(-speed);
                 frontRoller.move(speed);
-                middleRoller.move(0);
+                middleRoller.move(-speed/2);
                 bottomRoller.move(speed);
                 break;
             case FULLTOP:
