@@ -561,6 +561,7 @@ void skills(){
   chassis.pid_wait_quick_chain();
   chassis.pid_swing_set(ez::RIGHT_SWING,45_deg,90,true);
   intake.set(Intake::IntakeState::LOWSCORING);
+  pros::delay(500);
 
 
 
