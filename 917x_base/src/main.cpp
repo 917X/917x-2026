@@ -84,6 +84,8 @@ void printTelemetry() {
 }
 
 
+
+
 void initialize() {
   // Print our branding over your terminal :D
   controller.clear();
@@ -185,8 +187,8 @@ void autonomous() {
   chassis.drive_sensor_reset();               // Reset drive sensors to 0
   // chassis.odom_xyt_set(138_in, -37_in, -90_deg);    // Set the current position, you can start at a specific position with this
   chassis.drive_brake_set(MOTOR_BRAKE_HOLD);
-  // skills();
-  solo_awp();
+  skills(); 
+  // solo_awp();
 
   /*
   Odometry and Pure Pursuit are not magic
@@ -323,10 +325,23 @@ void switchSeparation() {
     }
 }
 
+static bool piston_state = false;
+void intake_piston_toggle() {
+  while (true)  {
+    if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_RIGHT)) {
+      piston_state = !piston_state;
+      intakePiston.set_value(piston_state);
+    }
+    pros::delay(300);
+}
+}
+
+
 void opcontrol() {
   // This is preference to what you like to drive on
   chassis.drive_brake_set(MOTOR_BRAKE_COAST);
-
+  
+  pros::Task asyncButtons(intake_piston_toggle);
 
   while (true) {
 
@@ -346,6 +361,7 @@ void opcontrol() {
       }
     }
 
+    
     // Gives you some extras to make EZ-Template ezier
     ez_template_extras();
     arcadeCurve(pros::E_CONTROLLER_ANALOG_LEFT_Y, pros::E_CONTROLLER_ANALOG_RIGHT_X, master, 5);  // Curved arcade  

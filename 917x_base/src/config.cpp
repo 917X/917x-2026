@@ -1,4 +1,5 @@
 #include "config.hpp"
+#include "pros/adi.h"
 #include "pros/misc.hpp"
 #include "pros/motor_group.hpp"
 #include "pros/optical.hpp"
@@ -21,7 +22,7 @@ constexpr int FRONT_ROLLER = 16;
 constexpr int DISTANCE = 1;
 
 
-constexpr char CLAMP = 'A';
+constexpr char INTAKE_PISTON = 'H';
 constexpr char HOOK = 'B';
 constexpr char HANG = 'G';
 constexpr char TOP_SORT = 6;
@@ -33,6 +34,8 @@ pros::Controller controller(pros::E_CONTROLLER_MASTER);
 
 // optical
 pros::Optical colorSort(TOP_SORT);
+
+pros::adi::DigitalOut intakePiston(INTAKE_PISTON);
 
 pros::Motor indexerMotor(INDEXER);
 pros::Motor bottomRoller(BOTTOM_ROLLER);

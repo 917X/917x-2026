@@ -1,4 +1,5 @@
 #pragma once
+#include "pros/adi.hpp"
 #include "pros/motors.hpp"
 #include "pros/optical.hpp"
 #include <cmath>
@@ -17,7 +18,6 @@ class Intake {
         void checkForSort();
         bool checkForDelay();
 
-    
         pros::Optical& colorSort;
         pros::Motor& frontRoller;
         pros::Motor& middleRoller;

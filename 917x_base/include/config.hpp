@@ -7,9 +7,10 @@
 #include "pros/imu.hpp"
 #include "subsystem/intake.hpp"
 
-
 extern pros::Controller controller;
 
+extern pros::adi::DigitalOut intakePiston;
+extern pros::Motor indexerMotor;
 extern pros::Motor indexerMotor;
 extern pros::Motor frontRoller;
 extern pros::Motor middleRoller;

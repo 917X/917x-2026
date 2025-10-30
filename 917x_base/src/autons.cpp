@@ -476,14 +476,18 @@ void skills(){
   chassis.pid_wait_quick();
   chassis.pid_turn_set(-90,90);
   chassis.pid_wait_quick();
-  
-  //include code to intake from load bar
-  pros::delay(2000); //remove once intake coded
-  intake.set(Intake::IntakeState::STOPPED);
-  chassis.pid_drive_set(-20_in,50,true);
+
+  intakePiston.set_value(true);
+  chassis.pid_drive_set(9,120,true); //8.7
+  chassis.pid_wait_quick_chain();
+  pros::delay(1500);
+  chassis.pid_drive_set(-27_in,50,true);
   chassis.pid_wait_quick_chain();
   intake.set(Intake::IntakeState::TOPSCORING);
+  pros::delay(500);
+  intakePiston.set_value(false);
   pros::delay(1500);
+
 
   chassis.pid_drive_set(5_in,100,false,false);
   chassis.pid_wait_quick();
@@ -491,33 +495,44 @@ void skills(){
   chassis.pid_wait_quick();
   intake.set(Intake::IntakeState::INTAKING, 127);
   
+
+
+
   //Robot has now turned to go to other side load bar
 
   // chassis.pid_drive_set(50,110,true);//68
   // chassis.pid_wait_quick_chain();
   // intake.set(Intake::IntakeState::INTAKING,127);
 
-  chassis.pid_drive_set(60,100,true);
+  chassis.pid_drive_set(60,90,true);
   chassis.pid_wait_quick_chain();
   // chassis.pid_turn_set(158_deg,90);
   // chassis.pid_wait_quick_chain();
+  // // chassis.pid_drive_set(4,110,true);
+  // // chassis.pid_wait_quick_chain();
+  // // chassis.pid_turn_set(90,90);
+  // // chassis.pid_wait_quick_chain();
   // chassis.pid_swing_set(ez::RIGHT_SWING,90_deg,90,30,true);
   // chassis.pid_wait();
-  chassis.pid_odom_set({{53,49},fwd,110},true);
-  chassis.pid_wait_quick();
-  chassis.pid_turn_set(90,90);
-  chassis.pid_wait_quick();
+  chassis.pid_odom_set({{48,49},fwd,90},true); //53,49
+  chassis.pid_wait(); 
   
-  
-  //include code to intake from load bar and prob use a odom move to make sure in case of variable sliding
-  pros::delay(2000); //remove once intake coded
-  intake.set(Intake::IntakeState::STOPPED);
+  chassis.pid_turn_set(86,100);
+  chassis.pid_wait();
+  intakePiston.set_value(true);
+  pros::delay(500); //lower if necessary
+  chassis.pid_drive_set(7_in,50,true);
+  chassis.pid_wait_quick_chain();
+
+  pros::delay(1500);
 
   chassis.pid_turn_set(90,90);
   chassis.pid_wait();
-  chassis.pid_drive_set(-21_in,70,true,true);
+  chassis.pid_drive_set(-28_in,70,true,true);
   chassis.pid_wait_quick_chain();
   intake.set(Intake::IntakeState::TOPSCORING);
+  pros::delay(500);
+  intakePiston.set_value(false);
   pros::delay(1500);
 
   //scored second loadbar, going to four ball
@@ -543,8 +558,6 @@ void skills(){
   chassis.pid_drive_set(-9.7_in,70,false);  //-9.8 -10 -12     <-110
   chassis.pid_wait_quick();
 
-  
-
   //going to fourball
   chassis.pid_turn_set(130,90,true); //120.    <-90
   chassis.pid_wait_quick();
@@ -556,6 +569,9 @@ void skills(){
   intake.set(Intake::IntakeState::OUTTAKE);
   pros::delay(1000);
 
+
+
+
   //going to third loadbar
   chassis.pid_swing_set(ez::LEFT_SWING,155,90,counterclockwise,true);
   chassis.pid_wait_quick_chain();
@@ -563,12 +579,18 @@ void skills(){
   chassis.pid_drive_chain_constant_set(6_in);
   chassis.pid_wait_quick_chain();
   chassis.pid_drive_chain_constant_set(3_in);
-  chassis.pid_odom_set({{50,-46.2},fwd,110},true);
+  chassis.pid_odom_set({{52,-45},fwd,110},true);
   chassis.pid_wait_quick();
   chassis.pid_turn_set(90,90);
   chassis.pid_wait();
 
   //include code to intake from load bar
+  intake.set(Intake::IntakeState::INTAKING, 127);
+  intakePiston.set_value(true);
+  pros::delay(500); //lower if necessary
+  chassis.pid_drive_set(9,50,true);
+  chassis.pid_wait_quick_chain();
+
   pros::delay(2000); //remove once intake coded
   intake.set(Intake::IntakeState::STOPPED);
   chassis.pid_drive_set(-17_in,60,true);
