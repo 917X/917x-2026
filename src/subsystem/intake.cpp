@@ -91,6 +91,7 @@ void Intake::intakeControl() {
         bool topFull = (state == INTAKING) && checkIfTopFull();
 
 
+
         switch (state) {
             case STOPPED:
                 indexerMotor.move(0);
@@ -103,7 +104,7 @@ void Intake::intakeControl() {
                 frontRoller.move(speed);
                 // Stop middle roller if top is full to prevent jamming
                 middleRoller.move(topFull ? 0 : speed);
-                bottomRoller.move(topFull ? 0: speed);
+                bottomRoller.move(topFull ? 0 : speed);
                 break;
             case OUTTAKE:
                 indexerMotor.move(-speed);
@@ -132,7 +133,7 @@ void Intake::intakeControl() {
             case LOWSCORE_DELAY:
                 indexerMotor.move(-speed);
                 frontRoller.move(speed);
-                middleRoller.move(-speed/2);
+                middleRoller.move(-speed);
                 bottomRoller.move(speed);
                 break;
             case FULLTOP:
