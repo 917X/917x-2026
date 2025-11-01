@@ -192,7 +192,8 @@ void autonomous() {
   // chassis.odom_xyt_set(138_in, -37_in, -90_deg);    // Set the current position, you can start at a specific position with this
   chassis.drive_brake_set(MOTOR_BRAKE_HOLD);
   //skills(); 
-  solo_awp();
+  // solo_awp();
+  right_elims();
   // chassis.pid_turn_set(45_deg, 100);
   // chassis.pid_wait();
   // chassis.pid_turn_set(-45_deg, 100);
@@ -341,20 +342,31 @@ void ez_template_extras() {
 static bool piston_state = false;
 void intake_piston_toggle() {
   while (true)  {
-    if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_RIGHT)) {
+    if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_B)) {
       piston_state = !piston_state;
       intakePiston.set_value(piston_state);
+      pros::delay(300);
     }
-    pros::delay(300);
 }
 }
 
+static bool flapper_state = false;
+void flapper_piston_toggle() {
+  while (true) {
+    if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_Y)) {
+      flapper_state = !flapper_state;
+      flapperPiston.set_value(flapper_state);
+      pros::delay(300);
+    }
+  }
+}
 
 void opcontrol() {
   // This is preference to what you like to drive on
   chassis.drive_brake_set(MOTOR_BRAKE_COAST);
   
-  pros::Task asyncButtons(intake_piston_toggle);
+  pros::Task asyncIntake(intake_piston_toggle);
+  pros::Task asyncFlapper(flapper_piston_toggle);
 
   while (true) {
 

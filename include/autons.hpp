@@ -18,4 +18,5 @@ void odom_boomerang_injected_pure_pursuit_example();
 void measure_offsets();
 
 void solo_awp();
+void right_elims();
 void skills();

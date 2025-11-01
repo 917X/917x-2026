@@ -23,8 +23,7 @@ constexpr int DISTANCE = 1;
 
 
 constexpr char INTAKE_PISTON = 'H';
-constexpr char HOOK = 'B';
-constexpr char HANG = 'G';
+constexpr char FLAPPER_PISTON = 'G';
 constexpr char TOP_SORT = 6;
 
 constexpr char IMU = 21;
@@ -36,6 +35,7 @@ pros::Controller controller(pros::E_CONTROLLER_MASTER);
 pros::Optical colorSort(TOP_SORT);
 
 pros::adi::DigitalOut intakePiston(INTAKE_PISTON);
+pros::adi::DigitalOut flapperPiston(FLAPPER_PISTON);
 
 pros::Motor indexerMotor(INDEXER);
 pros::Motor bottomRoller(BOTTOM_ROLLER);

@@ -145,7 +145,7 @@ void Intake::intakeControl() {
             case ROLLERONLY:
                 frontRoller.move(speed);
                 middleRoller.move(0);
-                bottomRoller.move(0);
+                bottomRoller.move(speed-70);
                 indexerMotor.move(0);
                 break;
         }

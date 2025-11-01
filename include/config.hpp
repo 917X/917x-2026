@@ -16,6 +16,8 @@ extern pros::Motor middleRoller;
 extern pros::Motor bottomRoller;
 extern Intake intake;
 
+extern pros::adi::DigitalOut flapperPiston;
+
 extern pros::Optical colorSort;
 extern pros::Imu imu;
 extern pros::MotorGroup rightMotors;
