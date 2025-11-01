@@ -24,7 +24,7 @@ void default_constants() {
 
   chassis.pid_heading_constants_set(11,0,50.0);        // Holds the robot straight while going forward without odom. 11 40
 
-  chassis.pid_turn_constants_set(2.7, 0, 18, 16.0);     // Turn in place constants
+  chassis.pid_turn_constants_set(3.2, 0, 25, 16.0);     // Turn in place constants
 
   chassis.pid_swing_constants_set(6.0, 0.0, 65.0);           // Swing constants
   chassis.pid_odom_angular_constants_set(6.5, 0.0, 60.5);    // Angular control for odom motions
@@ -466,31 +466,32 @@ void solo_awp() {
   chassis.pid_swing_set(ez::RIGHT_SWING, 91_deg, 90, 0, true);
   chassis.pid_wait_quick_chain();
   intakePiston.set_value(true);
-  chassis.pid_drive_set(7_in, 80, true);
+  chassis.pid_drive_set(7_in, 70, true);
   chassis.pid_wait_quick_chain();
-  pros::delay(500);
-  chassis.pid_drive_set(-31_in,100,true);
+  pros::delay(675);
+  chassis.pid_drive_set(-31_in,90,true);
   chassis.pid_wait_quick_chain();
   intakePiston.set_value(false);
   intake.set(Intake::IntakeState::TOPSCORING,127);
-  pros::delay(1500);
+  pros::delay(1800);
 
   
-  intake.set(Intake::IntakeState::INTAKING, 127);
+  intake.set(Intake::IntakeState::ROLLERONLY, 90);
   chassis.pid_swing_set(ez::RIGHT_SWING,0_deg,80,20,true);
   chassis.pid_wait_quick_chain();
   chassis.pid_odom_set({{20_in,26_in,-10_deg},fwd,100});
   chassis.pid_wait_quick_chain();
-  // chassis.pid_odom_set({{13_in, 24_in}, fwd, 80}, true);
-  // chassis.pid_drive_chain_constant_set(6_in);
-  // chassis.pid_swing_set(ez::RIGHT_SWING,-150_deg,90,20,true);
-  chassis.pid_turn_set(45_deg,90,true); //50
+  intake.set(Intake::IntakeState::STOPPED);
+
+  chassis.pid_turn_set(-135_deg,100); //50
   chassis.pid_wait_quick();
-  chassis.pid_drive_set(-17_in,110,true,false);
-  intake.set(Intake::IntakeState::LOWSCORING,127);
+
+  chassis.pid_drive_set(12_in,60,true);
+   pros::delay(200);
+  intake.set(Intake::IntakeState::OUTTAKE,127);
   chassis.pid_wait_quick_chain();
   
-  pros::delay(500);
+  pros::delay(750);
   intake.set(Intake::IntakeState::STOPPED);
 
 }

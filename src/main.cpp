@@ -183,6 +183,9 @@ void competition_initialize() {
  * from where it left off.
  */
 void autonomous() {
+
+  // intake.set(Intake::IntakeState::ROLLERONLY, 127);
+  // while(true) ;
   chassis.pid_targets_reset();                // Resets PID targets to 0
   chassis.drive_imu_reset();                  // Reset gyro position to 0
   chassis.drive_sensor_reset();               // Reset drive sensors to 0
@@ -190,6 +193,14 @@ void autonomous() {
   chassis.drive_brake_set(MOTOR_BRAKE_HOLD);
   //skills(); 
   solo_awp();
+  // chassis.pid_turn_set(45_deg, 100);
+  // chassis.pid_wait();
+  // chassis.pid_turn_set(-45_deg, 100);
+  // chassis.pid_wait();
+  // chassis.pid_turn_set(135_deg, 100);
+  // chassis.pid_wait();
+  // chassis.pid_turn_set(0_deg,100);
+  // chassis.pid_wait();
 
   /*
   Odometry and Pure Pursuit are not magic

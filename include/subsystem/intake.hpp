@@ -8,7 +8,7 @@ class Intake {
     public:
 
         Intake(pros::Motor& indexerMotor, pros::Optical& colorSort , pros::Motor& topRoller, pros::Motor& middleRoller, pros::Motor& bottomRoller);
-        enum IntakeState{ STOPPED , INTAKING , OUTTAKE, SEPARATE, TOPSCORING, LOWSCORING , LOWSCORE_DELAY, FULLTOP};
+        enum IntakeState{ STOPPED , INTAKING , OUTTAKE, SEPARATE, TOPSCORING, LOWSCORING , LOWSCORE_DELAY, FULLTOP, ROLLERONLY};
         enum Ball { BLUE , RED , NONE };
 
         void intakeControl();

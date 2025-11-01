@@ -104,7 +104,7 @@ void Intake::intakeControl() {
                 frontRoller.move(speed);
                 // Stop middle roller if top is full to prevent jamming
                 middleRoller.move(topFull ? 0 : speed);
-                bottomRoller.move(topFull ? 0 : speed);
+                bottomRoller.move(speed);
                 break;
             case OUTTAKE:
                 indexerMotor.move(-speed);
@@ -141,6 +141,13 @@ void Intake::intakeControl() {
                 frontRoller.move(speed);
                 middleRoller.move(0);
                 bottomRoller.move(speed);
+                break;
+            case ROLLERONLY:
+                frontRoller.move(speed);
+                middleRoller.move(0);
+                bottomRoller.move(0);
+                indexerMotor.move(0);
+                break;
         }
     }
 
