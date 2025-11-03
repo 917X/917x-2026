@@ -155,7 +155,7 @@ void initialize() {
  * the robot is enabled, this task will exit.
  */
 void disabled() {
-  // . . .
+  chassis.drive_brake_set(pros::E_MOTOR_BRAKE_COAST);
 }
 
 /**
@@ -190,10 +190,11 @@ void autonomous() {
   chassis.drive_imu_reset();                  // Reset gyro position to 0
   chassis.drive_sensor_reset();               // Reset drive sensors to 0
   // chassis.odom_xyt_set(138_in, -37_in, -90_deg);    // Set the current position, you can start at a specific position with this
-  chassis.drive_brake_set(MOTOR_BRAKE_HOLD);
+  chassis.drive_brake_set(pros::E_MOTOR_BRAKE_HOLD);
   //skills(); 
-  // solo_awp();
-  right_elims();
+  //solo_awp();
+  //right_elims();
+  left_elims();
   // chassis.pid_turn_set(45_deg, 100);
   // chassis.pid_wait();
   // chassis.pid_turn_set(-45_deg, 100);
@@ -363,8 +364,7 @@ void flapper_piston_toggle() {
 
 void opcontrol() {
   // This is preference to what you like to drive on
-  chassis.drive_brake_set(MOTOR_BRAKE_COAST);
-  
+  chassis.drive_brake_set(pros::E_MOTOR_BRAKE_COAST);
   pros::Task asyncIntake(intake_piston_toggle);
   pros::Task asyncFlapper(flapper_piston_toggle);
 
@@ -389,7 +389,7 @@ void opcontrol() {
 
     
     // Gives you some extras to make EZ-Template ezier
-    ez_template_extras();
+    //ez_template_extras();
     arcadeCurve(pros::E_CONTROLLER_ANALOG_LEFT_Y, pros::E_CONTROLLER_ANALOG_RIGHT_X, master, 5);  // Curved arcade  
     // if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
     //   indexerMotor.move(127); //scoring upper

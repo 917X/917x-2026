@@ -35,7 +35,7 @@ void default_constants() {
   chassis.pid_swing_exit_condition_set(90_ms, 3_deg, 250_ms, 7_deg, 500_ms, 500_ms);
   chassis.pid_drive_exit_condition_set(90_ms, 1_in, 250_ms, 3_in, 500_ms, 500_ms);
   chassis.pid_odom_turn_exit_condition_set(90_ms, 3_deg, 250_ms, 7_deg, 500_ms, 750_ms);
-  chassis.pid_odom_drive_exit_condition_set(90_ms, 1_in, 250_ms, 3_in, 500_ms, 750_ms);
+  chassis.pid_odom_drive_exit_condition_set(90_ms, 1_in, 250_ms, 5_in, 500_ms, 750_ms);
   chassis.pid_turn_chain_constant_set(3_deg);
   chassis.pid_swing_chain_constant_set(5_deg);
   chassis.pid_drive_chain_constant_set(3_in);
@@ -58,6 +58,8 @@ void default_constants() {
 
   chassis.pid_angle_behavior_set(ez::shortest);  // Changes the default behavior for turning, this defaults it to the shortest path there
 }
+
+
 
 ///
 // Drive Example
@@ -411,6 +413,7 @@ void solo_awp() {
   chassis.pid_wait_quick_chain();
   chassis.pid_swing_set(ez::RIGHT_SWING, 91_deg, 90, 0, true);
   chassis.pid_wait_quick_chain();
+  pros::delay(50);
   intakePiston.set_value(true);
   chassis.pid_drive_set(7_in, 70, true);
   chassis.pid_wait_quick_chain();
@@ -442,6 +445,44 @@ void solo_awp() {
 
 }
 
+
+void left_elims(){
+  
+  intake.set(Intake::IntakeState::INTAKING, 127);
+
+  chassis.odom_xyt_set(45_in,-6_in,-90_deg);
+  // chassis.pid_odom_set({{ 22_in, -19_in,180_deg},fwd,80,{-18_in, -24_in}, fwd, 80}, true);
+  chassis.pid_odom_set({{22_in,-21_in,-160_deg}, fwd, 90},true);
+  chassis.pid_wait_quick_chain();
+  chassis.pid_odom_set({{{17_in, -26_in}, fwd, 60}}, true);
+  chassis.pid_wait_quick();
+
+  chassis.pid_swing_set(ez::LEFT_SWING,135,90,-23,true); //20
+  chassis.pid_wait_quick_chain();
+  chassis.pid_drive_set(-13_in,80,true);
+  chassis.pid_wait_quick_chain();
+  intake.set(Intake::IntakeState::LOWSCORING,127);
+  pros::delay(1400);
+  
+  intake.set(Intake::IntakeState::INTAKING,127);
+  chassis.pid_odom_set({{40_in, -44_in}, fwd, 110}, true);
+  chassis.pid_wait_quick_chain();
+  chassis.pid_swing_set(ez::RIGHT_SWING, 91_deg, 90, 0, true);
+  chassis.pid_wait_quick_chain();
+  intakePiston.set_value(true);
+  pros::delay(50);
+  chassis.pid_drive_set(7_in, 70, true);
+  chassis.pid_wait_quick_chain();
+  pros::delay(675);
+  chassis.pid_drive_set(-31_in,90,true);
+  chassis.pid_wait_quick_chain();
+  intakePiston.set_value(false);
+  intake.set(Intake::IntakeState::TOPSCORING,127);
+  pros::delay(3000);
+  intake.set(Intake::IntakeState::STOPPED);
+  intakePiston.set_value(false);
+
+}
 void right_elims() {
   intake.set(Intake::IntakeState::INTAKING, 127);
 

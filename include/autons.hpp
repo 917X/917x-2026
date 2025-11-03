@@ -19,4 +19,5 @@ void measure_offsets();
 
 void solo_awp();
 void right_elims();
+void left_elims();
 void skills();
