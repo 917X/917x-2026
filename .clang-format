@@ -1,0 +1,20 @@
+BasedOnStyle: WebKit
+UseTab: Always
+IndentWidth: 4
+TabWidth: 4
+BreakBeforeBraces: BS_Custom
+BraceWrapping:
+  AfterCaseLabel: false
+  AfterClass: false
+  AfterControlStatement: false
+  AfterEnum: false
+  AfterFunction: false
+  AfterNamespace: false
+  AfterObjCBlock: false
+  AfterStruct: false
+  AfterUnion: false
+  BeforeCatch: false
+  BeforeElse: false
+  BeforeLambdaBody: false
+  BeforeWhile: false
+  IndentBraces: false
