@@ -4,7 +4,7 @@
 #include "api.h"
 #include "subsystems/intake.hpp"
 
-// externs devices 
+// externs devices
 extern Drive chassis;
 extern pros::Controller controller;
 
@@ -23,6 +23,6 @@ extern pros::Distance distance;
 
 /**
  * @brief Sets the default PID constants for the chassis
- * 
+ *
  */
 void default_constants();
