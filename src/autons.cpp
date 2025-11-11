@@ -1,4 +1,6 @@
+#include "devices.hpp"
 #include "main.h"
+#include "pros/motors.h"
 
 const int DRIVE_SPEED = 110;
 const int TURN_SPEED = 90;
@@ -28,7 +30,7 @@ void measure_offsets() {
 		chassis.pid_targets_reset();
 		chassis.drive_imu_reset();
 		chassis.drive_sensor_reset();
-		chassis.drive_brake_set(MOTOR_BRAKE_HOLD);
+		chassis.drive_brake_set(pros::E_MOTOR_BRAKE_HOLD);
 		chassis.odom_xyt_set(0_in, 0_in, 0_deg);
 		double imu_start = chassis.odom_theta_get();
 		double target =
@@ -236,120 +238,92 @@ void skills(){
   chassis.odom_xyt_set(-53_in,16_in,0_deg);
   chassis.pid_turn_set({-46,48},fwd,90);
   chassis.pid_wait_quick_chain();
-  chassis.pid_odom_set({{-46_in,48.5_in},fwd,120},false); //-46,49.5
+  chassis.pid_odom_set({{-46_in,47.5_in},fwd,120},false); //-46,48
   chassis.pid_wait_quick();
   chassis.pid_turn_set(-90,90);
   chassis.pid_wait_quick();
 
   intakePiston.set(true);
-  chassis.pid_drive_set(9,120,true); //8.7
+  chassis.pid_drive_set(8.5,120,true); //8.7
   chassis.pid_wait_quick_chain();
-  pros::delay(1500);
+  pros::delay(2000);
   chassis.pid_drive_set(-27_in,50,true);
   chassis.pid_wait_quick_chain();
   intake.set(Intake::IntakeState::TOPSCORING);
-  pros::delay(500);
+  pros::delay(1750);
   intakePiston.set(false);
-  pros::delay(1500);
+  pros::delay(500);
 
 
-  chassis.pid_drive_set(5_in,100,false,false);
+  chassis.pid_drive_set(2_in,100,false,false);
   chassis.pid_wait_quick();
-  chassis.pid_swing_set(ez::LEFT_SWING,90_deg,90,true,clockwise);
+  chassis.pid_swing_set(ez::RIGHT_SWING,90_deg,90,-22,counterclockwise,true);
   chassis.pid_wait_quick();
+  intake.set(Intake::IntakeState::OUTTAKE);
+  
+
+
+  //PUSHING TO MIDDLE
+  flapperPiston.set(true);
+  chassis.pid_drive_set(20,50,true,true);
+  chassis.pid_wait_quick();
+  flapperPiston.set(false);
+  chassis.pid_turn_set(92,90);
+  chassis.pid_wait_quick();
+  
+
+
+
+  //ROBOT GOING TO SECOND LOADBAR
+  chassis.pid_drive_set(50_in,90,true);
   intake.set(Intake::IntakeState::INTAKING,127);
-  
-
-
-
-
-
-
-
-
-  //Robot has now turned to go to other side load bar
-  chassis.pid_drive_set(60,90,true);
   chassis.pid_wait_quick_chain();
-  chassis.pid_odom_set({{48,48.5},fwd,90},true); //48,49.5
-  chassis.pid_wait(); 
-  
-  chassis.pid_turn_set(86,100);
+  chassis.pid_odom_set({{50,48.7},fwd,90},true); //48,49.5
+  chassis.pid_wait();
+  chassis.pid_turn_set(90,100);
   chassis.pid_wait();
   intakePiston.set(true);
   pros::delay(500); //lower if necessary
-  chassis.pid_drive_set(12_in,120,true); //11
+  chassis.pid_drive_set(8.5_in,120,true); //11
   chassis.pid_wait_quick();
-  intake.set(Intake::IntakeState::INTAKING,127);
-  pros::delay(1000);
-  intake.set(Intake::IntakeState::STOPPED);
-  pros::delay(500);
-//   pros::delay(1500);
+  pros::delay(2000);
 
-  chassis.pid_turn_set(90,90);
+  chassis.pid_turn_set(92,90);
   chassis.pid_wait();
-  chassis.pid_drive_set(-28_in,70,true,true);
+  chassis.pid_drive_set(-29_in,70,true,true);
   chassis.pid_wait_quick_chain();
   intake.set(Intake::IntakeState::TOPSCORING);
-  pros::delay(500); 
-  intakePiston.set(false);
   pros::delay(1500);
+  intakePiston.set(false);
+  pros::delay(500);
 
-  //scored second loadbar, going to four ball
-  // chassis.pid_drive_set(13_in,100,false,false); 
-  // chassis.pid_wait_quick();
-  // chassis.pid_turn_set(-170_deg,90,true);
-  // chassis.pid_wait_quick();
-  // intake.set(Intake::IntakeState::INTAKING,127);
-  // chassis.pid_odom_set({{{24,24.5,-125},fwd,90},{{18,22},fwd,90}},true);
-  // chassis.pid_wait_quick_chain();
-  // chassis.pid_swing_set(ez::LEFT_SWING,70,90,true,clockwise);
-  // intake.set(Intake::IntakeState::STOPPED);
-
-  //PUSHING BALLS INTO CENTER
-  chassis.pid_drive_set(10_in,110,false);
+  
+  //SCORING TO CENTER 
+  intake.set(Intake::IntakeState::INTAKING,90);
+  chassis.pid_drive_set(2,100,false);
+  chassis.pid_wait_quick_chain();
+  chassis.pid_turn_set(190,90,true);
   chassis.pid_wait_quick();
-  chassis.pid_turn_set(45,110,true);
+  chassis.pid_drive_set(30_in,100,true);
   chassis.pid_wait_quick_chain();
-  flapperPiston.set(true);
-  chassis.pid_drive_set(-10_in,110,false);
+  chassis.pid_odom_set({{18,-19},fwd,50},true); //17
+  chassis.pid_wait();
+  chassis.pid_swing_set(ez::RIGHT_SWING,140,90,true);
   chassis.pid_wait_quick_chain();
-  chassis.pid_swing_set(ez::RIGHT_SWING,90,110,true);
-  chassis.pid_wait_quick_chain();
-  chassis.pid_drive_set(-9.7_in,70,false);  //-9.8 -10 -12     <-110
+  chassis.pid_drive_set(-21_in,70,false);
   chassis.pid_wait_quick();
-  flapperPiston.set(false);
-
-  //GOING TO CENTER
-  chassis.pid_turn_set(125,90,true); // 125 | 130 | 120.    <-90
-  chassis.pid_wait_quick();
-//   intake.set(Intake::IntakeState::INTAKING,127);
-//   chassis.pid_swing_set(ez::LEFT_SWING, -140_deg, 53,12, clockwise,true); // 53,12
-//   chassis.pid_wait_until(-150_deg);
-//   intake.set(Intake::IntakeState::STOPPED);
-//   chassis.pid_wait_quick_chain();
-  intake.set(Intake::IntakeState::INTAKING,127);
-  chassis.pid_swing_set(ez::LEFT_SWING, 180_deg, 53,14, clockwise,true);
-  chassis.pid_wait_quick_chain();
-  chassis.pid_turn_set(-140_deg,90);
-//   chassis.pid_wait_until(-150_deg);
-//   intake.set(Intake::IntakeState::STOPPED);
-  chassis.pid_wait_quick_chain();
-  chassis.pid_drive_set(12,80,true);
-  chassis.pid_wait_quick();
-  intake.set(Intake::IntakeState::OUTTAKE,127);
+  intake.set(Intake::IntakeState::LOWSCORING,127);
   pros::delay(1000);
 
 
 
 
-  //going to third loadbar
-  chassis.pid_swing_set(ez::LEFT_SWING,155,90,counterclockwise,true);
-  chassis.pid_wait_quick_chain();
-  chassis.pid_drive_set(40,110,true);  //in attempt to speed movement up
+
+//   //going to third loadbar
   chassis.pid_drive_chain_constant_set(6_in);
   chassis.pid_wait_quick_chain();
   chassis.pid_drive_chain_constant_set(3_in);
-  chassis.pid_odom_set({{51,-43.5},fwd,110},true);
+  chassis.pid_odom_set({{48,-43.5},fwd,110},true);
   chassis.pid_wait_quick();
   chassis.pid_turn_set(90,90);
   chassis.pid_wait();

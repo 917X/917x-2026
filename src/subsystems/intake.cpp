@@ -43,9 +43,10 @@ bool Intake::checkForDelay() {
 }
 
 bool Intake::checkIfTopFull() {
-	// Check if optical sensor detects a ball stuck near the middle roller
-	// Proximity value above threshold indicates a ball is present
-	return this->colorSort.get_proximity() > 150;
+	// // Check if optical sensor detects a ball stuck near the middle roller
+	// // Proximity value above threshold indicates a ball is present
+	// return this->colorSort.get_proximity() > 150; 
+	return false;
 }
 void Intake::intakeControl() {
 	while (true) {
@@ -76,7 +77,7 @@ void Intake::intakeControl() {
 		if (state == LOWSCORE_DELAY) {
 			delaying += 1;
 			// 75*10 cuz 10 ms per loop iteration
-			if (delaying >= 75) {
+			if (delaying >= 50) {
 				state = LOWSCORING;
 				delaying = 1;
 				waitTime = 0;
