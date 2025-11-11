@@ -1,5 +1,6 @@
 #include "main.h"
 #include "autons.hpp"
+#include "devices.hpp"
 
 void initialize() {
 	pros::delay(500);
@@ -127,7 +128,15 @@ void opcontrol() {
 				intakePiston.set(false);
 			}
 		}
-
+		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_RIGHT)) {
+			if (flapperPiston.get() == false) {
+				flapperPiston.set(true);
+			}
+		} else {
+			if (flapperPiston.get() == true) {
+				flapperPiston.set(false);
+			}
+		}
 		pros::delay(ez::util::DELAY_TIME);
 	}
 }

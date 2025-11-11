@@ -16,8 +16,8 @@ constexpr int FRONT_ROLLER = 16;
 
 constexpr int DISTANCE = 1;
 
-constexpr char INTAKE_PISTON = 'H';
-constexpr char FLAPPER_PISTON = 'G';
+constexpr char INTAKE_PISTON = 'D';
+constexpr char FLAPPER_PISTON = 'H';
 constexpr char COLORSORT = 6;
 
 constexpr char IMU = 21;
