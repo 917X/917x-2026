@@ -98,4 +98,6 @@ class Intake {
 	int waitTime = 0;
 	int delaying = 0;
 	int separationTimeout = 0;
+
+	int BALL_FULL_DELAY = 0; // in 10ms increments
 };

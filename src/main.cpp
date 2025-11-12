@@ -44,7 +44,7 @@ void autonomous() {
 	chassis.odom_xyt_set(0_in, 0_in,
 						 0_deg); // Reset odometry position to 0,0,0
 	chassis.drive_brake_set(MOTOR_BRAKE_HOLD); // Set motors to hold position
-	skills();
+	solo_awp();
 	// ez::as::auton_selector.selected_auton_call(); // Calls selected auton
 }
 /**
@@ -119,7 +119,7 @@ void opcontrol() {
 			intake.set(Intake::IntakeState::STOPPED);
 		}
 
-		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_B)) {
+		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_RIGHT)) {
 			if (intakePiston.get() == false) {
 				intakePiston.set(true);
 			}
@@ -128,7 +128,7 @@ void opcontrol() {
 				intakePiston.set(false);
 			}
 		}
-		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_RIGHT)) {
+		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_B)) {
 			if (flapperPiston.get() == false) {
 				flapperPiston.set(true);
 			}
