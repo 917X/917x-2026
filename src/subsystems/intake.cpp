@@ -36,7 +36,7 @@ void Intake::setSeparation(Ball ball) { this->ball = ball; }
 // }
 
 bool Intake::checkForDelay() {
-	if (waitTime >= 50 && delaying == 0) {
+	if (waitTime >= 20 && delaying == 0) {
 		return true;
 	}
 	return false;
@@ -137,9 +137,9 @@ void Intake::intakeControl() {
 			bottomRoller.move(speed);
 			break;
 		case ROLLERONLY:
-			frontRoller.move(speed);
+            frontRoller.move(0);
 			middleRoller.move(0);
-			bottomRoller.move(speed - 70);
+			bottomRoller.move(speed);
 			indexerMotor.move(0);
 			break;
 		}

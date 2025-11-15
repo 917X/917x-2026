@@ -37,6 +37,7 @@ void competition_initialize() {
 }
 
 void autonomous() {
+    flapperPiston.set(true);
 	// clear chassis states
 	chassis.pid_targets_reset();  // Resets PID targets to 0
 	chassis.drive_imu_reset();	  // Reset gyro position to 0
@@ -45,7 +46,8 @@ void autonomous() {
 						 0_deg); // Reset odometry position to 0,0,0
 	chassis.drive_brake_set(MOTOR_BRAKE_HOLD); // Set motors to hold position
 	// left_elims();
-    solo_awp();
+    //solo_awp();
+    right_elims();
 	// ez::as::auton_selector.selected_auton_call(); // Calls selected auton
 }
 /**
@@ -103,6 +105,7 @@ void telemetry() {
 pros::Task telem(telemetry);
 
 void opcontrol() {
+    flapperPiston.set(true);
 	chassis.pid_targets_reset();
 	chassis.drive_brake_set(MOTOR_BRAKE_COAST);
 	while (true) {
@@ -130,12 +133,12 @@ void opcontrol() {
 			}
 		}
 		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_B)) {
-			if (flapperPiston.get() == false) {
-				flapperPiston.set(true);
-			}
-		} else {
 			if (flapperPiston.get() == true) {
 				flapperPiston.set(false);
+			}
+		} else {
+			if (flapperPiston.get() == false) {
+				flapperPiston.set(true);
 			}
 		}
 		pros::delay(ez::util::DELAY_TIME);

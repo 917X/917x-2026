@@ -51,7 +51,7 @@ ez::Drive chassis({15, -14, 13},  // Left Chassis Ports
 // default chassis constants
 void default_constants() {
 	// lateral constants
-	chassis.pid_drive_constants_forward_set(11.2, 0, 56);
+	chassis.pid_drive_constants_forward_set(11.7, 0, 56);
 	chassis.pid_drive_constants_backward_set(5.7, 0.0, 9);
 
 	// angular constants
@@ -59,7 +59,7 @@ void default_constants() {
 	chassis.pid_turn_constants_set(3.2, 0, 25, 16.0);
 	chassis.pid_swing_constants_set(6.0, 0.0, 65.0);
 	chassis.pid_odom_angular_constants_set(6.5, 0.0, 60.5);
-	chassis.pid_odom_boomerang_constants_set(5.8, 0.0, 32.5);
+	chassis.pid_odom_boomerang_constants_set(6, 0.0, 32.5);
 
 	// exit conditions
 	chassis.pid_turn_exit_condition_set(90_ms, 3_deg, 250_ms, 7_deg, 500_ms,
@@ -70,7 +70,7 @@ void default_constants() {
 										 500_ms);
 	chassis.pid_odom_turn_exit_condition_set(90_ms, 3_deg, 250_ms, 7_deg,
 											 500_ms, 750_ms);
-	chassis.pid_odom_drive_exit_condition_set(90_ms, 1_in, 250_ms, 5_in, 500_ms,
+	chassis.pid_odom_drive_exit_condition_set(50_ms, 1.5_in, 100_ms, 5_in, 500_ms,
 											  750_ms);
 	chassis.pid_turn_chain_constant_set(3_deg);
 	chassis.pid_swing_chain_constant_set(5_deg);
