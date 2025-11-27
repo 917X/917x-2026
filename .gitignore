@@ -46,3 +46,5 @@ EZ-Template-Example-Project/.d/
 .d/
 
 .vscode/ 
+
+.github/prompts/*
