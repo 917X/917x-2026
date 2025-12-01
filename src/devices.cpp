@@ -26,9 +26,6 @@ constexpr char IMU = 21;
 // controller
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
 
-// optical
-pros::Optical colorSort(COLORSORT);
-
 // pistons
 ez::Piston loaderPiston(LOADER_PISTON);
 ez::Piston flapperPiston(FLAPPER_PISTON);
@@ -39,14 +36,14 @@ pros::Motor indexerMotor(INDEXER);
 pros::Motor rollerMotor(ROLLER);
 
 // intake
-Intake intake(indexerMotor, colorSort, frontRoller, middleRoller, bottomRoller);
+Intake intake(rollerMotor, indexerMotor);
 
 // drive chassis
-ez::Drive chassis({-1, 2, -3},  // Left Chassis Ports
-				  {-10, 9, -8}, // Right Chassis Ports
-				  21,			  // IMU Port
-				  2.75,			  // Wheel Diameter
-				  600);			  // Drive RPM
+ez::Drive chassis({LEFT_F, LEFT_M, LEFT_B},	   // Left Chassis Ports
+				  {RIGHT_F, RIGHT_M, RIGHT_B}, // Right Chassis Ports
+				  IMU, // IMU Port
+				  2.75, // Wheel Diameter
+				  600); // Drive RPM
 
 // default chassis constants
 void default_constants() {
@@ -70,8 +67,8 @@ void default_constants() {
 										 500_ms);
 	chassis.pid_odom_turn_exit_condition_set(90_ms, 3_deg, 250_ms, 7_deg,
 											 500_ms, 750_ms);
-	chassis.pid_odom_drive_exit_condition_set(50_ms, 1.5_in, 100_ms, 5_in, 500_ms,
-											  750_ms);
+	chassis.pid_odom_drive_exit_condition_set(50_ms, 1.5_in, 100_ms, 5_in,
+											  500_ms, 750_ms);
 	chassis.pid_turn_chain_constant_set(3_deg);
 	chassis.pid_swing_chain_constant_set(5_deg);
 	chassis.pid_drive_chain_constant_set(3_in);
