@@ -1,23 +1,24 @@
 #include "devices.hpp"
 
 // device ports
-constexpr int RIGHT_F = -18;
-constexpr int RIGHT_M = 19;
-constexpr int RIGHT_B = -17;
+constexpr int RIGHT_F = -1;
+constexpr int RIGHT_M = 2;
+constexpr int RIGHT_B = -3;
 
-constexpr int LEFT_F = 15;
-constexpr int LEFT_M = -14;
-constexpr int LEFT_B = 13;
+constexpr int LEFT_F = 10;
+constexpr int LEFT_M = -9;
+constexpr int LEFT_B = 8;
 
-constexpr int INDEXER = -10;
-constexpr int MIDDLE_ROLLER = 7;
-constexpr int BOTTOM_ROLLER = -8;
-constexpr int FRONT_ROLLER = 16;
+constexpr int INDEXER = -7;
+constexpr int ROLLER = 6;
 
-constexpr int DISTANCE = 1;
+constexpr int LEFT_DISTANCE = 4;
+constexpr int RIGHT_DISTANCE = 5;
 
-constexpr char INTAKE_PISTON = 'D';
-constexpr char FLAPPER_PISTON = 'H';
+constexpr char LOADER_PISTON = 'A';
+constexpr char FLAPPER_PISTON = 'B';
+constexpr char LIFT_PISTON = 'C';
+
 constexpr char COLORSORT = 6;
 
 constexpr char IMU = 21;
@@ -29,21 +30,20 @@ pros::Controller controller(pros::E_CONTROLLER_MASTER);
 pros::Optical colorSort(COLORSORT);
 
 // pistons
-ez::Piston intakePiston(INTAKE_PISTON);
+ez::Piston loaderPiston(LOADER_PISTON);
 ez::Piston flapperPiston(FLAPPER_PISTON);
+ez::Piston liftPiston(LIFT_PISTON);
 
 // intake motors
 pros::Motor indexerMotor(INDEXER);
-pros::Motor bottomRoller(BOTTOM_ROLLER);
-pros::Motor middleRoller(MIDDLE_ROLLER);
-pros::Motor frontRoller(FRONT_ROLLER);
+pros::Motor rollerMotor(ROLLER);
 
 // intake
 Intake intake(indexerMotor, colorSort, frontRoller, middleRoller, bottomRoller);
 
 // drive chassis
-ez::Drive chassis({15, -14, 13},  // Left Chassis Ports
-				  {-18, 19, -17}, // Right Chassis Ports
+ez::Drive chassis({-1, 2, -3},  // Left Chassis Ports
+				  {-10, 9, -8}, // Right Chassis Ports
 				  21,			  // IMU Port
 				  2.75,			  // Wheel Diameter
 				  600);			  // Drive RPM
