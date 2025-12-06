@@ -51,7 +51,9 @@ void Drive::drive_pid_task() {
   leftPID.compute(drive_sensor_left());
   rightPID.compute(drive_sensor_right());
 
-  headingPID.compute(drive_imu_get());
+  // Compute heading PID with angle wrapping
+  double heading_error = util::wrap_angle(headingPID.target_get() - drive_imu_get());
+  headingPID.compute_error(heading_error, drive_imu_get());
 
   // Compute slew
   slew_left.iterate(drive_sensor_left());
@@ -182,6 +184,16 @@ void Drive::ptp_task() {
   // Prioritize turning by scaling xy_out down
   double xy_out = xyPID.output;
   xy_out = util::clamp(xy_out, max_slew_out);
+  
+  // Apply drive boost when output is weak and far from target
+  double distance_to_target = util::distance_to_point(odom_target, odom_pose_get());
+  if (odom_drive_boost_threshold > 0.0 && 
+      fabs(xy_out) < odom_drive_boost_threshold && 
+      distance_to_target > 20.0) {
+    xy_out *= odom_drive_boost_multiplier;
+    xy_out = util::clamp(xy_out, max_slew_out);  // Re-clamp after boost
+  }
+  
   // double scale = cos(util::to_rad(current_a_odomPID.error)) / odom_turn_bias_amount;
   double scale = 1.0 - ((1.0 - cos(util::to_rad(current_a_odomPID.error))) / odom_turn_bias_amount);  // 1 - ((1-0.7)/0.75)
   if (odom_turn_bias_enabled())

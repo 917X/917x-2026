@@ -76,6 +76,12 @@ void Drive::odom_boomerang_distance_set(okapi::QLength p_distance) { odom_boomer
 double Drive::odom_boomerang_distance_get() { return max_boomerang_distance; }
 void Drive::odom_turn_bias_set(double bias) { odom_turn_bias_amount = bias; }
 double Drive::odom_turn_bias_get() { return odom_turn_bias_amount; }
+void Drive::odom_drive_boost_set(double threshold, double multiplier) {
+  odom_drive_boost_threshold = threshold;
+  odom_drive_boost_multiplier = multiplier;
+}
+double Drive::odom_drive_boost_threshold_get() { return odom_drive_boost_threshold; }
+double Drive::odom_drive_boost_multiplier_get() { return odom_drive_boost_multiplier; }
 void Drive::odom_path_spacing_set(double spacing) { SPACING = spacing; }
 void Drive::odom_path_spacing_set(okapi::QLength p_spacing) { odom_path_spacing_set(p_spacing.convert(okapi::inch)); }
 double Drive::odom_path_spacing_get() { return SPACING; }

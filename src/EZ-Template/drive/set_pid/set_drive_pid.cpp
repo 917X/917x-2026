@@ -85,9 +85,9 @@ void Drive::pid_drive_set(double target, int speed) {
 }
 
 // Set drive PID
-void Drive::pid_drive_set(okapi::QLength p_target, int speed, bool slew_on, bool toggle_heading) {
+void Drive::pid_drive_set(okapi::QLength p_target, int speed, bool slew_on, bool toggle_heading, double heading_target) {
   double target = p_target.convert(okapi::inch);  // Convert okapi unit to inches
-  pid_drive_set(target, speed, slew_on, toggle_heading);
+  pid_drive_set(target, speed, slew_on, toggle_heading, heading_target);
 }
 
 // Set drive PID with global slew and okapi units
@@ -97,7 +97,7 @@ void Drive::pid_drive_set(okapi::QLength p_target, int speed) {
 }
 
 // Set drive PID raw
-void Drive::pid_drive_set(double target, int speed, bool slew_on, bool toggle_heading) {
+void Drive::pid_drive_set(double target, int speed, bool slew_on, bool toggle_heading, double heading_target) {
   leftPID.timers_reset();
   rightPID.timers_reset();
 
@@ -114,6 +114,13 @@ void Drive::pid_drive_set(double target, int speed, bool slew_on, bool toggle_he
   heading_on = toggle_heading;
   l_start = drive_sensor_left();
   r_start = drive_sensor_right();
+
+  // Set heading target: use provided value or current heading
+  if (heading_target != INFINITY) {
+    headingPID.target_set(heading_target);
+  } else {
+    headingPID.target_set(drive_imu_get());
+  }
 
   double l_target_encoder, r_target_encoder;
 

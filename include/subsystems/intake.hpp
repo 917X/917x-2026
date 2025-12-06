@@ -27,12 +27,21 @@ class Intake {
 	void intakeControl();
 
 	/**
-	 * @brief Set the state and speed of the intake system
+	 * @brief Set the state and overall speed of the intake system
 	 *
 	 * @param state
 	 * @param speed
 	 */
 	void set(IntakeState state, int speed = 127);
+
+    /**
+     * @brief Set the state, top speed, and bottom speed of the intake system
+     * 
+     * @param state 
+     * @param topSpeed 
+     * @param bottomSpeed 
+     */
+    void set(IntakeState state, int topSpeed, int bottomSpeed);
 
   private:
 	// motors and sensors
@@ -41,5 +50,6 @@ class Intake {
 
 	// intake state variables
 	IntakeState state = STOP;
-	int speed = 127;
+	int topSpeed = 127;
+	int bottomSpeed = 127;
 };

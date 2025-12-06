@@ -11,6 +11,9 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 void Drive::opcontrol_arcade_scaling(bool enable) { arcade_vector_scaling = enable; }
 bool Drive::opcontrol_arcade_scaling_enabled() { return arcade_vector_scaling; }
 
+void Drive::opcontrol_arcade_turn_bias_set(double bias) { arcade_turn_bias = bias; }
+double Drive::opcontrol_arcade_turn_bias_get() { return arcade_turn_bias; }
+
 // Set curve defaults
 void Drive::opcontrol_curve_default_set(double left, double right) {
   left_curve_scale = left;
@@ -328,8 +331,11 @@ void Drive::opcontrol_arcade_standard(e_type stick_type) {
     turn_stick = opcontrol_curve_right(clipped_joystick(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_X)));
   }
 
+  // Apply turn bias to prioritize turning
+  double biased_turn = turn_stick * arcade_turn_bias;
+
   // Set robot to l_stick and r_stick, check joystick threshold, set active brake
-  opcontrol_joystick_threshold_iterate(fwd_stick + turn_stick, fwd_stick - turn_stick);
+  opcontrol_joystick_threshold_iterate(fwd_stick + biased_turn, fwd_stick - biased_turn);
 }
 
 // Arcade control flipped
@@ -352,6 +358,9 @@ void Drive::opcontrol_arcade_flipped(e_type stick_type) {
     turn_stick = opcontrol_curve_left(clipped_joystick(master.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X)));
   }
 
+  // Apply turn bias to prioritize turning
+  double biased_turn = turn_stick * arcade_turn_bias;
+
   // Set robot to l_stick and r_stick, check joystick threshold, set active brake
-  opcontrol_joystick_threshold_iterate(fwd_stick + turn_stick, fwd_stick - turn_stick);
+  opcontrol_joystick_threshold_iterate(fwd_stick + biased_turn, fwd_stick - biased_turn);
 }

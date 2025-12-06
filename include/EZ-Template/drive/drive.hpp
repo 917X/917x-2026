@@ -810,6 +810,28 @@ class Drive {
 	double odom_turn_bias_get();
 
 	/**
+	 * Sets the minimum speed threshold and multiplier for odometry motions.
+	 * When drive output is below threshold and robot is far from target,
+	 * the output is multiplied by the scaling factor.
+	 *
+	 * \param threshold
+	 *        minimum speed threshold (0-127)
+	 * \param multiplier
+	 *        scaling factor to apply when below threshold (e.g., 1.5)
+	 */
+	void odom_drive_boost_set(double threshold, double multiplier);
+
+	/**
+	 * Returns the minimum speed threshold for odometry drive boost.
+	 */
+	double odom_drive_boost_threshold_get();
+
+	/**
+	 * Returns the multiplier for odometry drive boost.
+	 */
+	double odom_drive_boost_multiplier_get();
+
+	/**
 	 * Sets the spacing between points when points get injected into the path.
 	 *
 	 * \param spacing
@@ -1891,11 +1913,11 @@ class Drive {
 	 *        ramp up from a lower speed to your target speed
 	 * \param toggle_heading
 	 *        toggle for heading correction.  true enables, false disables
+	 * \param heading_target
+	 *        optional manual override for heading correction target in degrees (uses current heading if not provided)
 	 */
 	void pid_drive_set(okapi::QLength p_target, int speed, bool slew_on,
-					   bool toggle_heading = true);
-
-	/**
+				   bool toggle_heading = true, double heading_target = INFINITY);	/**
 	 * Sets the robot to move forward using PID without okapi units, only using
 	 * slew if globally enabled.
 	 *
@@ -1918,11 +1940,11 @@ class Drive {
 	 *        ramp up from a lower speed to your target speed
 	 * \param toggle_heading
 	 *        toggle for heading correction.  true enables, false disables
+	 * \param heading_target
+	 *        optional manual override for heading correction target in degrees (uses current heading if not provided)
 	 */
 	void pid_drive_set(double target, int speed, bool slew_on,
-					   bool toggle_heading = true);
-
-	/**
+				   bool toggle_heading = true, double heading_target = INFINITY);	/**
 	 * Sets the robot to turn face a point using PID and odometry.
 	 *
 	 * \param target
@@ -3836,6 +3858,20 @@ class Drive {
 	 */
 	bool opcontrol_arcade_scaling_enabled();
 
+	/**
+	 * Sets the turn bias for arcade control. Values > 1.0 prioritize turning over driving.
+	 * Recommended range: 1.0-2.0. Default is 1.0 (no bias).
+	 *
+	 * \param bias
+	 *        turn bias multiplier
+	 */
+	void opcontrol_arcade_turn_bias_set(double bias);
+
+	/**
+	 * Returns the current turn bias for arcade control.
+	 */
+	double opcontrol_arcade_turn_bias_get();
+
   private:
 	void opcontrol_drive_activebrake_targets_set();
 	double odom_smooth_weight_smooth = 0.0;
@@ -3848,6 +3884,7 @@ class Drive {
 	bool is_full_pid_tuner_enabled = false;
 	std::vector<const_and_name> *used_pid_tuner_pids;
 	double opcontrol_speed_max = 127.0;
+	double arcade_turn_bias = 1.0;
 	bool arcade_vector_scaling = false;
 	// odom privates
 	std::vector<odom> pp_movements;
@@ -3900,6 +3937,8 @@ class Drive {
 	double dlead = 0.5;
 	double max_boomerang_distance = 12.0;
 	double odom_turn_bias_amount = 1.375;
+	double odom_drive_boost_threshold = 0.0;
+	double odom_drive_boost_multiplier = 1.0;
 	drive_directions current_drive_direction = fwd;
 	double h_last = 0.0, t_last = 0.0, l_last = 0.0, r_last = 0.0;
 	pose l_pose{0.0, 0.0, 0.0};

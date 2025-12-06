@@ -18,16 +18,16 @@ void Intake::intakeControl() {
 			break;
 		case INTAKE:
 			indexerMotor.move(0);
-			rollerMotor.move(speed);
+			rollerMotor.move(bottomSpeed);
 			break;
 			break;
 		case OUTTAKE:
-			indexerMotor.move(-speed);
-			rollerMotor.move(-speed);
+			indexerMotor.move(-topSpeed);
+			rollerMotor.move(-bottomSpeed);
 			break;
 		case SCORE:
-            indexerMotor.move(speed);
-            rollerMotor.move(speed);
+            indexerMotor.move(topSpeed);
+            rollerMotor.move(bottomSpeed);
             break;
 		}
         pros::delay(10);
@@ -37,5 +37,13 @@ void Intake::intakeControl() {
 void Intake::set(IntakeState state, int speed) {
 	// state setting
 	this->state = state;
-	this->speed = speed;
+	this->topSpeed = speed;
+    this->bottomSpeed = speed;
+}
+
+void Intake::set(IntakeState state, int topSpeed, int bottomSpeed) {
+    // state setting
+    this->state = state;
+    this->topSpeed = topSpeed;
+    this->bottomSpeed = bottomSpeed;
 }
