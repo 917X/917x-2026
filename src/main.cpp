@@ -44,7 +44,8 @@ void autonomous() {
 											   // left_elims();
 	solo_awp();
 	//right_elims();
-    // skills();
+    //skills();
+    //left_elims();
 	// ez::as::auton_selector.selected_auton_call(); // Calls selected auton
 }
 
