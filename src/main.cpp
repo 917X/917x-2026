@@ -6,7 +6,7 @@ void initialize() {
 	pros::delay(500);
 	chassis.opcontrol_curve_buttons_toggle(false);
 	chassis.opcontrol_drive_activebrake_set(0.0);
-	chassis.opcontrol_curve_default_set(0, 0);
+	chassis.opcontrol_curve_default_set(2.0, 2.0);
 
 	// Enable vector scaling and set turn bias for better turning at high speeds
 	chassis.opcontrol_arcade_scaling(true);
