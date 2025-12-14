@@ -21,25 +21,27 @@ class Localizer {
 			  double leftOffset, double rightOffset, double backOffset,
 			  double frontOffset);
 	/**
-	 * @brief Enum representing the field walls for localization
+	 * @brief Enum representing the field corners for localization
 	 *
 	 */
 	enum class Corner { TL, TR, BL, BR };
 
-    /**
-     * @brief Enum representing the robot's heading for localization
-     * 
-     */
-    enum class Heading { TOP, BOTTOM, LEFT, RIGHT };
-
 	/**
 	 * @brief Localizes the robot based on the specified wall
 	 *
-	 * @param wall The wall to localize against
-	 * @return std::pair<double, double> The (x, y) coordinates of the robot
-	 * w.r.t the field
+	 * @param corner The corner that robot is loading from
+	 * @return int The localized position value. Always Y value. 
 	 */
-	std::pair<double, double> localize(Corner corner, Heading heading);
+	int localize(Corner corner);
+
+
+    /**
+     * @brief Converts millimeters to inches
+     * 
+     * @param mm 
+     * @return double
+     */
+    double mmToInches(double mm);
 
   private:
 	pros::Distance *leftRangefinder = nullptr;
