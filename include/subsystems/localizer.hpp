@@ -1,6 +1,8 @@
 #pragma once
+#include "okapi/api/units/QLength.hpp"
 #include "pros/distance.hpp"
 #include <cmath>
+#include "okapi/api.hpp"
 
 class Localizer {
   public:
@@ -30,9 +32,10 @@ class Localizer {
 	 * @brief Localizes the robot based on the specified wall
 	 *
 	 * @param corner The corner that robot is loading from
-	 * @return int The localized position value. Always Y value. 
+	 * @return okapi::QLength The localized position value. Always Y value. 
 	 */
-	int localize(Corner corner);
+	okapi::QLength localize(Corner corner);
+	okapi::QLength get_localized_coordinate(Corner corner);
 
 
     /**
