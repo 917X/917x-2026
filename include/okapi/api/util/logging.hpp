@@ -73,7 +73,7 @@ class Logger {
 
   template <typename T> void debug(T ilazyMessage) noexcept {
     if (isDebugLevelEnabled() && logfile && timer) {
-      std::scoped_lock lock(logfileMutex);
+      std::lock_guard lock(logfileMutex);
       fprintf(logfile,
               "%ld (%s) DEBUG: %s\n",
               static_cast<long>(timer->millis().convert(millisecond)),
@@ -88,7 +88,7 @@ class Logger {
 
   template <typename T> void info(T ilazyMessage) noexcept {
     if (isInfoLevelEnabled() && logfile && timer) {
-      std::scoped_lock lock(logfileMutex);
+      std::lock_guard lock(logfileMutex);
       fprintf(logfile,
               "%ld (%s) INFO: %s\n",
               static_cast<long>(timer->millis().convert(millisecond)),
@@ -103,7 +103,7 @@ class Logger {
 
   template <typename T> void warn(T ilazyMessage) noexcept {
     if (isWarnLevelEnabled() && logfile && timer) {
-      std::scoped_lock lock(logfileMutex);
+      std::lock_guard lock(logfileMutex);
       fprintf(logfile,
               "%ld (%s) WARN: %s\n",
               static_cast<long>(timer->millis().convert(millisecond)),
@@ -118,7 +118,7 @@ class Logger {
 
   template <typename T> void error(T ilazyMessage) noexcept {
     if (isErrorLevelEnabled() && logfile && timer) {
-      std::scoped_lock lock(logfileMutex);
+      std::lock_guard lock(logfileMutex);
       fprintf(logfile,
               "%ld (%s) ERROR: %s\n",
               static_cast<long>(timer->millis().convert(millisecond)),

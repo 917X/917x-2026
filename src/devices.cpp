@@ -65,7 +65,7 @@ void default_constants() {
 	chassis.pid_heading_constants_set(4, 0.0, 9); // 5 0 9
 
 	// angular constants
-	chassis.pid_turn_constants_set(1.8, 0.12, 11.1, 5);
+	chassis.pid_turn_constants_set(2, 0.2, 11.1, 5);
 	chassis.pid_swing_constants_set(3.8, 0.3, 21.25, 5);
 	chassis.pid_odom_angular_constants_set(1.8, 0.0, 11, 5);
 	chassis.pid_odom_boomerang_constants_set(6, 0.0, 24);

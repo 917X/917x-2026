@@ -101,7 +101,7 @@ void solo_awp() {
 	chassis.pid_wait_quick();
     
     loaderPiston.set(true);
-    pros::delay(150);
+    pros::delay(300);
 	chassis.pid_drive_set(11_in,127,false, true, -90); 
 	chassis.pid_wait_quick();
     pros::delay(50);
@@ -112,7 +112,7 @@ void solo_awp() {
 
     loaderPiston.set(false);
     intake.set(Intake::IntakeState::SCORE);
-    pros::delay(1300);
+    pros::delay(1100);
     intake.set(Intake::IntakeState::INTAKE);
 
     // get mid balls 
@@ -122,46 +122,40 @@ void solo_awp() {
 
     
     chassis.pid_wait_quick_chain();
-    chassis.pid_odom_ptp_set({{-19_in,21.5_in},fwd,60},false); 
+    chassis.pid_odom_ptp_set({{-19_in,23.5_in},fwd,60},false); 
     pros::delay(500);
-    intake.set(Intake::IntakeState::INTAKE, 80);
     chassis.pid_wait_quick();
 
     // score mid balls
     chassis.pid_swing_set(ez::LEFT_SWING, -45_deg, 120, 0, false);
     chassis.pid_wait_quick_chain();
-    chassis.pid_drive_set(-10_in, 80,true);
+    chassis.pid_drive_set(-9.7_in, 80,true);
     liftPiston.set(true);
 
 
     loaderPiston.set(true);
-    chassis.pid_wait_quick();
+    chassis.pid_wait_until(-5_in);
     intake.set(Intake::IntakeState::OUTTAKE, 127);
-    pros::delay(250);
-    intake.set(Intake::IntakeState::SCORE, 80, 127);
+    pros::delay(100);
+    intake.set(Intake::IntakeState::SCORE, 60, 100);
 
-    //pros::delay(1000);
-    
-    //return;
-    pros::delay(4000);
+    pros::delay(1200);
+
     loaderPiston.set(false);
-    liftPiston.set(false);
-    chassis.pid_drive_set(10_in,80,true);
-    pros::delay(10000);
 
     // get second batch matchloads
     liftPiston.set(false);
     intake.set(Intake::IntakeState::INTAKE, 127);
-    chassis.pid_odom_ptp_set({{-40_in,44_in},fwd,85},true); 
+    chassis.pid_odom_ptp_set({{-40_in,46_in},fwd,85},true); 
     chassis.pid_wait_quick();
     chassis.pid_turn_set(-90_deg,127);
     chassis.pid_wait_quick_chain();
 
     loaderPiston.set(true);
-    pros::delay(200);
-    chassis.pid_drive_set(13.5_in,100,false, true, -90);
-    chassis.pid_wait_quick();
     pros::delay(300);
+    chassis.pid_drive_set(14_in,100,false, true, -90);
+    chassis.pid_wait_quick();
+    pros::delay(50);
 
     // score second batch
     chassis.pid_drive_set(-27_in,80,true, true, -90);
