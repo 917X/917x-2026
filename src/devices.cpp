@@ -35,6 +35,10 @@ ez::Piston liftPiston(LIFT_PISTON);
 pros::Motor indexerMotor(INDEXER);
 pros::Motor rollerMotor(ROLLER);
 
+// distance sensors
+pros::Distance leftDistance(LEFT_DISTANCE);
+pros::Distance rightDistance(RIGHT_DISTANCE);
+
 // intake
 Intake intake(rollerMotor, indexerMotor);
 
@@ -44,6 +48,9 @@ ez::Drive chassis({LEFT_F, LEFT_M, LEFT_B},	   // Left Chassis Ports
 				  IMU,						   // IMU Port
 				  2.75,						   // Wheel Diameter
 				  600);						   // Drive RPM
+
+
+Localizer localizer(&leftDistance, &rightDistance, nullptr, nullptr, 4.78125, 4.78125, 0, 0);
 
 // default chassis constants
 void default_constants() {
@@ -96,4 +103,5 @@ void default_constants() {
 
 	// turn behavior
 	chassis.pid_angle_behavior_set(ez::shortest);
+
 }
