@@ -64,9 +64,9 @@ void autonomous() {
 						 0_deg); // Reset odometry position to 0,0,0
 	chassis.drive_brake_set(MOTOR_BRAKE_HOLD); // Set motors to hold position
 											   // left_elims();
-	solo_awp();
+	// solo_awp();
 	// right_elims();
-    // skills();
+    skills();
     // left_elims();
 	// ez::as::auton_selector.selected_auton_call(); // Calls selected auton
 }
