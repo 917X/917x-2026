@@ -104,7 +104,6 @@ void solo_awp() {
     pros::delay(300);
 	chassis.pid_drive_set(11_in,127,false, true, -90); 
 	chassis.pid_wait_quick();
-    pros::delay(50);
 
     // score first batch
 	chassis.pid_drive_set(-27_in,80,true, true, -90);
@@ -116,20 +115,20 @@ void solo_awp() {
     intake.set(Intake::IntakeState::INTAKE);
 
     // get mid balls 
-    chassis.pid_swing_set(ez::LEFT_SWING, 50_deg, 100, -10, false);
+    chassis.pid_swing_set(ez::LEFT_SWING, 50_deg, 100, 5, false);
     chassis.pid_wait_quick_chain();
-    chassis.pid_odom_ptp_set({{-18_in,-22_in},fwd,60},false); 
+    chassis.pid_odom_ptp_set({{-19_in,-22_in},fwd,40},false); 
 
     
     chassis.pid_wait_quick_chain();
-    chassis.pid_odom_ptp_set({{-19_in,23.5_in},fwd,60},false); 
+    chassis.pid_odom_ptp_set({{-19_in,22.3_in},fwd,60},false); 
     pros::delay(500);
     chassis.pid_wait_quick();
 
     // score mid balls
     chassis.pid_swing_set(ez::LEFT_SWING, -45_deg, 120, 0, false);
     chassis.pid_wait_quick_chain();
-    chassis.pid_drive_set(-9.7_in, 80,true);
+    chassis.pid_drive_set(-10.2_in, 80,true);
     liftPiston.set(true);
 
 
@@ -146,7 +145,7 @@ void solo_awp() {
     // get second batch matchloads
     liftPiston.set(false);
     intake.set(Intake::IntakeState::INTAKE, 127);
-    chassis.pid_odom_ptp_set({{-40_in,46_in},fwd,85},true); 
+    chassis.pid_odom_ptp_set({{-40_in,45.5_in},fwd,85},true); 
     chassis.pid_wait_quick();
     chassis.pid_turn_set(-90_deg,127);
     chassis.pid_wait_quick_chain();
@@ -155,7 +154,6 @@ void solo_awp() {
     pros::delay(300);
     chassis.pid_drive_set(14_in,100,false, true, -90);
     chassis.pid_wait_quick();
-    pros::delay(50);
 
     // score second batch
     chassis.pid_drive_set(-27_in,80,true, true, -90);
