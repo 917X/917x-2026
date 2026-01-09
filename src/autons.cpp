@@ -209,13 +209,14 @@ void left_elims() {
 
 
 void right_elims() {
-
+	chassis.pid_drive_exit_condition_set(90_ms, 1_in, 250_ms, 3_in, 100_ms,
+										 250_ms);
     // get matchloads
 	flapperPiston.set(true);
 	intake.set(Intake::IntakeState::INTAKE,127);
 	chassis.odom_xyt_set(-53_in,-16_in,180_deg);
 
-	chassis.pid_odom_ptp_set({{-46_in,-46.5_in},fwd,90},false); //-46,48
+	chassis.pid_odom_ptp_set({{-46_in,-46.5_in},fwd,127},false); //-46,48
 	chassis.pid_wait_quick();
 	chassis.pid_turn_set(-90,127);
 	chassis.pid_wait_quick();
@@ -232,15 +233,15 @@ void right_elims() {
 
     loaderPiston.set(false);
     intake.set(Intake::IntakeState::SCORE);
-    pros::delay(1300);
+    pros::delay(1200);
     intake.set(Intake::IntakeState::INTAKE);
 
-    chassis.pid_swing_set(ez::LEFT_SWING, -14_deg, 100, 6, false);
-    chassis.pid_wait_quick();
+    chassis.pid_swing_set(ez::LEFT_SWING, -22_deg, 100, 6, false);
+    chassis.pid_wait_quick_chain();
     chassis.pid_swing_set(ez::RIGHT_SWING, -86_deg, 100, false);
-    chassis.pid_wait_quick();
+    chassis.pid_wait_quick_chain();
     flapperPiston.set(false);
-    chassis.pid_drive_set(-34_in,60,true);
+    chassis.pid_drive_set(-36.7_in,85,true);
 
 
 
@@ -261,6 +262,12 @@ void right_elims() {
 
 
 }
+
+// void right_elim_mid_ball(){
+// 	intake.set(Intake::IntakeState::INTAKE,127);
+// 	chassis.odom_xyt_set(-48_in,-6_in,180_deg);
+// 
+// }
 
 void skills() {
 	okapi::QLength x;
