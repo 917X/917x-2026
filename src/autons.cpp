@@ -235,20 +235,29 @@ void right_elims() {
     pros::delay(1300);
     intake.set(Intake::IntakeState::INTAKE);
 
-    // get mid balls 
-    chassis.pid_swing_set(ez::LEFT_SWING, 50_deg, 100, 5, false);
-    chassis.pid_wait_quick_chain();
-    chassis.pid_odom_ptp_set({{-19_in,-23_in},fwd,50},false); 
+    chassis.pid_swing_set(ez::LEFT_SWING, -14_deg, 100, 6, false);
     chassis.pid_wait_quick();
-    chassis.pid_odom_ptp_set({{-40_in,-50_in},rev,60},false);
+    chassis.pid_swing_set(ez::RIGHT_SWING, -86_deg, 100, false);
     chassis.pid_wait_quick();
+    flapperPiston.set(false);
+    chassis.pid_drive_set(-34_in,60,true);
+
+
+
+    // // get mid balls 
+    // chassis.pid_swing_set(ez::LEFT_SWING, 50_deg, 100, 5, false);
+    // chassis.pid_wait_quick_chain();
+    // chassis.pid_odom_ptp_set({{-19_in,-23_in},fwd,50},false); 
+    // chassis.pid_wait_quick();
+    // chassis.pid_odom_ptp_set({{-40_in,-50_in},rev,60},false);
+    // chassis.pid_wait_quick();
 
     
-    chassis.pid_turn_set(-90_deg,127);
-    chassis.pid_wait_quick();
-    chassis.pid_drive_set(-20_in,80,true);
-    chassis.pid_wait_until(-14_in);
-    intake.set(Intake::IntakeState::SCORE,100);
+    // chassis.pid_turn_set(-90_deg,127);
+    // chassis.pid_wait_quick();
+    // chassis.pid_drive_set(-20_in,80,true);
+    // chassis.pid_wait_until(-14_in);
+    // intake.set(Intake::IntakeState::SCORE,100);
 
 
 }
