@@ -80,7 +80,7 @@ void default_constants() {
 	chassis.pid_odom_turn_exit_condition_set(90_ms, 3_deg, 250_ms, 7_deg,
 											 250_ms, 250_ms);
 	chassis.pid_odom_drive_exit_condition_set(50_ms, 1.5_in, 100_ms, 5_in,
-											  250_ms, 250_ms);
+											  250_ms, 500_ms);
 	chassis.pid_turn_chain_constant_set(3_deg);
 	chassis.pid_swing_chain_constant_set(5_deg);
 	chassis.pid_drive_chain_constant_set(3_in);
