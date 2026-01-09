@@ -65,8 +65,8 @@ void autonomous() {
 	chassis.drive_brake_set(MOTOR_BRAKE_HOLD); // Set motors to hold position
 											   // left_elims();
 	// solo_awp();
-	// right_elims();
-    skills();
+	right_elims();
+    // skills();
     // left_elims();
 	// ez::as::auton_selector.selected_auton_call(); // Calls selected auton
 }
