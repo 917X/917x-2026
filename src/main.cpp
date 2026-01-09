@@ -47,7 +47,7 @@ void initialize() {
 }
 
 void disabled() {
-	// . . .
+	flapperPiston.set(true);
 }
 
 void competition_initialize() {
