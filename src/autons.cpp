@@ -134,7 +134,9 @@ void solo_awp() {
     chassis.pid_wait_quick_chain();
     chassis.pid_drive_set(-10.2_in, 80,true);
     liftPiston.set(true);
-
+    intake.set(Intake::IntakeState::OUTTAKE);
+	pros::delay(100);
+	intake.set(Intake::INTAKE);
 
     chassis.pid_wait_until(-5_in);
     intake.set(Intake::IntakeState::SCORE, 50, 100);
@@ -146,13 +148,13 @@ void solo_awp() {
     // get second batch matchloads
     liftPiston.set(false);
     intake.set(Intake::IntakeState::INTAKE, 127);
-    chassis.pid_odom_ptp_set({{-40_in,45.5_in},fwd,85},true); 
+    chassis.pid_odom_ptp_set({{-40_in,45.2_in},fwd,85},true); //-40,45.2
     chassis.pid_wait_quick();
     chassis.pid_turn_set(-90_deg,127);
     chassis.pid_wait_quick_chain();
 
     loaderPiston.set(true);
-    pros::delay(300);
+    pros::delay(400);
     chassis.pid_drive_set(14_in,100,false, true, -90);
     chassis.pid_wait_quick();
 
@@ -187,7 +189,7 @@ void left_elims() {
 	pros::delay(1300);
 
 	intake.set(Intake::IntakeState::INTAKE, 127);
-	chassis.pid_odom_ptp_set({{39_in, -41.5_in}, fwd, 110}, true);
+	chassis.pid_odom_ptp_set({{39_in, -42_in}, fwd, 110}, true); //39,-41.5
 	liftPiston.set(false);
     chassis.pid_wait_quick_chain();
 	chassis.pid_swing_set(ez::RIGHT_SWING, 90_deg, 90, 0, true);
@@ -205,13 +207,20 @@ void left_elims() {
 	pros::delay(1500);
 	loaderPiston.set(false);
     // chassis.pid_swing_set(ez::LEFT_SWING, -22_deg, 100, 6, false);
-	chassis.pid_swing_set(ez::LEFT_SWING, 158_deg, 110, 3, false);
+	chassis.pid_swing_set(ez::LEFT_SWING, 155_deg, 110, 3, false); //158
     chassis.pid_wait_quick_chain();
     chassis.pid_swing_set(ez::RIGHT_SWING, 94_deg, 100, false);
     chassis.pid_wait_quick_chain();
+	
 
+	chassis.pid_drive_exit_condition_set(90_ms, 1_in, 250_ms, 3_in, 15000_ms,
+										 15000_ms);
     flapperPiston.set(false);
     chassis.pid_drive_set(-36.7_in,85,true);
+}
+
+void move_forward(){
+	chassis.pid_drive_set(5,50);
 }
 
 
@@ -235,8 +244,8 @@ void right_elims() {
 
 
     // score first batch
-	chassis.pid_drive_set(-27_in,80,true, true, -90);
-	chassis.pid_wait_until(-23_in);
+	chassis.pid_drive_set(-27_in,127,false, true, -90);
+	chassis.pid_wait_until(-22.5_in);
 
     loaderPiston.set(false);
     intake.set(Intake::IntakeState::SCORE);
@@ -248,9 +257,16 @@ void right_elims() {
     chassis.pid_wait_quick_chain();
     chassis.pid_swing_set(ez::RIGHT_SWING, -86_deg, 100, false);
     chassis.pid_wait_quick_chain();
-
+	
+	// chassis.pid_drive_exit_condition_set(90_ms, 1_in, 250_ms, 3_in, 15000_ms,
+										//  15000_ms);
     flapperPiston.set(false);
-    chassis.pid_drive_set(-36.7_in,85,true);
+    chassis.pid_drive_set(-36.7_in,127,false); //85
+	chassis.pid_wait_quick();
+	// chassis.pid_swing_exit_condition_set(10000_ms, 1_deg, 10000_ms, 7_deg, 15000_ms,
+	// 									 15000_ms);
+	chassis.pid_swing_set(ez::RIGHT_SWING,-140,127,-5,true);
+
 	
 
 
@@ -287,7 +303,11 @@ void skills() {
 	chassis.pid_drive_set(-9.2_in,70,true); //8.8
 	chassis.pid_wait_quick();
 	intake.set(Intake::IntakeState::SCORE,50,100);
-	pros::delay(2500);
+	pros::delay(500);
+	intake.set(Intake::IntakeState::OUTTAKE,127);
+	pros::delay(200);
+	intake.set(Intake::IntakeState::SCORE,50,127);
+	pros::delay(2000);
 
 
 	intake.set(Intake::IntakeState::INTAKE,127);
@@ -406,7 +426,7 @@ void skills() {
 	pros::delay(1000);
 	chassis.pid_drive_set(-30_in,70,true);
 	chassis.pid_wait_quick_chain();
-	intake.set(Intake::SCORE,100,127); 
+	intake.set(Intake::SCORE,110,127); 
 	pros::delay(1200);
 	loaderPiston.set(false);
 	intake.set(Intake::INTAKE,127);

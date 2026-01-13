@@ -47,7 +47,7 @@ void initialize() {
 }
 
 void disabled() {
-	flapperPiston.set(true);
+	// flapperPiston.set(true);
 }
 
 void competition_initialize() {
@@ -65,6 +65,7 @@ void autonomous() {
 	chassis.drive_brake_set(MOTOR_BRAKE_HOLD); // Set motors to hold position
 											   // left_elims();
 	// solo_awp();
+	// move_forward();
 	right_elims();
     // skills();
     // left_elims();
@@ -81,7 +82,13 @@ void opcontrol() {
 	chassis.pid_targets_reset();
 	chassis.drive_brake_set(MOTOR_BRAKE_COAST);
 	while (true) {
-		chassis.opcontrol_arcade_standard(ez::SPLIT);
+		
+		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_UP)) {
+			chassis.opcontrol_arcade_standard(ez::SPLIT, 85);
+		} else {
+			chassis.opcontrol_arcade_standard(ez::SPLIT);
+		}
+
 
 		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
 			intake.set(Intake::IntakeState::SCORE, 127);

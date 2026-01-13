@@ -1047,7 +1047,7 @@ class Drive {
 	 * \param stick_type
 	 *        ez::SINGLE or ez::SPLIT control
 	 */
-	void opcontrol_arcade_standard(e_type stick_type);
+	void opcontrol_arcade_standard(e_type stick_type, int speed_clutch = 0);
 
 	/**
 	 * Sets the chassis to controller joysticks using flipped arcade control,
@@ -1209,7 +1209,7 @@ class Drive {
 	 * \param r_stick
 	 *        input for right joystick
 	 */
-	void opcontrol_joystick_threshold_iterate(int l_stick, int r_stick);
+	void opcontrol_joystick_threshold_iterate(int l_stick, int r_stick, int speed_clutch = 0);
 
 	/////
 	//

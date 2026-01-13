@@ -240,7 +240,7 @@ bool Drive::opcontrol_joystick_practicemode_toggle_get() { return practice_mode_
 void Drive::opcontrol_drive_reverse_set(bool toggle) { is_reversed = toggle; }
 bool Drive::opcontrol_drive_reverse_get() { return is_reversed; }
 
-void Drive::opcontrol_joystick_threshold_iterate(int l_stick, int r_stick) {
+void Drive::opcontrol_joystick_threshold_iterate(int l_stick, int r_stick, int speed_clutch) {
   double l_out = 0.0, r_out = 0.0;
 
   // Check the motors are being set to power
@@ -274,7 +274,7 @@ void Drive::opcontrol_joystick_threshold_iterate(int l_stick, int r_stick) {
     }
   }
 
-  // Constrain left and right outputs to the user set max speed
+  // Constrain left and right outputs to the user set max speed -> scaling factor
   // the user set max speed is defaulted to 127
   l_out *= (opcontrol_speed_max / 127.0);
   r_out *= (opcontrol_speed_max / 127.0);
@@ -282,6 +282,12 @@ void Drive::opcontrol_joystick_threshold_iterate(int l_stick, int r_stick) {
   // Ensure output is within speed limit
   l_out = l_out > opcontrol_speed_max ? opcontrol_speed_max : l_out;
   r_out = r_out > opcontrol_speed_max ? opcontrol_speed_max : r_out;
+
+  // Apply speed clutch if set
+  if (speed_clutch != 0) {
+    l_out = l_out > speed_clutch ? speed_clutch : l_out;
+    r_out = r_out > speed_clutch ? speed_clutch : r_out;
+  }
 
   drive_set(l_out, r_out);
 }
@@ -312,7 +318,7 @@ void Drive::opcontrol_tank() {
 }
 
 // Arcade standard
-void Drive::opcontrol_arcade_standard(e_type stick_type) {
+void Drive::opcontrol_arcade_standard(e_type stick_type, int speed_clutch) {
   is_tank = false;
   opcontrol_drive_sensors_reset();
 
