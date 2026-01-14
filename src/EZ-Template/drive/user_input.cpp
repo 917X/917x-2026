@@ -285,8 +285,8 @@ void Drive::opcontrol_joystick_threshold_iterate(int l_stick, int r_stick, int s
 
   // Apply speed clutch if set
   if (speed_clutch != 0) {
-    l_out = l_out > speed_clutch ? speed_clutch : l_out;
-    r_out = r_out > speed_clutch ? speed_clutch : r_out;
+    l_out = std::clamp(l_out, -(double)speed_clutch, (double)speed_clutch);
+    r_out = std::clamp(r_out, -(double)speed_clutch, (double)speed_clutch);
   }
 
   drive_set(l_out, r_out);
@@ -341,7 +341,7 @@ void Drive::opcontrol_arcade_standard(e_type stick_type, int speed_clutch) {
   double biased_turn = turn_stick * arcade_turn_bias;
 
   // Set robot to l_stick and r_stick, check joystick threshold, set active brake
-  opcontrol_joystick_threshold_iterate(fwd_stick + biased_turn, fwd_stick - biased_turn);
+  opcontrol_joystick_threshold_iterate(fwd_stick + biased_turn, fwd_stick - biased_turn, speed_clutch);
 }
 
 // Arcade control flipped

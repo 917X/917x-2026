@@ -2,6 +2,8 @@
 #include "autons.hpp"
 #include "devices.hpp"
 
+bool skillsActive = true;
+
 /**
  * @brief debug task for displaying robot status
  *
@@ -81,17 +83,32 @@ void opcontrol() {
 	flapperPiston.set(true);
 	chassis.pid_targets_reset();
 	chassis.drive_brake_set(MOTOR_BRAKE_COAST);
+
+	const double speed_scales[] = {0.2, 0.4, 0.6, 0.8, 1.0};
+	int scale_index = 4; // start at full speed
+	bool up_pressed_last = false;
+
 	while (true) {
-		
-		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_UP)) {
-			chassis.opcontrol_arcade_standard(ez::SPLIT, 85);
-		} else {
-			chassis.opcontrol_arcade_standard(ez::SPLIT);
+		bool up_pressed_now = controller.get_digital(pros::E_CONTROLLER_DIGITAL_UP);
+		if (up_pressed_now && !up_pressed_last) {
+			scale_index = (scale_index + 1) % 5;
+			controller.rumble(".");
 		}
+		up_pressed_last = up_pressed_now;
+        controller.print(0, 0, "Speed Scale: %.1f", speed_scales[scale_index]);
+
+		int max_speed = (int)(127 * speed_scales[scale_index]);
+		chassis.opcontrol_speed_max_set(max_speed);
+		chassis.opcontrol_arcade_standard(ez::SPLIT);
 
 
 		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
-			intake.set(Intake::IntakeState::SCORE, 127);
+			if (skillsActive && liftPiston.get() == true) {
+
+                intake.set(Intake::IntakeState::SCORE, 40, 127);
+            } else {
+                intake.set(Intake::IntakeState::SCORE, 127);
+            }
 		} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
 			intake.set(Intake::IntakeState::INTAKE, 127);
 		} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
