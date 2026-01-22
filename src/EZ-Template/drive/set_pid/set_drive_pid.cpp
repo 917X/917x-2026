@@ -6,6 +6,7 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 #include "EZ-Template/api.hpp"
 #include "okapi/api/units/QAngle.hpp"
+#include "okapi/api/units/QLength.hpp"
 
 /////
 // Sets swing constants
@@ -78,32 +79,58 @@ PID::Constants Drive::pid_drive_constants_get() {
 // Set drive PID
 /////
 
-// Set pid using global slew
+// MIN SPEED ONLY
 void Drive::pid_drive_set(double target, int speed, int min_speed) {
   bool slew_on = util::sgn(target) >= 0 ? slew_drive_forward_get() : slew_drive_backward_get();
   pid_drive_set(target, speed, slew_on, true, INFINITY, min_speed);
 }
-// Set pid using local slew
-void Drive::pid_drive_set(double target, int speed, bool slew_on, int min_speed) {
-  pid_drive_set(target, speed, slew_on, true, INFINITY, min_speed);
-}
-
-// Set drive PID
-void Drive::pid_drive_set(okapi::QLength p_target, int speed, bool slew_on, bool toggle_heading, double heading_target, int min_speed) {
-  double target = p_target.convert(okapi::inch);  // Convert okapi unit to inches
-  pid_drive_set(target, speed, slew_on, toggle_heading, heading_target, min_speed);
-}
-
-// Set drive PID with global slew and okapi units
+// with okapi units
 void Drive::pid_drive_set(okapi::QLength p_target, int speed, int min_speed) {
   double target = p_target.convert(okapi::inch);  // Convert okapi unit to inches
   pid_drive_set(target, speed, min_speed);
 }
-// Set drive PID with local slew and okapi units
-void Drive::pid_drive_set(okapi::QLength p_target, int speed, bool slew_on, int min_speed) {
-  double target = p_target.convert(okapi::inch);  // Convert okapi unit to inches
+
+
+
+//LOCAL SLEW
+void Drive::pid_drive_set(double target, int speed, int min_speed, bool slew_on) {
   pid_drive_set(target, speed, slew_on, true, INFINITY, min_speed);
 }
+//with okapi units
+void Drive::pid_drive_set(okapi::QLength p_target, int speed, int min_speed, bool slew_on) {
+  double target = p_target.convert(okapi::inch);
+  pid_drive_set(target, speed, slew_on, true, INFINITY, min_speed);
+}
+
+//FULL 
+void Drive::pid_drive_set(double target, int speed, int min_speed, bool slew_on, bool toggle_heading, double heading_target) {
+  pid_drive_set(target, speed, slew_on, toggle_heading, heading_target, min_speed);
+}
+//with okapi units
+void Drive::pid_drive_set(okapi::QLength p_target, int speed, int min_speed, bool slew_on, bool toggle_heading, double heading_target) {
+  double target = p_target.convert(okapi::inch);  // Convert okapi unit to inches
+  pid_drive_set(target, speed, slew_on, toggle_heading, heading_target, min_speed);
+}
+
+
+//LOCAL SLEW without min_speed
+// Set pid using local slew
+void Drive::pid_drive_set(double target, int speed, bool slew_on) {
+  pid_drive_set(target, speed, slew_on, true, INFINITY, 0);
+}
+//with okapi units
+void Drive::pid_drive_set(okapi::QLength p_target, int speed, bool slew_on) {
+  double target = p_target.convert(okapi::inch);  // Convert okapi unit to inches
+  pid_drive_set(target, speed, slew_on, 0);
+}
+
+
+// FULL with okapi units without min_speed
+void Drive::pid_drive_set(okapi::QLength p_target, int speed, bool slew_on, bool toggle_heading, double heading_target) {
+  double target = p_target.convert(okapi::inch);  // Convert okapi unit to inches
+  pid_drive_set(target, speed, slew_on, toggle_heading, heading_target, 0);
+}
+
 
 // Set drive PID raw
 void Drive::pid_drive_set(double target, int speed, bool slew_on, bool toggle_heading, double heading_target, int min_speed) {
