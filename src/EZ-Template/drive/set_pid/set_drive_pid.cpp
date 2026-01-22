@@ -82,7 +82,7 @@ PID::Constants Drive::pid_drive_constants_get() {
 // MIN SPEED ONLY
 void Drive::pid_drive_set(double target, int speed, int min_speed) {
   bool slew_on = util::sgn(target) >= 0 ? slew_drive_forward_get() : slew_drive_backward_get();
-  pid_drive_set(target, speed, slew_on, true, INFINITY, min_speed);
+  pid_drive_set(target, speed, min_speed, slew_on, true, INFINITY);
 }
 // with okapi units
 void Drive::pid_drive_set(okapi::QLength p_target, int speed, int min_speed) {
@@ -91,49 +91,44 @@ void Drive::pid_drive_set(okapi::QLength p_target, int speed, int min_speed) {
 }
 
 
-
 //LOCAL SLEW
 void Drive::pid_drive_set(double target, int speed, int min_speed, bool slew_on) {
-  pid_drive_set(target, speed, slew_on, true, INFINITY, min_speed);
+  pid_drive_set(target, speed, min_speed, slew_on, true, INFINITY);
 }
 //with okapi units
 void Drive::pid_drive_set(okapi::QLength p_target, int speed, int min_speed, bool slew_on) {
   double target = p_target.convert(okapi::inch);
-  pid_drive_set(target, speed, slew_on, true, INFINITY, min_speed);
+  pid_drive_set(target, speed, min_speed, slew_on, true, INFINITY);
 }
 
-//FULL 
-void Drive::pid_drive_set(double target, int speed, int min_speed, bool slew_on, bool toggle_heading, double heading_target) {
-  pid_drive_set(target, speed, slew_on, toggle_heading, heading_target, min_speed);
+
+//LOCAL SLEW without min_speed (Legacy)
+void Drive::pid_drive_set(double target, int speed, bool slew_on) {
+  pid_drive_set(target, speed, 0, slew_on, true, INFINITY);
 }
-//with okapi units
+void Drive::pid_drive_set(okapi::QLength p_target, int speed, bool slew_on) {
+  double target = p_target.convert(okapi::inch); 
+  pid_drive_set(target, speed, 0, slew_on, true, INFINITY);
+}
+
+// Manual without min_speed (Legacy)
+void Drive::pid_drive_set(double target, int speed, bool slew_on, bool toggle_heading, double heading_target) {
+  pid_drive_set(target, speed, 0, slew_on, toggle_heading, heading_target);
+}
+void Drive::pid_drive_set(okapi::QLength p_target, int speed, bool slew_on, bool toggle_heading, double heading_target) {
+  double target = p_target.convert(okapi::inch);
+  pid_drive_set(target, speed, 0, slew_on, toggle_heading, heading_target);
+}
+
+// FULL with okapi units
 void Drive::pid_drive_set(okapi::QLength p_target, int speed, int min_speed, bool slew_on, bool toggle_heading, double heading_target) {
   double target = p_target.convert(okapi::inch);  // Convert okapi unit to inches
-  pid_drive_set(target, speed, slew_on, toggle_heading, heading_target, min_speed);
-}
-
-
-//LOCAL SLEW without min_speed
-// Set pid using local slew
-void Drive::pid_drive_set(double target, int speed, bool slew_on) {
-  pid_drive_set(target, speed, slew_on, true, INFINITY, 0);
-}
-//with okapi units
-void Drive::pid_drive_set(okapi::QLength p_target, int speed, bool slew_on) {
-  double target = p_target.convert(okapi::inch);  // Convert okapi unit to inches
-  pid_drive_set(target, speed, slew_on, 0);
-}
-
-
-// FULL with okapi units without min_speed
-void Drive::pid_drive_set(okapi::QLength p_target, int speed, bool slew_on, bool toggle_heading, double heading_target) {
-  double target = p_target.convert(okapi::inch);  // Convert okapi unit to inches
-  pid_drive_set(target, speed, slew_on, toggle_heading, heading_target, 0);
+  pid_drive_set(target, speed, min_speed, slew_on, toggle_heading, heading_target);
 }
 
 
 // Set drive PID raw
-void Drive::pid_drive_set(double target, int speed, bool slew_on, bool toggle_heading, double heading_target, int min_speed) {
+void Drive::pid_drive_set(double target, int speed, int min_speed, bool slew_on, bool toggle_heading, double heading_target) {
   leftPID.timers_reset();
   rightPID.timers_reset();
 
