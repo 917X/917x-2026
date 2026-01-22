@@ -63,8 +63,13 @@ void Drive::drive_pid_task() {
   double l_drive_out = leftPID.output;
   double r_drive_out = rightPID.output;
 
-  if (fabs(l_drive_out) < drive_min_speed) l_drive_out = util::sgn(l_drive_out) * drive_min_speed;
-  if (fabs(r_drive_out) < drive_min_speed) r_drive_out = util::sgn(r_drive_out) * drive_min_speed;
+  // Apply min speed if not in settle range
+  if (fabs(leftPID.error) > (leftPID.exit.small_error > 0 ? leftPID.exit.small_error : 1.0)) {
+    if (fabs(l_drive_out) < drive_min_speed) l_drive_out = util::sgn(l_drive_out) * drive_min_speed;
+  }
+  if (fabs(rightPID.error) > (rightPID.exit.small_error > 0 ? rightPID.exit.small_error : 1.0)) {
+    if (fabs(r_drive_out) < drive_min_speed) r_drive_out = util::sgn(r_drive_out) * drive_min_speed;
+  }
 
   // Scale leftPID and rightPID to slew (if slew is disabled, it returns max_speed)
   double max_slew_out = fmax(slew_left.output(), slew_right.output());
@@ -188,7 +193,10 @@ void Drive::ptp_task() {
   double xy_out = xyPID.output;
   xy_out = util::clamp(xy_out, max_slew_out);
 
-  if (fabs(xy_out) < odom_min_speed) xy_out = util::sgn(xy_out) * odom_min_speed;
+  // Apply min speed if not in settle range
+  if (fabs(xyPID.error) > (xyPID.exit.small_error > 0 ? xyPID.exit.small_error : 1.0)) {
+    if (fabs(xy_out) < odom_min_speed) xy_out = util::sgn(xy_out) * odom_min_speed;
+  }
   
   // Apply drive boost when output is weak and far from target
   double distance_to_target = util::distance_to_point(odom_target, odom_pose_get());
