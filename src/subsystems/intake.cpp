@@ -17,7 +17,7 @@ void Intake::intakeControl() {
 			rollerMotor.move(0);
 			break;
 		case INTAKE:
-			indexerMotor.move(-10);
+			indexerMotor.move(-40);
 			rollerMotor.move(bottomSpeed);
 			break;
 		case OUTTAKE:

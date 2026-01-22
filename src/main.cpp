@@ -2,7 +2,7 @@
 #include "autons.hpp"
 #include "devices.hpp"
 
-bool skillsActive = true;
+bool skillsActive = false;
 
 /**
  * @brief debug task for displaying robot status
