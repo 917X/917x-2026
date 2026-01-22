@@ -478,10 +478,15 @@ double Drive::pid_swing_chain_forward_constant_get() { return swing_forward_moti
 double Drive::pid_swing_chain_backward_constant_get() { return swing_backward_motion_chain_scale; }
 
 // Pid wait that hold momentum into the next motion
-void Drive::pid_wait_quick_chain() {
+void Drive::pid_wait_quick_chain(double motion_chain_constant_override) {
   // If driving, add drive_motion_chain_scale to target
   if (mode == DRIVE) {
-    double chain_scale = motion_chain_backward ? drive_backward_motion_chain_scale : drive_forward_motion_chain_scale;
+    double chain_scale;
+    if (motion_chain_constant_override !=0.0) {
+      chain_scale = fabs(motion_chain_constant_override);
+    } else {
+      chain_scale = motion_chain_backward ? drive_backward_motion_chain_scale : drive_forward_motion_chain_scale;
+    }
     used_motion_chain_scale = chain_scale * util::sgn(chain_target_start);
     leftPID.target_set(leftPID.target_get() + used_motion_chain_scale);
     rightPID.target_set(rightPID.target_get() + used_motion_chain_scale);
@@ -489,13 +494,22 @@ void Drive::pid_wait_quick_chain() {
 
   // If turning, add turn_motion_chain_scale to target
   else if (mode == TURN) {
-    used_motion_chain_scale = turn_motion_chain_scale * util::sgn(chain_target_start - chain_sensor_start);
+    if (motion_chain_constant_override !=0.0) {
+      used_motion_chain_scale = fabs(motion_chain_constant_override) * util::sgn(chain_target_start - chain_sensor_start);
+    } else {
+      used_motion_chain_scale = turn_motion_chain_scale * util::sgn(chain_target_start - chain_sensor_start);
+    }
     turnPID.target_set(turnPID.target_get() + used_motion_chain_scale);
   }
 
   // If swinging, add swing_motion_chain_scale to target
   else if (mode == SWING) {
-    double chain_scale = motion_chain_backward ? swing_backward_motion_chain_scale : swing_forward_motion_chain_scale;
+    double chain_scale;
+    if (motion_chain_constant_override !=0.0) {
+      chain_scale = fabs(motion_chain_constant_override);
+    } else {
+      chain_scale = motion_chain_backward ? swing_backward_motion_chain_scale : swing_forward_motion_chain_scale;
+    }
     used_motion_chain_scale = chain_scale * util::sgn(chain_target_start - chain_sensor_start);
     swingPID.target_set(swingPID.target_get() + used_motion_chain_scale);
   }
@@ -503,7 +517,13 @@ void Drive::pid_wait_quick_chain() {
   // If odometrying, add drive_motion_chain_scale to the final target point
   // It'll be at the angle between the second to last point and the last point
   else if (mode == POINT_TO_POINT || mode == PURE_PURSUIT) {
-    double chain_scale = current_drive_direction == REV ? drive_backward_motion_chain_scale : drive_forward_motion_chain_scale;
+    double chain_scale;
+    if (motion_chain_constant_override !=0.0) {
+      chain_scale = fabs(motion_chain_constant_override);
+    } else {
+      double chain_scale = current_drive_direction == REV ? drive_backward_motion_chain_scale : drive_forward_motion_chain_scale;
+    }
+
     used_motion_chain_scale = chain_scale;
 
     // Figure out what angle to use.

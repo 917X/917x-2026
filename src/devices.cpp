@@ -1,19 +1,19 @@
 #include "devices.hpp"
 
 // device ports
-constexpr int LEFT_F = -1;
-constexpr int LEFT_M = 2;
-constexpr int LEFT_B = -3;
+constexpr int LEFT_F = -10;
+constexpr int LEFT_M = 19;
+constexpr int LEFT_B = -18;
 
-constexpr int RIGHT_F = 10;
-constexpr int RIGHT_M = -9;
-constexpr int RIGHT_B = 8;
+constexpr int RIGHT_F = 11;
+constexpr int RIGHT_M = -12;
+constexpr int RIGHT_B = 13;
 
-constexpr int INDEXER = -7;
-constexpr int ROLLER = 6;
+constexpr int INDEXER = -15;
+constexpr int ROLLER = 16;
 
-constexpr int LEFT_DISTANCE = 4;
-constexpr int RIGHT_DISTANCE = 5;
+constexpr int LEFT_DISTANCE = 10;
+constexpr int RIGHT_DISTANCE = 14;
 
 constexpr char LOADER_PISTON = 'A';
 constexpr char FLAPPER_PISTON = 'C';
@@ -21,7 +21,7 @@ constexpr char LIFT_PISTON = 'B';
 
 constexpr char COLORSORT = 6;
 
-constexpr char IMU = 21;
+constexpr char IMU = 1;
 
 // controller
 pros::Controller controller(pros::E_CONTROLLER_MASTER);

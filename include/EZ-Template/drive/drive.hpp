@@ -2887,7 +2887,7 @@ class Drive {
 	 *
 	 * This will exit the motion while carrying momentum into the next motion.
 	 */
-	void pid_wait_quick_chain();
+	void pid_wait_quick_chain(double motion_chain_constant_override = 0.0);
 
 	/**
 	 * Lock the code in a while loop until this point has been passed.
