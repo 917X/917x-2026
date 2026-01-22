@@ -136,6 +136,7 @@ typedef struct odom {
   pose target;
   drive_directions drive_direction;
   int max_xy_speed;
+  int min_speed = 0;
   e_angle_behavior turn_behavior = shortest;
 } odom;
 
@@ -146,6 +147,7 @@ typedef struct united_odom {
   united_pose target;
   drive_directions drive_direction;
   int max_xy_speed;
+  int min_speed = 0;
   e_angle_behavior turn_behavior = shortest;
 } united_odom;
 

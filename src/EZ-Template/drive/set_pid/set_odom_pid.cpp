@@ -111,7 +111,7 @@ void Drive::pid_odom_set(double target, int speed) {
 void Drive::pid_odom_set(double target, int speed, bool slew_on) {
   drive_directions fwd_or_rev = util::sgn(target) >= 0 ? fwd : rev;
   pose target_pose = util::vector_off_point(target, {odom_x_get(), odom_y_get(), headingPID.target_get()});
-  odom path = {{target_pose.x, target_pose.y}, fwd_or_rev, speed};
+  odom path = {{target_pose.x, target_pose.y}, fwd_or_rev, speed}; // Uses default min_speed=0 from struct reorder
 
   xyPID.timers_reset();
   current_a_odomPID.timers_reset();
@@ -444,6 +444,7 @@ void Drive::raw_pid_odom_ptp_set(odom imovement, bool slew_on) {
 
   // Set max speed
   pid_speed_max_set(imovement.max_xy_speed);
+  odom_min_speed = imovement.min_speed;
 
   int slew_min = slew_consts.min_speed;
   if (current_slew_on && slew_will_enable_later && !slew_on && slew_odom_reenabled()) {

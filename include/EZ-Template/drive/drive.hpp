@@ -1898,8 +1898,25 @@ class Drive {
 	 *        target okapi unit
 	 * \param speed
 	 *        0 to 127, max speed during motion
+	 * \param min_speed
+	 *        0 to 127, min speed during motion
 	 */
-	void pid_drive_set(okapi::QLength p_target, int speed);
+	void pid_drive_set(okapi::QLength p_target, int speed, int min_speed = 0);
+
+    /**
+	 * Sets the robot to move forward using PID with okapi units, using slew if
+	 * enabled for this motion.
+	 *
+	 * \param p_target
+	 *        target okapi unit
+	 * \param speed
+	 *        0 to 127, max speed during motion
+	 * \param min_speed
+	 *        0 to 127, min speed during motion
+	 * \param slew_on
+	 *        ramp up from a lower speed to your target speed
+	 */
+	void pid_drive_set(okapi::QLength p_target, int speed, int min_speed, bool slew_on);
 
 	/**
 	 * Sets the robot to move forward using PID with okapi units, using slew if
@@ -1909,6 +1926,8 @@ class Drive {
 	 *        target okapi unit
 	 * \param speed
 	 *        0 to 127, max speed during motion
+	 * \param min_speed
+	 *        0 to 127, min speed during motion
 	 * \param slew_on
 	 *        ramp up from a lower speed to your target speed
 	 * \param toggle_heading
@@ -1916,8 +1935,8 @@ class Drive {
 	 * \param heading_target
 	 *        optional manual override for heading correction target in degrees (uses current heading if not provided)
 	 */
-	void pid_drive_set(okapi::QLength p_target, int speed, bool slew_on,
-				   bool toggle_heading = true, double heading_target = INFINITY);	/**
+	void pid_drive_set(okapi::QLength p_target, int speed, int min_speed, bool slew_on,
+				   bool toggle_heading, double heading_target = INFINITY);	/**
 	 * Sets the robot to move forward using PID without okapi units, only using
 	 * slew if globally enabled.
 	 *
@@ -1925,8 +1944,25 @@ class Drive {
 	 *        target value in inches
 	 * \param speed
 	 *        0 to 127, max speed during motion
+	 * \param min_speed
+	 *        0 to 127, min speed during motion
 	 */
-	void pid_drive_set(double target, int speed);
+	void pid_drive_set(double target, int speed, int min_speed = 0);
+
+    /**
+	 * Sets the robot to move forward using PID without okapi units, using slew
+	 * if enabled for this motion.
+	 *
+	 * \param target
+	 *        target value in inches
+	 * \param speed
+	 *        0 to 127, max speed during motion
+	 * \param min_speed
+	 *        0 to 127, min speed during motion
+	 * \param slew_on
+	 *        ramp up from a lower speed to your target speed
+	 */
+	void pid_drive_set(double target, int speed, int min_speed, bool slew_on);
 
 	/**
 	 * Sets the robot to move forward using PID without okapi units, using slew
@@ -1936,6 +1972,8 @@ class Drive {
 	 *        target value in inches
 	 * \param speed
 	 *        0 to 127, max speed during motion
+	 * \param min_speed
+	 *        0 to 127, min speed during motion
 	 * \param slew_on
 	 *        ramp up from a lower speed to your target speed
 	 * \param toggle_heading
@@ -1943,8 +1981,8 @@ class Drive {
 	 * \param heading_target
 	 *        optional manual override for heading correction target in degrees (uses current heading if not provided)
 	 */
-	void pid_drive_set(double target, int speed, bool slew_on,
-				   bool toggle_heading = true, double heading_target = INFINITY);	/**
+	void pid_drive_set(double target, int speed, int min_speed, bool slew_on,
+				   bool toggle_heading, double heading_target = INFINITY);	/**
 	 * Sets the robot to turn face a point using PID and odometry.
 	 *
 	 * \param target
@@ -3884,6 +3922,8 @@ class Drive {
 	bool is_full_pid_tuner_enabled = false;
 	std::vector<const_and_name> *used_pid_tuner_pids;
 	double opcontrol_speed_max = 127.0;
+	int drive_min_speed = 0;
+	int odom_min_speed = 0;
 	double arcade_turn_bias = 1.0;
 	bool arcade_vector_scaling = false;
 	// odom privates

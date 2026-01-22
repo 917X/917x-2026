@@ -272,7 +272,7 @@ std::vector<odom> united_odoms_to_odoms(std::vector<united_odom> inputs) {
   std::vector<odom> output;
   for (int i = 0; i < inputs.size(); i++) {
     pose new_pose = united_pose_to_pose(inputs[i].target);
-    output.push_back({{new_pose}, inputs[i].drive_direction, inputs[i].max_xy_speed, inputs[i].turn_behavior});
+    output.push_back({{new_pose}, inputs[i].drive_direction, inputs[i].max_xy_speed, inputs[i].min_speed, inputs[i].turn_behavior});
   }
   return output;
 }

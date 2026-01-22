@@ -63,6 +63,9 @@ void Drive::drive_pid_task() {
   double l_drive_out = leftPID.output;
   double r_drive_out = rightPID.output;
 
+  if (fabs(l_drive_out) < drive_min_speed) l_drive_out = util::sgn(l_drive_out) * drive_min_speed;
+  if (fabs(r_drive_out) < drive_min_speed) r_drive_out = util::sgn(r_drive_out) * drive_min_speed;
+
   // Scale leftPID and rightPID to slew (if slew is disabled, it returns max_speed)
   double max_slew_out = fmax(slew_left.output(), slew_right.output());
   double faster_side = fmax(fabs(l_drive_out), fabs(r_drive_out));
@@ -184,6 +187,8 @@ void Drive::ptp_task() {
   // Prioritize turning by scaling xy_out down
   double xy_out = xyPID.output;
   xy_out = util::clamp(xy_out, max_slew_out);
+
+  if (fabs(xy_out) < odom_min_speed) xy_out = util::sgn(xy_out) * odom_min_speed;
   
   // Apply drive boost when output is weak and far from target
   double distance_to_target = util::distance_to_point(odom_target, odom_pose_get());
