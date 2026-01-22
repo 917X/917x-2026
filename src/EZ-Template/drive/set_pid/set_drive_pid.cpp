@@ -81,17 +81,17 @@ PID::Constants Drive::pid_drive_constants_get() {
 // Set pid using global slew
 void Drive::pid_drive_set(double target, int speed, int min_speed) {
   bool slew_on = util::sgn(target) >= 0 ? slew_drive_forward_get() : slew_drive_backward_get();
-  pid_drive_set(target, speed, min_speed, slew_on, true, INFINITY);
+  pid_drive_set(target, speed, slew_on, true, INFINITY, min_speed);
 }
 // Set pid using local slew
-void Drive::pid_drive_set(double target, int speed, int min_speed, bool slew_on) {
-  pid_drive_set(target, speed, min_speed, slew_on, true, INFINITY);
+void Drive::pid_drive_set(double target, int speed, bool slew_on, int min_speed) {
+  pid_drive_set(target, speed, slew_on, true, INFINITY, min_speed);
 }
 
 // Set drive PID
-void Drive::pid_drive_set(okapi::QLength p_target, int speed, int min_speed, bool slew_on, bool toggle_heading, double heading_target) {
+void Drive::pid_drive_set(okapi::QLength p_target, int speed, bool slew_on, bool toggle_heading, double heading_target, int min_speed) {
   double target = p_target.convert(okapi::inch);  // Convert okapi unit to inches
-  pid_drive_set(target, speed, min_speed, slew_on, toggle_heading, heading_target);
+  pid_drive_set(target, speed, slew_on, toggle_heading, heading_target, min_speed);
 }
 
 // Set drive PID with global slew and okapi units
@@ -100,13 +100,13 @@ void Drive::pid_drive_set(okapi::QLength p_target, int speed, int min_speed) {
   pid_drive_set(target, speed, min_speed);
 }
 // Set drive PID with local slew and okapi units
-void Drive::pid_drive_set(okapi::QLength p_target, int speed, int min_speed, bool slew_on) {
+void Drive::pid_drive_set(okapi::QLength p_target, int speed, bool slew_on, int min_speed) {
   double target = p_target.convert(okapi::inch);  // Convert okapi unit to inches
-  pid_drive_set(target, speed, min_speed, slew_on, true, INFINITY);
+  pid_drive_set(target, speed, slew_on, true, INFINITY, min_speed);
 }
 
 // Set drive PID raw
-void Drive::pid_drive_set(double target, int speed, int min_speed, bool slew_on, bool toggle_heading, double heading_target) {
+void Drive::pid_drive_set(double target, int speed, bool slew_on, bool toggle_heading, double heading_target, int min_speed) {
   leftPID.timers_reset();
   rightPID.timers_reset();
 
