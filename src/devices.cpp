@@ -1,7 +1,7 @@
 #include "devices.hpp"
 
 // device ports
-constexpr int LEFT_F = -10;
+constexpr int LEFT_F = -20;
 constexpr int LEFT_M = 19;
 constexpr int LEFT_B = -18;
 
@@ -9,11 +9,11 @@ constexpr int RIGHT_F = 11;
 constexpr int RIGHT_M = -12;
 constexpr int RIGHT_B = 13;
 
-constexpr int INDEXER = -15;
-constexpr int ROLLER = 16;
+constexpr int INDEXER = -3;
+constexpr int ROLLER = 14;
 
-constexpr int LEFT_DISTANCE = 10;
-constexpr int RIGHT_DISTANCE = 14;
+constexpr int LEFT_DISTANCE = 17;
+constexpr int RIGHT_DISTANCE = 2;
 
 constexpr char LOADER_PISTON = 'A';
 constexpr char FLAPPER_PISTON = 'C';
@@ -50,12 +50,12 @@ ez::Drive chassis({LEFT_F, LEFT_M, LEFT_B},	   // Left Chassis Ports
 				  600);						   // Drive RPM
 
 
-Localizer localizer(&leftDistance, &rightDistance, nullptr, nullptr, 4.78125, 4.78125, 0, 0);
+Localizer localizer(&leftDistance, &rightDistance, nullptr, nullptr, 4.875, 4.875, 0, 0);
 
 // default chassis constants
 void default_constants() {
 
-    chassis.drive_width_set(11.25);
+    chassis.drive_width_set(10.5);
 
 	// lateral constants
 	chassis.pid_drive_constants_forward_set(6, 0.0, 11.5);
