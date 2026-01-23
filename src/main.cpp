@@ -69,9 +69,10 @@ void autonomous() {
 	// solo_awp();
 	// move_forward();
 	// right_elims();
-    skills();
+	right_elims_mid_ball();
+    // skills();
     // left_elims();
-	// ez::as::auton_selector.selected_auton_call(); // Calls selected auton
+	// ez::as::auton_selector.selected_auton_call(); // Calls selected auton	
 }
 
 
@@ -112,7 +113,7 @@ void opcontrol() {
 		} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
 			intake.set(Intake::IntakeState::INTAKE, 127);
 		} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
-			intake.set(Intake::IntakeState::OUTTAKE, 127);
+			intake.set(Intake::IntakeState::OUTTAKE, 100);
 		} else {
 			intake.set(Intake::IntakeState::STOP);
 		}
