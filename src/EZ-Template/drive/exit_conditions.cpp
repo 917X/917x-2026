@@ -98,6 +98,53 @@ void Drive::pid_odom_turn_exit_condition_set(okapi::QTime p_small_exit_time, oka
   pid_odom_turn_exit_condition_set(set, se, bet, be, vet, mAt, use_imu);
 }
 
+void Drive::pid_slowdown(double range, int speed) {
+  // Wait until error is less than range or exit condition met
+  while (true) {
+    double current_error = INFINITY;
+
+    if (mode == DRIVE) {
+      current_error = (fabs(leftPID.error) + fabs(rightPID.error)) / 2.0;
+    } else if (mode == TURN) {
+      current_error = fabs(turnPID.error);
+    } else if (mode == SWING) {
+      current_error = fabs(swingPID.error);
+    } else if (mode == POINT_TO_POINT || mode == PURE_PURSUIT) {
+      current_error = fabs(xyPID.error);
+    } else {
+      return; 
+    }
+
+    if (current_error < range) {
+      pid_speed_max_set(speed);
+      return;
+    }
+
+    exit_output exit_status = RUNNING;
+    if (mode == DRIVE) {
+        exit_status = leftPID.exit_condition(left_motors[0]);
+    } else if (mode == TURN) {
+        exit_status = turnPID.exit_condition({left_motors[0], right_motors[0]});
+    } else if (mode == SWING) {
+        exit_status = swingPID.exit_condition(current_swing == LEFT_SWING ? left_motors[0] : right_motors[0]);
+    } else if (mode == POINT_TO_POINT || mode == PURE_PURSUIT) {
+        exit_status = xyPID.exit_condition({left_motors[0], right_motors[0]});
+    }
+
+    if (exit_status != RUNNING) return;
+
+    pros::delay(util::DELAY_TIME);
+  }
+}
+
+void Drive::pid_slowdown(okapi::QLength range, int speed) {
+  pid_slowdown(range.convert(okapi::inch), speed);
+}
+
+void Drive::pid_slowdown(okapi::QAngle range, int speed) {
+  pid_slowdown(range.convert(okapi::degree), speed);
+}
+
 // User wrapper for exit condition
 void Drive::pid_wait() {
   // Let the PID run at least 1 iteration

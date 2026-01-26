@@ -2934,6 +2934,39 @@ class Drive {
 	void drive_angle_set(double angle);
 
 	/**
+	 * Lock the code in a while loop until the robot is within a range of the
+	 * target, then sets the max speed.
+	 *
+	 * \param range
+	 *        range in inches or degrees
+	 * \param speed
+	 *        new max speed
+	 */
+	void pid_slowdown(double range, int speed);
+
+	/**
+	 * Lock the code in a while loop until the robot is within a range of the
+	 * target, then sets the max speed.
+	 *
+	 * \param range
+	 *        range in okapi::QLength
+	 * \param speed
+	 *        new max speed
+	 */
+	void pid_slowdown(okapi::QLength range, int speed);
+
+	/**
+	 * Lock the code in a while loop until the robot is within a range of the
+	 * target, then sets the max speed.
+	 *
+	 * \param range
+	 *        range in okapi::QAngle
+	 * \param speed
+	 *        new max speed
+	 */
+	void pid_slowdown(okapi::QAngle range, int speed);
+
+	/**
 	 * Lock the code in a while loop until the robot has settled.
 	 */
 	void pid_wait();
