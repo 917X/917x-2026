@@ -52,14 +52,14 @@ ez::Drive chassis({LEFT_F, LEFT_M, LEFT_B},	   // Left Chassis Ports
 				  2.75,						   // Wheel Diameter
 				  600);						   // Drive RPM
 
-ez::tracking_wheel vertical_pod(VERT_POD, 2,0);
+ez::tracking_wheel vertical_pod(VERT_POD, 2,0.25);
 
 Localizer localizer(&leftDistance, &rightDistance, nullptr, nullptr, 4.875, 4.875, 0, 0);
 
 // default chassis constants
 void default_constants() {
 
-	chassis.odom_tracker_left_set(&vertical_pod);
+	chassis.odom_tracker_right_set(&vertical_pod);
     chassis.drive_width_set(10.5);
 
 	// lateral constants

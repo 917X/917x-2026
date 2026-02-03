@@ -66,9 +66,9 @@ void autonomous() {
 						 0_deg); // Reset odometry position to 0,0,0
 	chassis.drive_brake_set(MOTOR_BRAKE_HOLD); // Set motors to hold position
 											   // left_elims();
-	// skills();
+	skills();
 	// move_forward();
-	right_elims();
+	//right_elims();
 	// right_elims_mid_ball();
     // skills();
     // left_elims();
