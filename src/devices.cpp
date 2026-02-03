@@ -1,4 +1,5 @@
 #include "devices.hpp"
+#include "EZ-Template/tracking_wheel.hpp"
 
 // device ports
 constexpr int LEFT_F = -20;
@@ -8,6 +9,8 @@ constexpr int LEFT_B = -18;
 constexpr int RIGHT_F = 11;
 constexpr int RIGHT_M = -12;
 constexpr int RIGHT_B = 13;
+
+constexpr int VERT_POD = 15;
 
 constexpr int INDEXER = -3;
 constexpr int ROLLER = 14;
@@ -49,12 +52,14 @@ ez::Drive chassis({LEFT_F, LEFT_M, LEFT_B},	   // Left Chassis Ports
 				  2.75,						   // Wheel Diameter
 				  600);						   // Drive RPM
 
+ez::tracking_wheel vertical_pod(VERT_POD, 2,0);
 
 Localizer localizer(&leftDistance, &rightDistance, nullptr, nullptr, 4.875, 4.875, 0, 0);
 
 // default chassis constants
 void default_constants() {
 
+	chassis.odom_tracker_left_set(&vertical_pod);
     chassis.drive_width_set(10.5);
 
 	// lateral constants
