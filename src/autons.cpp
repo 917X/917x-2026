@@ -226,14 +226,14 @@ void move_forward(){
 
 
 void right_elims() {
-	chassis.pid_drive_exit_condition_set(90_ms, 1_in, 250_ms, 3_in, 100_ms,
+	chassis.pid_drive_exit_condition_set(90_ms, 1_in, 250_ms, 3_in, 90_ms,
 										 250_ms);
     // get matchloads
 	flapperPiston.set(true);
 	intake.set(Intake::IntakeState::INTAKE,127);
-	chassis.odom_xyt_set(-53_in,-16_in,180_deg);
+	chassis.odom_xyt_set(-53_in,-15.6_in,180_deg);
 
-	chassis.pid_odom_ptp_set({{-46_in,-47.7_in},fwd,127},false); //-46,48
+	chassis.pid_odom_ptp_set({{-46_in,-48_in},fwd,127},false); //-46,48
 	chassis.pid_wait_quick();
 	chassis.pid_turn_set(-90,127);
 	chassis.pid_wait_quick();
@@ -246,7 +246,7 @@ void right_elims() {
 
     // score first batch
 	chassis.pid_drive_set(-27_in,127,false, true, -90);
-	chassis.pid_wait_until(-22.5_in);
+	chassis.pid_wait_until(-22.7_in);
 
     loaderPiston.set(false);
     intake.set(Intake::IntakeState::SCORE);
