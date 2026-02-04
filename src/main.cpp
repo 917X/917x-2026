@@ -65,8 +65,19 @@ void autonomous() {
 	chassis.odom_xyt_set(0_in, 0_in,
 						 0_deg); // Reset odometry position to 0,0,0
 	chassis.drive_brake_set(MOTOR_BRAKE_HOLD); // Set motors to hold position
-											   // left_elims();
-	skills();
+	
+    //liftPiston.set(true);
+    intake.set(Intake::IntakeState::INTAKE,127);
+    pros::delay(500);
+    chassis.drive_set(67, 67);
+    wait_for_imu_bump(3);
+    
+    chassis.drive_set(60,60);
+    wait_for_imu_bump(3);
+    loaderPiston.set(true);
+    chassis.drive_set(0,0);
+    // left_elims();
+	//skills();
 	// move_forward();
 	//right_elims();
 	// right_elims_mid_ball();
@@ -102,6 +113,10 @@ void opcontrol() {
 		chassis.opcontrol_speed_max_set(max_speed);
 		chassis.opcontrol_arcade_standard(ez::SPLIT);
 
+        if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_LEFT)){
+            skillsActive = true;
+            pros::delay(500);
+        }
 
 		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
 			if (skillsActive && liftPiston.get() == true) {

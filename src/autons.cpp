@@ -12,6 +12,33 @@ const int DRIVE_SPEED = 110;
 const int TURN_SPEED = 90;
 const int SWING_SPEED = 110;
 
+
+// wait until the imu pitch is raised above a certain threshold and then back down
+void wait_for_imu_bump(double threshold) {
+  double initial_pitch = chassis.imu.get_pitch();
+  
+  // Phase 1: Wait until pitch rises above threshold (climbing the barrier)
+  while (fabs(chassis.imu.get_pitch() - initial_pitch) < threshold) {
+    pros::delay(10);
+  }
+  
+  // Phase 2: Wait until pitch returns close to initial (back on flat ground)
+  while (fabs(chassis.imu.get_pitch() - initial_pitch) > threshold * 0.5) {
+    pros::delay(10);
+  }
+  
+  // Phase 3: Wait for pitch to stabilize near initial
+  int counter = 0;
+  while (counter < 5) {
+    if (fabs(chassis.imu.get_pitch() - initial_pitch) < 2) {
+      counter++;
+    } else {
+      counter = 0;
+    }
+    pros::delay(12);
+  }
+}
+
 // Calculate the offsets of your tracking wheels
 
 void measure_offsets() {
@@ -360,15 +387,15 @@ void skills_83_route() {
 	chassis.pid_wait_quick_chain();
 	chassis.pid_drive_set(-9.2_in,70,true); //8.8
 	chassis.pid_wait_quick();
-	intake.set(Intake::IntakeState::SCORE,50,100);
+	intake.set(Intake::SCORE,50,100);
 	pros::delay(500);
-	intake.set(Intake::IntakeState::OUTTAKE,127);
+	intake.set(Intake::OUTTAKE,127);
 	pros::delay(200);
-	intake.set(Intake::IntakeState::SCORE,50,127);
+	intake.set(Intake::SCORE,50,127);
 	pros::delay(2000);
 
 
-	intake.set(Intake::IntakeState::INTAKE,127);
+	intake.set(Intake::INTAKE,127);
 	chassis.pid_odom_ptp_set({{46_in,-44.7_in},fwd,80},true); //46,46
 	liftPiston.set(false);
 	chassis.pid_wait_quick_chain();
@@ -386,11 +413,11 @@ void skills_83_route() {
 	
 	chassis.pid_drive_set(-30_in,100,true);
 	chassis.pid_wait_quick(); 
-	intake.set(Intake::IntakeState::SCORE,127);
+	intake.set(Intake::SCORE,127);
 	pros::delay(700);
 	loaderPiston.set(false);
 	pros::delay(1000);
-	intake.set(Intake::IntakeState::INTAKE,127);
+	intake.set(Intake::INTAKE,127);
 	
 	// // CLEAR OPPOSITE PARK
 	// chassis.pid_odom_ptp_set({{62_in,-24_in},fwd,90},true);

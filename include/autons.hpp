@@ -1,5 +1,6 @@
 #pragma once
 
+void wait_for_imu_bump(double threshold);
 void measure_offsets();
 void solo_awp();
 void move_forward();
