@@ -67,17 +67,18 @@ void autonomous() {
 	chassis.drive_brake_set(MOTOR_BRAKE_HOLD); // Set motors to hold position
 	
     //liftPiston.set(true);
-    intake.set(Intake::IntakeState::INTAKE,127);
-    pros::delay(500);
-    chassis.drive_set(67, 67);
-    wait_for_imu_bump(3);
+    // intake.set(Intake::IntakeState::INTAKE,127);
+    // pros::delay(500);
+    // chassis.drive_set(67, 67);
+    // wait_for_imu_bump(3);
     
-    chassis.drive_set(60,60);
-    wait_for_imu_bump(3);
-    loaderPiston.set(true);
-    chassis.drive_set(0,0);
+    // chassis.drive_set(60,60);
+    // wait_for_imu_bump(3);
+    // loaderPiston.set(true);
+    // chassis.drive_set(0,0);
     // left_elims();
-	//skills();
+	skills(); 
+
 	// move_forward();
 	//right_elims();
 	// right_elims_mid_ball();
