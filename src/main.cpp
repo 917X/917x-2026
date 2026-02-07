@@ -80,8 +80,8 @@ void autonomous() {
 	// skills(); 
 	// solo_awp();
 	// move_forward();
-	right_elims();
-	// right_elims_mid_ball();
+	// right_elims();
+	right_elims_mid_ball();
     // skills();
     // left_elims();
 	// ez::as::auton_selector.selected_auton_call(); // Calls selected auton	
