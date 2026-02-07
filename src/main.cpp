@@ -77,10 +77,10 @@ void autonomous() {
     // loaderPiston.set(true);
     // chassis.drive_set(0,0);
     // left_elims();
-	skills(); 
-
+	// skills(); 
+	// solo_awp();
 	// move_forward();
-	//right_elims();
+	right_elims();
 	// right_elims_mid_ball();
     // skills();
     // left_elims();

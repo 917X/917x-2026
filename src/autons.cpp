@@ -119,9 +119,9 @@ void solo_awp() {
     // get matchloads
 	flapperPiston.set(true);
 	intake.set(Intake::IntakeState::INTAKE,127);
-	chassis.odom_xyt_set(-53_in,-16_in,180_deg);
+	chassis.odom_xyt_set(-53_in,-18_in,180_deg);
 
-	chassis.pid_odom_ptp_set({{-46_in,-47.5_in},fwd,90},false); //-46,48
+	chassis.pid_odom_ptp_set({{-46_in,-48_in},fwd,90},false); //-46,48
 	chassis.pid_wait_quick();
 	chassis.pid_turn_set(-90,127);
 	chassis.pid_wait_quick();
@@ -156,7 +156,7 @@ void solo_awp() {
     chassis.pid_swing_set(ez::LEFT_SWING, -45_deg, 120, 0, false);
 	
     chassis.pid_wait_quick_chain();
-    chassis.pid_drive_set(-10.2_in, 80,true);
+    chassis.pid_drive_set(-11_in, 80,true);
     liftPiston.set(true);
     intake.set(Intake::IntakeState::OUTTAKE);
 	pros::delay(200);
@@ -254,9 +254,9 @@ void right_elims() {
     // get matchloads
 	flapperPiston.set(true);
 	intake.set(Intake::IntakeState::INTAKE,127);
-	chassis.odom_xyt_set(-53_in,-15.6_in,180_deg);
+	chassis.odom_xyt_set(-53_in,-18_in,180_deg);
 
-	chassis.pid_odom_ptp_set({{-46_in,-48_in},fwd,127},false); //-46,48
+	chassis.pid_odom_ptp_set({{-46_in,-45.7_in},fwd,127},false); //-46,48
 	chassis.pid_wait_quick();
 	chassis.pid_turn_set(-90,127);
 	chassis.pid_wait_quick();
@@ -277,7 +277,7 @@ void right_elims() {
     intake.set(Intake::IntakeState::INTAKE);
 
     // chassis.pid_swing_set(ez::LEFT_SWING, -22_deg, 100, 6, false);
-	chassis.pid_swing_set(ez::LEFT_SWING, -22_deg, 110, 3, false);
+	chassis.pid_swing_set(ez::LEFT_SWING, -23_deg, 110, 3, false);
     chassis.pid_wait_quick_chain();
     chassis.pid_swing_set(ez::RIGHT_SWING, -86_deg, 100, false);
     chassis.pid_wait_quick_chain();
