@@ -245,14 +245,74 @@ void left_elims() {
     chassis.pid_drive_set(-36.7_in,85,true);
 }
 
+void left_side_8_ball(){
+	chassis.pid_drive_exit_condition_set(90_ms, 1_in, 250_ms, 3_in, 85_ms,
+										 250_ms);
+	flapperPiston.set(true);
+	
+	intake.set(Intake::IntakeState::INTAKE, 127);
+
+	chassis.odom_xyt_set(-46.5_in, 6_in, 90_deg);
+	chassis.pid_drive_set(6,90,30);
+	chassis.pid_wait_quick_chain(); 
+
+	chassis.pid_turn_set({-8,30},fwd,90);
+	chassis.pid_wait_quick_chain();
+	chassis.pid_odom_ptp_set({{-9 ,35},fwd,70},true); //-9.5,35
+	// chassis.pid_wait_until(30);
+	// loaderPiston.set(true);
+	chassis.pid_wait_quick();
+	chassis.pid_swing_set(ez::RIGHT_SWING, -4_deg, 40, -7, true);
+	pros::delay(400);
+	loaderPiston.set(true);
+	chassis.pid_wait_quick_chain();
+	chassis.pid_drive_set(2.5_in, 80, true);
+	chassis.pid_wait_quick_chain();
+	pros::delay(500);
+	chassis.pid_drive_set(-5_in, 80, true);
+	loaderPiston.set(false);
+	chassis.pid_wait_quick_chain();
+	chassis.pid_swing_set(ez::RIGHT_SWING, 90_deg, 80, 0, true);
+	chassis.pid_wait_quick();
+	chassis.pid_odom_ptp_set({{-27,36.3},rev,90},true);
+	chassis.pid_wait_quick();
+	chassis.pid_swing_set(ez::RIGHT_SWING,-90_deg,80,8,cw,true);
+	chassis.pid_wait_quick();
+	chassis.pid_drive_set(-7_in, 80, true);
+	intake.set(Intake::IntakeState::SCORE, 127);
+	loaderPiston.set(true);
+	chassis.pid_wait_quick_chain();
+	// pros::delay(100);
+	intake.set(Intake::IntakeState::INTAKE, 127);
+	chassis.pid_drive_set(29_in, 60, true,true,-90);
+	chassis.pid_wait_quick();
+	chassis.pid_drive_set(-7_in, 80,30, true);
+	chassis.pid_wait_quick_chain();
+	chassis.pid_odom_ptp_set({{-11,7},rev,90},true);
+	chassis.pid_wait_until(10);
+	loaderPiston.set(false);
+	liftPiston.set(true);
+	chassis.pid_wait_quick();
+	intake.set(Intake::IntakeState::SCORE, 127);
+	pros::delay(1000);
+	chassis.pid_odom_ptp_set({{-14,29.5},fwd,90},true);
+	liftPiston.set(false);
+	intake.set(Intake::IntakeState::INTAKE, 127);
+	chassis.pid_wait_quick();
+	flapperPiston.set(false);
+	chassis.pid_swing_set(ez::LEFT_SWING, 90_deg, 90, 0, true);
+	chassis.pid_wait_quick();
+	chassis.pid_drive_set(6_in, 80, true);
+	chassis.pid_wait_quick();
+	chassis.pid_turn_set(95, 80);
+}
+
 void move_forward(){
 	chassis.pid_drive_set(5,50);
 }
 
 
 void right_elims() {
-	chassis.pid_drive_exit_condition_set(90_ms, 1_in, 250_ms, 3_in, 90_ms,
-										 250_ms);
     // get matchloads
 	flapperPiston.set(true);
 	intake.set(Intake::IntakeState::INTAKE,127);
