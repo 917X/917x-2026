@@ -245,7 +245,7 @@ void left_elims() {
     chassis.pid_drive_set(-36.7_in,85,true);
 }
 
-void left_side_8_ball(){
+void left_side_9_ball(){
 	chassis.pid_drive_exit_condition_set(90_ms, 1_in, 250_ms, 3_in, 85_ms,
 										 250_ms);
 	flapperPiston.set(true);
