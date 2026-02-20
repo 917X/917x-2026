@@ -1,7 +1,7 @@
 {
   "py/object": "pros.conductor.project.Project",
   "py/state": {
-    "project_name": "EZ-Template",
+    "project_name": "wbias",
     "target": "v5",
     "templates": {
       "kernel": {
@@ -402,7 +402,7 @@
       "compress_bin": true,
       "description": "roboticsisez.com",
       "remote_name": "EZ-Template",
-      "slot": 2
+      "slot": 1
     },
     "use_early_access": false
   }

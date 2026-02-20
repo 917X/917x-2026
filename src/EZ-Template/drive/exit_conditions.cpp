@@ -197,7 +197,13 @@ void Drive::pid_wait() {
       a_exit = a_exit != RUNNING ? a_exit : current_a_odomPID.exit_condition({left_motors[0], right_motors[0]});
       pros::delay(util::DELAY_TIME);
     }
-    if (print_toggle) std::cout << "  XY: " << exit_to_string(xy_exit) << " Exit, error: " << xyPID.error << ".   Angle: " << exit_to_string(a_exit) << " Exit, error: " << current_a_odomPID.error << ".\n";
+    if (print_toggle) {
+      if (xy_exit == VELOCITY_EXIT) {
+        printf("  XY: Velocity Wait Until Exit Failsafe, triggered at (%.2f, %.2f) instead of (%.2f, %.2f)\n", odom_pose_get().x, odom_pose_get().y, odom_target.x, odom_target.y);
+      } else {
+        std::cout << "  XY: " << exit_to_string(xy_exit) << " Exit, error: " << xyPID.error << ".   Angle: " << exit_to_string(a_exit) << " Exit, error: " << current_a_odomPID.error << ".\n";
+      }
+    }
 
     if (xy_exit == mA_EXIT || xy_exit == VELOCITY_EXIT || a_exit == mA_EXIT || a_exit == VELOCITY_EXIT) {
       interfered = true;
