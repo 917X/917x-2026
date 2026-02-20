@@ -115,13 +115,13 @@ void opcontrol() {
 
         if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_LEFT)){
             skillsActive = true;
-            pros::delay(500);
+            controller.rumble(".");
         }
 
 		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
 			if (skillsActive && liftPiston.get() == true) {
 
-                intake.set(Intake::IntakeState::SCORE, 40, 127);
+                intake.set(Intake::IntakeState::SCORE, 30, 127);
             } else {
                 intake.set(Intake::IntakeState::SCORE, 127);
             }
