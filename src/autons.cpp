@@ -662,7 +662,7 @@ void skills(){
 	chassis.odom_xyt_set(-46.5_in, 6_in, 90_deg);
 
 	//Score two balls in middle for redundancy
-	chassis.pid_odom_ptp_set({{-27,18}, fwd,50}, true); //28,18
+	chassis.pid_odom_ptp_set({{-27,17.5}, fwd,50}, true); //28,18
 	chassis.pid_wait_quick();
 	intake.set(Intake::STOP);
 	chassis.pid_swing_set(ez::RIGHT_SWING,-45,70,-7);
@@ -671,7 +671,7 @@ void skills(){
 	chassis.pid_wait_quick();
 	chassis.pid_drive_set(-19_in, 80, true);
 	chassis.pid_wait_until(7_in);
-	intake.set(Intake::IntakeState::SCORE,60,90);
+	intake.set(Intake::IntakeState::SCORE,60,80);
     chassis.pid_wait_quick();
 	pros::delay(750);
 
@@ -759,12 +759,12 @@ void skills(){
 	pros::delay(100);
 	//Clearing Park
 	// chassis.pid_drive_set(32_in,80,false,false);
-	chassis.drive_set(70,70);  //67,67
+	chassis.drive_set(72,72);  //67,67
 	pros::delay(700);
 	chassis.drive_set(0,0);
 	pros::delay(250);  //300 gets 6 balls
 	chassis.drive_set(70,70);
-	pros::delay(1500);
+	pros::delay(1300);
 	chassis.drive_set(0,0);
 	chassis.pid_drive_set(-5,80,false,false);
 	chassis.pid_wait_quick();
@@ -793,9 +793,10 @@ void skills(){
 	
     chassis.pid_drive_set(7,80, false);
     chassis.pid_wait_quick();
-	chassis.pid_turn_set({26,-19},fwd,90);
-	chassis.pid_wait_quick();
-	chassis.pid_odom_ptp_set({{25.5,-19},fwd,60}, true);
+	chassis.pid_turn_set({26,-16},fwd,90);
+    chassis.pid_odom_ptp_set({{43,-20},fwd,90}, true);
+	chassis.pid_wait_quick_chain(3);
+	chassis.pid_odom_ptp_set({{25.5,-22},fwd,60}, true);
 	chassis.pid_wait_quick();
 	pros::delay(500);
 	intake.set(Intake::STOP);
@@ -804,18 +805,19 @@ void skills(){
 
 
 	//score 7 of same color in middle SCORING FOR MID
-	chassis.pid_drive_set(8.2_in,60,true);
+	chassis.pid_drive_set(6_in,60,true);
 	chassis.pid_wait_quick();
 	chassis.pid_turn_set(135,60, true);
 	intake.set(Intake::IntakeState::INTAKE,60);
 	chassis.pid_wait_quick();
 	liftPiston.set(true);
     pros::delay(200);
-	chassis.pid_drive_set(-9.6_in, 80, true);
+	chassis.pid_drive_set(-13.3_in, 80, true);
 	chassis.pid_wait_quick();
-	chassis.pid_drive_set(2.4_in,60, 40, false);   //NOTE: Pid wait at the end of scoring for this movement
+	chassis.pid_drive_set(2.5_in,60, 10, true);   //NOTE: Pid wait at the end of scoring for this movement
 
-	intake.set(Intake::SCORE,45 ,127);
+
+	intake.set(Intake::SCORE,40,100);
 	loaderPiston.set(false);
 	pros::delay(1800);
     //chassis.pid_drive_set(1.3_in,60, 40, false);
