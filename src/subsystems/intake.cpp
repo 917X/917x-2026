@@ -13,7 +13,7 @@ void Intake::intakeControl() {
 	while (true) {
 		switch (state) {
 		case STOP:
-			indexerMotor.move(-10);
+			indexerMotor.move(-45);
 			rollerMotor.move(0);
 			break;
 		case INTAKE:
