@@ -818,7 +818,7 @@ void skills(){
 	intake.set(Intake::SCORE,45 ,127);
 	loaderPiston.set(false);
 	pros::delay(1800);
-    chassis.pid_drive_set(1.3_in,60, 40, false);
+    //chassis.pid_drive_set(1.3_in,60, 40, false);
 	//intake.set(Intake::SCORE,37,115);
 	pros::delay(1400);
 	chassis.pid_wait();
