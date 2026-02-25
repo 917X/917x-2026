@@ -123,7 +123,7 @@ void opcontrol() {
 		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
 			if (skillsActive && liftPiston.get() == true) {
 
-                intake.set(Intake::IntakeState::SCORE, 30, 100);
+                intake.set(Intake::IntakeState::SCORE, 30, 80);
             } else {
                 intake.set(Intake::IntakeState::SCORE, 127);
             }
