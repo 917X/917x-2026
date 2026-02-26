@@ -172,6 +172,17 @@ void Drive::ptp_task() {
   slew_right.iterate(drive_sensor_right());
   double max_slew_out = fmax(slew_left.output(), slew_right.output());
 
+  // Apply radial slowdown if enabled
+  double distance_to_target = util::distance_to_point(odom_target, odom_pose_get());
+  if (odom_slowdown_radius > 0 && odom_slowdown_speed > 0) {
+    if (distance_to_target <= odom_slowdown_radius) {
+      double slowdown_max = odom_slowdown_speed;
+      if (max_slew_out > slowdown_max) {
+        max_slew_out = slowdown_max;
+      }
+    }
+  }
+
   // Decide if we've past the target or not
   double temp_target = is_past_target(odom_target, odom_pose_get());        // Use this instead of distance formula to fix impossible movements
   int dir = (current_drive_direction == REV ? -1 : 1);                      // If we're going backwards, add a -1
@@ -198,8 +209,7 @@ void Drive::ptp_task() {
     if (fabs(xy_out) < odom_min_speed) xy_out = util::sgn(xy_out) * odom_min_speed;
   }
   
-  // Apply drive boost when output is weak and far from target
-  double distance_to_target = util::distance_to_point(odom_target, odom_pose_get());
+  // Apply drive boost when output is weak and far from target (reuse distance_to_target from above)
   if (odom_drive_boost_threshold > 0.0 && 
       fabs(xy_out) < odom_drive_boost_threshold && 
       distance_to_target > 20.0) {

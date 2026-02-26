@@ -83,7 +83,7 @@ void autonomous() {
 	// move_forward();
 	// right_elims();
 	// right_elims_mid_ball();
-     skills();
+    skills();
     // left_elims();
 	// ez::as::auton_selector.selected_auton_call(); // Calls selected auton	
 }
@@ -101,6 +101,7 @@ void opcontrol() {
 	const double speed_scales[] = {0.2, 0.4, 0.6, 0.8, 1.0};
 	int scale_index = 4; // start at full speed
 	bool up_pressed_last = false;
+    int loader_debounce_delay = 0;
 
 	while (true) {
 		bool up_pressed_now = controller.get_digital(pros::E_CONTROLLER_DIGITAL_UP);
@@ -145,6 +146,7 @@ void opcontrol() {
 			}
 		}
 
+        
 		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_RIGHT)) {
 			if (loaderPiston.get() == false) {
 				loaderPiston.set(true);

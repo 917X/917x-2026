@@ -1606,7 +1606,7 @@ class Drive {
 	 * \param slew_on
 	 *        ramp up from a lower speed to your target speed
 	 */
-	void pid_odom_ptp_set(odom imovement, bool slew_on);
+	void pid_odom_ptp_set(odom imovement, bool slew_on, double slowdown_radius = -1, int slowdown_speed = -1);
 
 	/**
 	 * Takes in an odom movement to go to a single point using boomerang.  If an
@@ -4026,7 +4026,7 @@ class Drive {
 	bool ptf1_running = false;
 	std::vector<pose> find_point_to_face(pose current, pose target,
 										 drive_directions dir, bool set_global);
-	void raw_pid_odom_ptp_set(odom imovement, bool slew_on);
+	void raw_pid_odom_ptp_set(odom imovement, bool slew_on, double slowdown_radius = -1, int slowdown_speed = -1);
 	std::vector<odom> inject_points(std::vector<odom> imovements);
 	std::vector<pose> point_to_face = {{0, 0, 0}, {0, 0, 0}};
 	double turn_is_toleranced(double target, double current, double input,
@@ -4068,6 +4068,8 @@ class Drive {
 	double odom_turn_bias_amount = 1.375;
 	double odom_drive_boost_threshold = 0.0;
 	double odom_drive_boost_multiplier = 1.0;
+	double odom_slowdown_radius = -1.0;
+	int odom_slowdown_speed = -1;
 	drive_directions current_drive_direction = fwd;
 	double h_last = 0.0, t_last = 0.0, l_last = 0.0, r_last = 0.0;
 	pose l_pose{0.0, 0.0, 0.0};

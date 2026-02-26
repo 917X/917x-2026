@@ -336,7 +336,7 @@ void Drive::pid_odom_pp_set(std::vector<odom> imovements, bool slew_on) {
 //////
 // External base ptp
 /////
-void Drive::pid_odom_ptp_set(odom imovement, bool slew_on) {
+void Drive::pid_odom_ptp_set(odom imovement, bool slew_on, double slowdown_radius, int slowdown_speed) {
   imovement = set_odom_direction(imovement);
 
   odom_second_to_last = odom_pose_get();
@@ -354,7 +354,7 @@ void Drive::pid_odom_ptp_set(odom imovement, bool slew_on) {
   current_slew_on = slew_on;
   slew_min_when_it_enabled = 0;
   slew_will_enable_later = false;
-  raw_pid_odom_ptp_set(imovement, slew_on);
+  raw_pid_odom_ptp_set(imovement, slew_on, slowdown_radius, slowdown_speed);
 
   // Initialize slew
   int dir = current_drive_direction == REV ? -1 : 1;  // If we're going backwards, add a -1
@@ -400,7 +400,7 @@ void Drive::raw_pid_odom_pp_set(std::vector<odom> imovements, bool slew_on) {
 /////
 // Base point to point
 /////
-void Drive::raw_pid_odom_ptp_set(odom imovement, bool slew_on) {
+void Drive::raw_pid_odom_ptp_set(odom imovement, bool slew_on, double slowdown_radius, int slowdown_speed) {
   // Update current drive/turn behavior
   current_drive_direction = imovement.drive_direction;
 
@@ -441,6 +441,10 @@ void Drive::raw_pid_odom_ptp_set(odom imovement, bool slew_on) {
   // Set constants
   PID::Constants pid_drive_consts = new_drive_pid->constants_get();
   xyPID.constants_set(pid_drive_consts.kp, pid_drive_consts.ki, pid_drive_consts.kd, pid_drive_consts.start_i);
+
+  // Store slowdown parameters for use in ptp_task
+  odom_slowdown_radius = slowdown_radius;
+  odom_slowdown_speed = slowdown_speed;
 
   // Set max speed
   pid_speed_max_set(imovement.max_xy_speed);
