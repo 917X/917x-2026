@@ -22,7 +22,7 @@ constexpr char LOADER_PISTON = 'A';
 constexpr char FLAPPER_PISTON = 'C';
 constexpr char LIFT_PISTON = 'B';
 
-constexpr char COLORSORT = 6;
+constexpr char COLORSORT = 10;
 
 constexpr char IMU = 1;
 
@@ -42,8 +42,11 @@ pros::Motor rollerMotor(ROLLER);
 pros::Distance leftDistance(LEFT_DISTANCE);
 pros::Distance rightDistance(RIGHT_DISTANCE);
 
+// optical sensor
+pros::Optical colorSensor(COLORSORT);
+
 // intake
-Intake intake(rollerMotor, indexerMotor);
+Intake intake(rollerMotor, indexerMotor, &colorSensor);
 
 // drive chassis
 ez::Drive chassis({LEFT_F, LEFT_M, LEFT_B},	   // Left Chassis Ports

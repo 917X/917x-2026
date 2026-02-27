@@ -23,11 +23,16 @@ void telemetry() {
 					1);
 			}
 			pros::delay(100);
+            ez::screen_print("hue: " + util::to_string_with_precision(intake.colorSensor->get_hue()), 5);
+        ez::screen_print("sat: " + util::to_string_with_precision(intake.colorSensor->get_saturation()), 6);
+        ez::screen_print("prox: " + util::to_string_with_precision(intake.colorSensor->get_proximity()), 7);
 		}
-	}
+        
+}
 
 void initialize() {
 	pros::delay(500);
+    intake.colorSensor->set_led_pwm(100);
 	chassis.opcontrol_curve_buttons_toggle(false);
 	chassis.opcontrol_drive_activebrake_set(0.0);
 	chassis.opcontrol_curve_default_set(2.0, 2.0);

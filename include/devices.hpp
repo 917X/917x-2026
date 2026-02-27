@@ -20,6 +20,7 @@ extern ez::Piston liftPiston;
 extern pros::Imu imu;
 extern pros::Distance leftDistance;
 extern pros::Distance rightDistance;
+extern pros::Optical colorSensor;
 
 extern Localizer localizer;
 

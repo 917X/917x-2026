@@ -13,7 +13,7 @@ class Intake {
 	 * @param rollerMotor
 	 * @param indexerMotor
 	 */
-	Intake(pros::Motor &rollerMotor, pros::Motor &indexerMotor);
+	Intake(pros::Motor &rollerMotor, pros::Motor &indexerMotor, pros::Optical* colorSensor = nullptr);
 
 	/**
 	 * @brief Enum for the different states of the intake system
@@ -43,11 +43,14 @@ class Intake {
      */
     void set(IntakeState state, int topSpeed, int bottomSpeed);
 
+    void waitUntilColor(int hue1, int hue2, double saturation, int proximity, int timeout);
+
+     pros::Optical *colorSensor;
   private:
 	// motors and sensors
 	pros::Motor &rollerMotor;
 	pros::Motor &indexerMotor;
-
+   
 	// intake state variables
 	IntakeState state = STOP;
 	int topSpeed = 127;
