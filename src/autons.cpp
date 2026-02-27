@@ -686,12 +686,12 @@ void skills(){
 
     
 	intake.set(Intake::IntakeState::SCORE,50,80);
+    intake.waitUntilColor(190, 260, 0.3, 0, 500);
+    intake.set(Intake::IntakeState::SCORE, -127, 50);
     chassis.pid_wait_quick();
-	pros::delay(300);
 
 
 	//First Matchloader
-	intake.set(Intake::IntakeState::SCORE, -127, 50);
 	liftPiston.set(false);
 	chassis.pid_odom_ptp_set({{-36,47},fwd,70}, true);
 	chassis.pid_wait_quick();
