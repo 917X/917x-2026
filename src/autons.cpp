@@ -712,7 +712,7 @@ void skills(){
 	x = (-71 + 14.3125)*1_in;
 	y = localizer.get_localized_coordinate(Localizer::Corner::TL);
 	chassis.odom_xy_set(x,y);
-	pros::delay(600);
+	pros::delay(550);
 
 
 	//Go to other side to score
@@ -754,7 +754,7 @@ void skills(){
 	x = (71 - 14.3125)*1_in;
 	y = localizer.get_localized_coordinate(Localizer::Corner::TR);
 	chassis.odom_xy_set(x,y);
-	pros::delay(800);
+	pros::delay(750);
 	chassis.pid_odom_ptp_set({{30,46.5},rev,80},true);
 	chassis.pid_wait_until({32_in, 46_in});
 	intake.set(Intake::IntakeState::SCORE, 100, 90);
@@ -763,7 +763,7 @@ void skills(){
 	loaderPiston.set(false);
 	// chassis.odom_xyt_set(30.83_in,48.35_in,90_deg);   //REMOVE ONCE DONE TESTING REST OF CODE
 	chassis.pid_drive_set(7,80,true,false);
-	chassis.pid_wait_quick();
+	chassis.pid_wait_quick_chain();
 
 	// Go to Park
 	chassis.pid_odom_ptp_set({{49,39},fwd,80}, true);
@@ -787,12 +787,12 @@ void skills(){
 	chassis.drive_set(0,0);
 	chassis.pid_turn_set(179,90);
 	chassis.pid_wait_quick();
-	pros::delay(150);  //300 gets 6 balls
+	pros::delay(100);  //300 gets 6 balls
 	chassis.drive_set(70,70);
 	pros::delay(1300);
 	chassis.drive_set(0,0);
 	chassis.pid_drive_set(-5,80,false,false);
-	chassis.pid_wait_quick();
+	chassis.pid_wait_quick_chain(2);
 	chassis.pid_drive_set(8,80,false,false);
 	chassis.pid_wait_quick();
 	// //localize
@@ -824,8 +824,10 @@ void skills(){
 	chassis.pid_odom_ptp_set({{26,-29},fwd,60}, true,12,28);
 	chassis.pid_wait_until({30,-16});
 	loaderPiston.set(true);
+    pros::delay(100);
+    intake.set(Intake::STOP);
 	chassis.pid_wait_quick();
-	intake.set(Intake::STOP);
+	
 	
 
 
@@ -837,14 +839,18 @@ void skills(){
 	pros::delay(200);
 	liftPiston.set(true);
 	chassis.pid_wait_quick();
-    pros::delay(200);
+    pros::delay(100);
 	chassis.pid_drive_set(-18_in, 80, true);
 	chassis.pid_wait_quick();
 	chassis.pid_drive_set(1.5_in,60, 10, true);   //NOTE: Pid wait at the end of scoring for this movement
 
-	intake.set(Intake::IntakeState::SCORE,50,80);
+	intake.set(Intake::IntakeState::SCORE,50,127); // total wait 2200
 	loaderPiston.set(false);
-    intake.waitUntilColor(190, 260, 0.3, 0, 2200);
+    pros::delay(500);
+    intake.set(Intake::SCORE,50,100);
+    pros::delay(300);
+    intake.set(Intake::SCORE,50,80);
+    intake.waitUntilColor(190, 260, 0.3, 0, 1400);
     intake.set(Intake::IntakeState::SCORE, -127, 50);
     //chassis.pid_drive_set(1.3_in,60, 40, false);
 	chassis.pid_wait();
@@ -852,7 +858,7 @@ void skills(){
 	//moving to score 3
 	liftPiston.set(false);
 	pros::delay(200);
-	chassis.pid_odom_ptp_set({{45_in,-54_in},fwd,90},true); //46,46
+	chassis.pid_odom_ptp_set({{45_in,-53_in},fwd,90},true); //46,46
 	pros::delay(200);
 	intake.set(Intake::INTAKE,127);
 	chassis.pid_wait_quick();
@@ -862,7 +868,7 @@ void skills(){
 
 
 	//score 3
-	chassis.pid_odom_ptp_set({{22,-55},rev,90},true);
+	chassis.pid_odom_ptp_set({{22,-54.5},rev,90},true);
 	pros::delay(700);
 	intake.set(Intake::SCORE,127);
 	chassis.pid_wait_quick();
@@ -870,9 +876,7 @@ void skills(){
 	pros::delay(700);
 	
 	//Intake Third Matchloader
-	chassis.pid_turn_set(90,90);
-	chassis.pid_wait_quick();
-	chassis.pid_drive_set(30.5_in,60,true);
+	chassis.pid_drive_set(30.5_in,60,true, true, 89);
     intake.set(Intake::IntakeState::INTAKE,127);
 	chassis.pid_wait();
 	pros::delay(500);
@@ -885,17 +889,17 @@ void skills(){
 
 
 	//Go to other side to score
-	chassis.pid_odom_ptp_set({{35,-62},rev,70}, true);
+	chassis.pid_odom_ptp_set({{35,-61.5},rev,80}, true);
 	chassis.pid_wait_quick_chain(4);
-	chassis.pid_turn_set({-23,-58},rev,90);
+	chassis.pid_turn_set({-23,-56},rev,90);
 	chassis.pid_wait_quick_chain();
 
-	chassis.pid_odom_ptp_set({{-23,-57.5},rev,80}, true);
+	chassis.pid_odom_ptp_set({{-23,-55.5},rev,85}, true);
     chassis.pid_wait_until(-43_in);
     loaderPiston.set(false);
 	chassis.pid_wait_quick_chain(3);
     // chassis.pid_turn_set({-40_in,-46_in},rev,90);
-	chassis.pid_odom_ptp_set({{-40,-42},rev,75}, true);
+	chassis.pid_odom_ptp_set({{-41.7,-40},rev,80}, true);
     chassis.pid_wait_quick();
 	chassis.pid_turn_set(-89.3,90);
 	chassis.pid_wait_quick();
@@ -919,7 +923,7 @@ void skills(){
 	x = (-71 + 14.3125)*1_in;
 	y = localizer.get_localized_coordinate(Localizer::Corner::BL);
 	chassis.odom_xy_set(x,y);
-	pros::delay(800);
+	pros::delay(750);
 	chassis.pid_odom_ptp_set({{-28.5,-46.5},rev,90},true);
     chassis.pid_wait_until({-31_in, -46_in});
     intake.set(Intake::IntakeState::SCORE,127);

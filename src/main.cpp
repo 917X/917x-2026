@@ -86,9 +86,9 @@ void autonomous() {
 	//left_side_9_ball();
 	// solo_awp();
 	// move_forward();
-	// right_elims();
+	right_elims();
 	// right_elims_mid_ball();
-    skills();
+    //skills();
     // left_elims();
 	// ez::as::auton_selector.selected_auton_call(); // Calls selected auton	
 }
