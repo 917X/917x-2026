@@ -1,6 +1,7 @@
 #include "main.h"
 #include "autons.hpp"
 #include "devices.hpp"
+#include "pros/misc.h"
 
 bool skillsActive = false;
 
@@ -86,9 +87,9 @@ void autonomous() {
 	//left_side_9_ball();
 	// solo_awp();
 	// move_forward();
-	right_elims();
+	// right_elims();
 	// right_elims_mid_ball();
-    //skills();
+    skills();
     // left_elims();
 	// ez::as::auton_selector.selected_auton_call(); // Calls selected auton	
 }
@@ -136,7 +137,12 @@ void opcontrol() {
 		} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
 			intake.set(Intake::IntakeState::INTAKE, 127);
 		} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
-			intake.set(Intake::IntakeState::OUTTAKE, 100);
+			if (liftPiston.get() == true) {
+				intake.set(Intake::IntakeState::OUTTAKE, 40);
+			} else {
+				intake.set(Intake::IntakeState::OUTTAKE, 127);
+			}
+			intake.set(Intake::IntakeState::OUTTAKE, 50);
 		} else {
 			intake.set(Intake::IntakeState::STOP);
 		}
@@ -152,15 +158,7 @@ void opcontrol() {
 		}
 
         
-		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_RIGHT)) {
-			if (loaderPiston.get() == false) {
-				loaderPiston.set(true);
-			}
-		} else {
-			if (loaderPiston.get() == true) {
-				loaderPiston.set(false);
-			}
-		}
+		loaderPiston.button_toggle(master.get_digital(pros::E_CONTROLLER_DIGITAL_RIGHT));
 
 		liftPiston.button_toggle(
 			master.get_digital(pros::E_CONTROLLER_DIGITAL_B));

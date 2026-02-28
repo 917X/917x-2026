@@ -761,7 +761,7 @@ void skills(){
 	chassis.pid_wait_quick();
 	pros::delay(1550);
 	loaderPiston.set(false);
-	// chassis.odom_xyt_set(30.83_in,48.35_in,90_deg);   //REMOVE ONCE DONE TESTING REST OF CODE
+	chassis.odom_xyt_set(30.83_in,48.35_in,90_deg);   //REMOVE ONCE DONE TESTING REST OF CODE
 	chassis.pid_drive_set(7,80,true,false);
 	chassis.pid_wait_quick_chain();
 
@@ -780,14 +780,14 @@ void skills(){
 	chassis.pid_wait_quick();
 	//Clearing Park
 	// chassis.pid_drive_set(32_in,80,false,false);
-	chassis.drive_set(72,72);  //67,67
+	chassis.drive_set(73,73);  //67,67
 	pros::delay(23);
 	loaderPiston.set(false);
 	pros::delay(730);
 	chassis.drive_set(0,0);
 	chassis.pid_turn_set(179,90);
 	chassis.pid_wait_quick();
-	pros::delay(100);  //300 gets 6 balls
+	// pros::delay(100);  //300 gets 6 balls
 	chassis.drive_set(70,70);
 	pros::delay(1300);
 	chassis.drive_set(0,0);
@@ -840,7 +840,7 @@ void skills(){
 	liftPiston.set(true);
 	chassis.pid_wait_quick();
     pros::delay(100);
-	chassis.pid_drive_set(-18_in, 80, true);
+	chassis.pid_drive_set(-18.5_in, 80, true);
 	chassis.pid_wait_quick();
 	chassis.pid_drive_set(1.5_in,60, 10, true);   //NOTE: Pid wait at the end of scoring for this movement
 
