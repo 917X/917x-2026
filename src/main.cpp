@@ -139,7 +139,7 @@ void opcontrol() {
 		} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
 			intake.set(Intake::IntakeState::OUTTAKE, 60);
 		} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_Y)){
-			intake.set(Intake::IntakeState::SCORE, 90, 127);
+			intake.set(Intake::IntakeState::SCORE, 80, 127);
 		} else {
 			intake.set(Intake::IntakeState::STOP);
 		}
