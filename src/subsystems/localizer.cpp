@@ -31,9 +31,13 @@ okapi::QLength Localizer::localize(Corner corner) {
         case Corner::BR:
             return (-71 + mmToInches(rightRangefinder->get()) + rightOffset)*1_in;
             break;
+        case Corner::RAW_FRONT:
+            return (71-mmToInches(frontRangefinder->get()) - frontOffset)*1_in;
+            break;
     }
     return 0_in; 
 }
+
 
 okapi::QLength Localizer::get_localized_coordinate(Corner corner){
     std::vector<okapi::QLength> localizer_values;
