@@ -18,6 +18,7 @@ constexpr int ROLLER = 14;
 constexpr int LEFT_DISTANCE = 17;
 constexpr int RIGHT_DISTANCE = 2;
 constexpr int FRONT_DISTANCE = 16;
+constexpr int BACK_DISTANCE = 4;
 
 constexpr char LOADER_PISTON = 'A';
 constexpr char FLAPPER_PISTON = 'C';
@@ -43,7 +44,7 @@ pros::Motor rollerMotor(ROLLER);
 pros::Distance leftDistance(LEFT_DISTANCE);
 pros::Distance rightDistance(RIGHT_DISTANCE);
 pros::Distance frontDistance(FRONT_DISTANCE);
-
+pros::Distance backDistance(BACK_DISTANCE);
 // optical sensor
 pros::Optical colorSensor(COLORSORT);
 
@@ -59,7 +60,7 @@ ez::Drive chassis({LEFT_F, LEFT_M, LEFT_B},	   // Left Chassis Ports
 
 ez::tracking_wheel vertical_pod(VERT_POD, 2,0.25);
 
-Localizer localizer(&leftDistance, &rightDistance, nullptr, &frontDistance, 4.875, 4.875, 0, 7);
+Localizer localizer(&leftDistance, &rightDistance, &backDistance, &frontDistance, 4.875, 4.875, -4.53, 7);
 
 // default chassis constants
 void default_constants() {

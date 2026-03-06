@@ -34,6 +34,9 @@ okapi::QLength Localizer::localize(Corner corner) {
         case Corner::RAW_FRONT:
             return (71-mmToInches(frontRangefinder->get()) - frontOffset)*1_in;
             break;
+        case Corner::RAW_REAR:
+            return (71 - mmToInches(backRangefinder->get()) - backOffset)*1_in;
+            break;
     }
     return 0_in; 
 }

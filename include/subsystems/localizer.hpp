@@ -26,7 +26,7 @@ class Localizer {
 	 * @brief Enum representing the field corners for localization
 	 *
 	 */
-	enum class Corner { TL, TR, BL, BR , RAW_FRONT};
+	enum class Corner { TL, TR, BL, BR , RAW_FRONT, RAW_REAR};
 
 	/**
 	 * @brief Localizes the robot based on the specified wall
