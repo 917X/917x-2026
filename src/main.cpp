@@ -127,7 +127,11 @@ void opcontrol() {
             controller.rumble(".");
         }
 
-		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+
+		//INTAKE LOGIC
+		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_Y)){
+			intake.set(Intake::IntakeState::SCORE, 80, 127);
+		} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
 			if (skillsActive && liftPiston.get() == true) {
 
                 intake.set(Intake::IntakeState::SCORE, 35, 80);
@@ -138,8 +142,6 @@ void opcontrol() {
 			intake.set(Intake::IntakeState::INTAKE, 127);
 		} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
 			intake.set(Intake::IntakeState::OUTTAKE, 60);
-		} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_Y)){
-			intake.set(Intake::IntakeState::SCORE, 80, 127);
 		} else {
 			intake.set(Intake::IntakeState::STOP);
 		}
