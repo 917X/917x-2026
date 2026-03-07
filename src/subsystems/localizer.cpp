@@ -42,9 +42,9 @@ okapi::QLength Localizer::localize(Corner corner) {
 }
 
 
-okapi::QLength Localizer::get_localized_coordinate(Corner corner){
+okapi::QLength Localizer::get_localized_coordinate(Corner corner, int samples){
     std::vector<okapi::QLength> localizer_values;
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < samples; i++) {
         localizer_values.push_back(localize(corner));
         pros::delay(50);
     }
@@ -52,3 +52,19 @@ okapi::QLength Localizer::get_localized_coordinate(Corner corner){
     return sum/localizer_values.size();
 }
             
+std::vector<okapi::QLength> Localizer::get_park_clear_localization(Corner corner, int samples){
+    std::vector<okapi::QLength> localizer_values_corner;
+    std::vector<okapi::QLength> localizer_values_rear;
+    for (int i = 0; i < samples; i++) {
+        localizer_values_corner.push_back(localize(corner));
+        localizer_values_rear.push_back(localize(Corner::RAW_REAR));
+        pros::delay(50);
+    }
+    okapi::QLength sum_corner = std::accumulate(localizer_values_corner.begin(), localizer_values_corner.end(),0.0_in);
+    okapi::QLength sum_rear = std::accumulate(localizer_values_rear.begin(), localizer_values_rear.end(),0.0_in);
+    std::vector<okapi::QLength> localizer_values;
+
+    localizer_values.push_back(sum_rear/localizer_values_rear.size());
+    localizer_values.push_back(sum_corner/localizer_values_corner.size());
+    return localizer_values;
+}
