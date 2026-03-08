@@ -36,7 +36,17 @@ The robot exits while still moving, and the next motion command is issued immedi
 The direction of the extension is computed using the sign of the motion so the target always extends *forward* along the direction of travel:
 
 ```cpp
+// util::sgn() returns +1 or -1 based on the sign of its argument.
+// (chain_target_start - chain_sensor_start) is the original error:
+//   positive  → robot needs to turn clockwise  → extend target further clockwise
+//   negative  → robot needs to turn counter-clockwise → extend target further counter-clockwise
+// Multiplying the constant by this sign ensures the extended target is always
+// pushed *beyond* the goal in the same direction the robot is already going.
 used_motion_chain_scale = turn_motion_chain_scale * util::sgn(chain_target_start - chain_sensor_start);
+
+// Add the signed extension to the live PID target.
+// The PID controller now believes it must reach a point slightly past the real goal,
+// so its exit condition fires while the robot is still approaching — not after it stops.
 turnPID.target_set(turnPID.target_get() + used_motion_chain_scale);
 ```
 
@@ -92,23 +102,30 @@ chassis.pid_swing_chain_constant_set(5_deg);
 chassis.pid_drive_chain_constant_set(3_in);
 ```
 
-The setters simply store the absolute value of the input into the appropriate scale fields:
+The setters store the absolute value of the input into the appropriate scale fields. `fabs()` is used to ensure the constant is always positive — direction is handled separately via sign logic at call time, so a negative value passed by the user cannot accidentally invert the extension:
 
 ```cpp
+// Turn has a single constant because turns don't have a "forward" vs "backward" distinction.
 void Drive::pid_turn_chain_constant_set(double input) { turn_motion_chain_scale = fabs(input); }
 
+// Drive provides a single convenience setter that internally applies the same value
+// to both the forward and backward constants, halving the configuration burden for most use cases.
 void Drive::pid_drive_chain_constant_set(double input) {
   pid_drive_chain_forward_constant_set(input);
   pid_drive_chain_backward_constant_set(input);
 }
+// The forward and backward fields are separate so they can be tuned independently
+// if reversing deceleration behavior differs from forward (e.g. due to weight distribution).
 void Drive::pid_drive_chain_forward_constant_set(double input)  { drive_forward_motion_chain_scale  = fabs(input); }
 void Drive::pid_drive_chain_backward_constant_set(double input) { drive_backward_motion_chain_scale = fabs(input); }
 ```
 
-Drive and swing support independent forward and backward constants for finer control, which are selected automatically based on the direction of the current motion:
+At runtime, `pid_wait_quick_chain()` selects the correct scale field based on which direction the current motion is traveling. `motion_chain_backward` is a flag set when the motion command was issued with a negative (reverse) target:
 
 ```cpp
-// Inside pid_wait_quick_chain(), drive mode selection:
+// motion_chain_backward is true if the active drive motion is in reverse.
+// This selects the matching chain constant rather than always using the forward one,
+// allowing the two to be tuned independently without changing call-site code.
 chain_scale = motion_chain_backward ? drive_backward_motion_chain_scale
                                     : drive_forward_motion_chain_scale;
 ```
@@ -118,7 +135,10 @@ chain_scale = motion_chain_backward ? drive_backward_motion_chain_scale
 For situations where a single chain needs a non-standard exit point, the chain constant can be overridden inline. The override takes priority over the stored global constant:
 
 ```cpp
-// Inside pid_wait_quick_chain() — override path:
+// The override parameter defaults to 0.0, which is treated as "not set".
+// Any non-zero value bypasses the stored constant and uses the provided value instead.
+// fabs() is applied here too — the sign of the override is irrelevant;
+// direction is still derived from the motion's own sign, not this value.
 if (motion_chain_constant_override != 0.0)
   chain_scale = fabs(motion_chain_constant_override);
 ```
@@ -149,23 +169,47 @@ The full `pid_wait_quick_chain()` function branches on the current drive `mode` 
 
 ```cpp
 void Drive::pid_wait_quick_chain(double motion_chain_constant_override) {
+
+  // ── DRIVE mode ────────────────────────────────────────────────────────────
   if (mode == DRIVE) {
+    // Resolve which chain scale to use: per-call override beats the stored constant.
+    // Within the stored constant, select forward vs. backward based on motion direction.
     double chain_scale = motion_chain_constant_override != 0.0
       ? fabs(motion_chain_constant_override)
       : (motion_chain_backward ? drive_backward_motion_chain_scale
                                : drive_forward_motion_chain_scale);
+
+    // util::sgn(chain_target_start) gives the direction of the linear motion:
+    //   +1 for a forward drive, -1 for a reverse drive.
+    // Multiplying by the sign ensures the extension always pushes the target
+    // further in the direction the robot is already traveling.
     used_motion_chain_scale = chain_scale * util::sgn(chain_target_start);
+
+    // Drive uses two independent PID controllers (one per side).
+    // Both targets must be extended identically to keep the chassis tracking straight.
     leftPID.target_set(leftPID.target_get()   + used_motion_chain_scale);
     rightPID.target_set(rightPID.target_get() + used_motion_chain_scale);
   }
+
+  // ── TURN mode ─────────────────────────────────────────────────────────────
   else if (mode == TURN) {
+    // (chain_target_start - chain_sensor_start) is the original angular error.
+    // Its sign captures the turn direction: clockwise (+) or counter-clockwise (-).
+    // Applying that sign to the constant ensures the extension pushes the PID target
+    // further in the same rotational direction.
     used_motion_chain_scale = (motion_chain_constant_override != 0.0
       ? fabs(motion_chain_constant_override)
       : turn_motion_chain_scale)
       * util::sgn(chain_target_start - chain_sensor_start);
+
+    // Turns use a single angular PID controller.
     turnPID.target_set(turnPID.target_get() + used_motion_chain_scale);
   }
+
+  // ── SWING mode ────────────────────────────────────────────────────────────
   else if (mode == SWING) {
+    // Swing also distinguishes forward vs. backward, and uses the same sign
+    // logic as TURN (angular direction from the original error).
     double chain_scale = motion_chain_constant_override != 0.0
       ? fabs(motion_chain_constant_override)
       : (motion_chain_backward ? swing_backward_motion_chain_scale
@@ -175,16 +219,22 @@ void Drive::pid_wait_quick_chain(double motion_chain_constant_override) {
   }
   // ...odometry modes handled separately
 
-  pid_wait_quick();  // wait until the now-extended target is reached
+  // After the target has been extended, hand off to pid_wait_quick().
+  // This blocks until the robot passes the *original* goal position —
+  // which it reaches while still moving, because the PID target is now beyond it.
+  pid_wait_quick();
 }
 ```
 
-`pid_wait_quick()` itself calls `pid_wait_until(chain_target_start)`, where `chain_target_start` is the **original** (pre-extension) target — so the wait loop exits as soon as the robot passes the real goal, which now occurs while target is still ahead of it:
+`pid_wait_quick()` is what actually determines when the function returns. It calls `pid_wait_until` with `chain_target_start` — the **original** target that was saved before any extension happened. The wait loop therefore unblocks as soon as the robot crosses the real goal, at which point the PID is still driving toward the *extended* target and the robot has not yet decelerated to zero:
 
 ```cpp
 void Drive::pid_wait_quick() {
-  // ...
-  pid_wait_until(chain_target_start);  // original target, not the extended one
+  // chain_target_start is captured when the motion command is first issued
+  // and is never modified by pid_wait_quick_chain().
+  // Waiting on it means: "exit as soon as the robot reaches the original goal",
+  // regardless of how far the PID target has been pushed beyond it.
+  pid_wait_until(chain_target_start);
 }
 ```
 
