@@ -1,8 +1,9 @@
 #include "main.h"
 #include "autons.hpp"
 #include "devices.hpp"
+#include "pros/misc.h"
 
-bool skillsActive = false;
+bool skillsActive = true;
 
 /**
  * @brief debug task for displaying robot status
@@ -126,17 +127,21 @@ void opcontrol() {
             controller.rumble(".");
         }
 
-		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+
+		//INTAKE LOGIC
+		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_Y)){
+			intake.set(Intake::IntakeState::SCORE, 80, 127);
+		} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
 			if (skillsActive && liftPiston.get() == true) {
 
-                intake.set(Intake::IntakeState::SCORE, 30, 80);
+                intake.set(Intake::IntakeState::SCORE, 35, 80);
             } else {
                 intake.set(Intake::IntakeState::SCORE, 127);
             }
 		} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
 			intake.set(Intake::IntakeState::INTAKE, 127);
 		} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
-			intake.set(Intake::IntakeState::OUTTAKE, 100);
+			intake.set(Intake::IntakeState::OUTTAKE, 60);
 		} else {
 			intake.set(Intake::IntakeState::STOP);
 		}
@@ -152,19 +157,20 @@ void opcontrol() {
 		}
 
         
-		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_RIGHT)) {
-			if (loaderPiston.get() == false) {
-				loaderPiston.set(true);
+		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
+			if (flapperPiston.get() == true) {
+				flapperPiston.set(false);
 			}
 		} else {
-			if (loaderPiston.get() == true) {
-				loaderPiston.set(false);
+			if (flapperPiston.get() == false) {
+				flapperPiston.set(true);
 			}
 		}
 
+        
+		loaderPiston.button_toggle(master.get_digital(pros::E_CONTROLLER_DIGITAL_RIGHT));
+
 		liftPiston.button_toggle(
 			master.get_digital(pros::E_CONTROLLER_DIGITAL_B));
-
-		pros::delay(ez::util::DELAY_TIME);
 	}
 }

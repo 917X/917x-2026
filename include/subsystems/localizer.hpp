@@ -2,6 +2,7 @@
 #include "okapi/api/units/QLength.hpp"
 #include "pros/distance.hpp"
 #include <cmath>
+#include <numeric>
 #include "okapi/api.hpp"
 
 class Localizer {
@@ -26,7 +27,7 @@ class Localizer {
 	 * @brief Enum representing the field corners for localization
 	 *
 	 */
-	enum class Corner { TL, TR, BL, BR };
+	enum class Corner { TL, TR, BL, BR , RAW_FRONT, RAW_REAR};
 
 	/**
 	 * @brief Localizes the robot based on the specified wall
@@ -35,7 +36,8 @@ class Localizer {
 	 * @return okapi::QLength The localized position value. Always Y value. 
 	 */
 	okapi::QLength localize(Corner corner);
-	okapi::QLength get_localized_coordinate(Corner corner);
+	okapi::QLength get_localized_coordinate(Corner corner, int samples = 10);
+	std::vector<okapi::QLength> get_park_clear_localization(Corner corner, int samples =10);
 
 
     /**
