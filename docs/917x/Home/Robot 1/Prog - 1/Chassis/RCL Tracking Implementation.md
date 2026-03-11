@@ -17,6 +17,7 @@
 - The differential dead-reckoning bridge: seamless tracking between absolute fixes
 - Rate-limited auto-sync and why it is safe during active PID motions
 - Accumulation mode for high-precision static resets
+- Line obstacle definitions: how known field structures prevent sensor rays from producing corrupt wall readings
 - Code walkthrough, parameter reference, and usage examples
 
 ## ▲ Executive Summary
@@ -47,6 +48,7 @@ The RCL algorithm concept and architecture are adapted from [jiazegao/RCL-Tracki
 |:----------------|:--------------|
 | `RclSensor` | Wraps one distance sensor with its geometric mounting parameters; performs ray-casting and coordinate recovery |
 | `RclTracking` | Manages the collection of sensors, the differential dead-reckoning state, and the sync pipeline |
+| `LineObstacle` | Defines a finite line segment that blocks sensor rays; vetoes readings targeting a field obstacle rather than a wall |
 
 ### Interfaces
 
@@ -139,7 +141,7 @@ sp_.heading = norm_heading(bot_pose.theta + main_angle_);
 
 [Note: Insert diagram here — **"Sensor World Position Computation"**. Draw a top-down VRC field with a robot at roughly (30 in, 20 in), heading ~30° clockwise from north. Draw the robot as a rectangle. Mark the tracking center. Draw the body-frame axes (+X right, +Y forward) in dashed lines rotated at the robot's heading. Place a sensor on the robot's right side. Draw the offset vector from the tracking center to the sensor in the body frame. Then draw the rotated offset vector in the field frame (full lines), showing it has been rotated by θ. Label the resulting sensor world position as $(s_x, s_y)$. Show the angle $\alpha - \theta$ between the world +X axis and the offset vector in world frame. Include the formula $s_x = x + d\cos(\alpha - \theta)$.]
 
-### Step 3: Reading Validity — Three Gates
+### Step 3: Reading Validity — Four Gates
 
 Before a distance reading is used for position correction, it passes three sequential checks:
 
@@ -169,6 +171,28 @@ Mathematically: the coordinate recovery error due to a small heading error $\del
 The gate accepts readings only when the ray heading, modulo 90°, is within `angle_tol_` (default 15°) of a grid-aligned direction. The visual pattern is: reading accepted when sensor points roughly N/E/S/W; rejected when pointing diagonally.
 
 [Note: Insert diagram here — **"Cardinal Direction Gate"**. Draw a circle representing all possible ray headings (0°–360°). Divide it into eight 45° sectors. Mark the four cardinal directions (N, E, S, W) with thick radial lines. Shade the region within ±15° of each cardinal direction green (labeled "ACCEPTED"). Shade the region outside these bands — approximately the 45°/135°/225°/315° diagonal sectors — red (labeled "REJECTED"). Label the green arcs "heading_mod ≤ 15° or ≥ 75°" and describe the arrow of a sensor ray hitting a wall at the boundary, showing that near-perpendicular rays (green) give stable coordinate recovery while oblique rays (red) amplify heading errors.]
+
+**Gate 4 — Line obstacle check:**
+```cpp
+double dist_in = dist_mm / 25.4;
+for (const auto* obstacle : LineObstacle::obstacle_collection) {
+  if (obstacle != nullptr && obstacle->is_intersecting(sp_, dist_in)) return false;
+}
+```
+On a live VRC field, goal posts, barrier structures, and other game elements can sit between a sensor and the wall. A reading to one of these objects produces a wrong coordinate — the ray appears to hit a wall much closer than the true wall distance. The previous three gates cannot detect this: the reading has acceptable range, confidence, and heading direction, but the geometry is corrupted.
+
+`LineObstacle` objects are declared once globally for every known field element. Each stores a pair of field-frame endpoints $(x_1, y_1) \to (x_2, y_2)$. At every `is_valid()` call, every registered obstacle is tested against the sensor's ray via a 2D parametric intersection. Using the same heading-to-trig conversion as the ray-casting step, the ray direction is $\vec{v}_A = (\cos_a, \sin_a)$ and the segment direction is $\vec{v}_B = (x_2 - x_1,\; y_2 - y_1)$. With $\det = \cos_a \cdot v_{By} - \sin_a \cdot v_{Bx}$ and displacement $(dx, dy) = (x_1 - s_x,\; y_1 - s_y)$, the parametric solution is:
+
+$$t = \frac{dx \cdot v_{By} - dy \cdot v_{Bx}}{\det} \qquad u = \frac{dx \cdot \sin_a - dy \cdot \cos_a}{\det}$$
+
+The reading is vetoed when all three conditions hold:
+- $t > 0$ — the obstacle is ahead of the sensor, not behind it
+- $u \in [0, 1]$ — the intersection lands on the segment, not its infinite extension
+- $t \leq d_\text{reading}$ — the obstacle is **closer** than the measured distance, meaning the ray would hit it before reaching the wall
+
+The distance bound is critical: without it, a `LineObstacle` declared anywhere on the field could suppress valid wall readings even when the sensor ray clears the obstacle and correctly reaches the wall.
+
+[Note: Insert diagram here — **"Line Obstacle Ray Filtering"**. Draw a top-down VRC field. Place a robot near field center facing east. Draw a sensor ray extending eastward. Place a short line segment (labeled "LineObstacle") between the sensor and the east wall. Mark the parametric intersection point on the segment with labels $t$ (along ray) and $u$ (along segment, within [0,1]). Show the east wall with an ✗ indicating this reading is suppressed. Then draw a second scenario with the robot repositioned so the ray bypasses the obstacle entirely — mark the wall intersection with a ✓. In a third scenario, place the robot so the ray intersects the obstacle's infinite extension beyond its endpoint ($u > 1$) — mark the wall ✓ to show that only finite segment hits trigger the veto.]
 
 ### Step 4: Ray–Wall Intersection
 
@@ -252,7 +276,7 @@ This uses the exact same $(\alpha - \theta)$ angle computed in Step 2: the offse
 
 ```
 1. update_pose()       → compute sensor world position (sx, sy) and ray heading
-2. is_valid()          → range, confidence, and cardinal-direction checks
+2. is_valid()          → range, confidence, cardinal-direction, and obstacle checks
 3. val = distance in inches
 4. Compute (cos_a, sin_a) from compass heading via trig conversion
 5. Find nearest wall by solving ray–wall intersection for t on all four walls
@@ -405,6 +429,8 @@ src/
 
 ### Class Structure Overview
 
+**`LineObstacle`** — one instance per known field element, declared globally. Self-registers into a shared static collection on construction, so `RclSensor::is_valid()` finds all obstacles automatically without any manual registration step.
+
 **`RclSensor`** — one instance per physical sensor, declared globally. Auto-registers into a shared static vector on construction, so `RclTracking` finds all sensors automatically without any manual registration step.
 
 **`RclTracking`** — one instance for the whole robot. Manages two background tasks: `main_loop()` (runs sensor reads and position fixes) and `sync_loop()` (applies rate-limited corrections to encoder odom).
@@ -421,6 +447,9 @@ RclSensor rclBack(&backDistance, 0.0, -4.53, 180.0);
 
 // RclTracking: 25 Hz, auto-sync on
 RclTracking rcl(&chassis, 25, true);
+
+// Line obstacles — one declaration per known field element that may block a sensor ray
+LineObstacle centerBarrier(-24.0, 0.0, 24.0, 0.0);   // horizontal bar at y=0
 ```
 
 **Startup (initialize()):**

@@ -42,6 +42,41 @@ static inline double norm_heading(double h) {
 // ── Static member ─────────────────────────────────────────────────────────────
 
 std::vector<RclSensor*> RclSensor::sensor_collection;
+std::vector<LineObstacle*> LineObstacle::obstacle_collection;
+
+// ── LineObstacle ─────────────────────────────────────────────────────────────
+
+LineObstacle::LineObstacle(double x1, double y1, double x2, double y2)
+    : line_({x1, y1, x2, y2}) {
+  obstacle_collection.push_back(this);
+}
+
+LineObstacle::~LineObstacle() {
+  obstacle_collection.erase(
+      std::remove(obstacle_collection.begin(), obstacle_collection.end(), this),
+      obstacle_collection.end());
+}
+
+bool LineObstacle::is_intersecting(const RclSensorPose& sp, double max_dist_in) const {
+  // Match the exact heading -> trig conversion used in get_bot_coord().
+  double trig_ang = deg_to_rad(bot_to_trig(sp.heading));
+  double vAx      = std::cos(trig_ang);
+  double vAy      = std::sin(trig_ang);
+
+  double vBx = line_.x2 - line_.x1;
+  double vBy = line_.y2 - line_.y1;
+
+  double det = vAx * vBy - vAy * vBx;
+  if (std::abs(det) < 1e-6) return false;
+
+  double dx = line_.x1 - sp.x;
+  double dy = line_.y1 - sp.y;
+
+  double t = (dx * vBy - dy * vBx) / det;
+  double u = (dx * vAy - dy * vAx) / det;
+
+  return t > 0.0 && t <= max_dist_in && u >= 0.0 && u <= 1.0;
+}
 
 // ── RclSensor ─────────────────────────────────────────────────────────────────
 
@@ -83,6 +118,11 @@ bool RclSensor::is_valid(double dist_mm) const {
   // heading_mod in [0°, 90°); valid if ≤ angle_tol_ or ≥ (90° - angle_tol_).
   double heading_mod = std::fmod(sp_.heading, 90.0);
   if (heading_mod > angle_tol_ && heading_mod < (90.0 - angle_tol_)) return false;
+
+  double dist_in = dist_mm / 25.4;
+  for (const auto* obstacle : LineObstacle::obstacle_collection) {
+    if (obstacle != nullptr && obstacle->is_intersecting(sp_, dist_in)) return false;
+  }
 
   return true;
 }

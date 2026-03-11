@@ -28,6 +28,28 @@ struct RclSensorPose {
   double heading = 0.0;   // degrees, CW from initial robot facing
 };
 
+struct RclLine {
+  double x1 = 0.0;
+  double y1 = 0.0;
+  double x2 = 0.0;
+  double y2 = 0.0;
+};
+
+class LineObstacle {
+ public:
+  LineObstacle(double x1, double y1, double x2, double y2);
+  ~LineObstacle();
+  LineObstacle(const LineObstacle&) = delete;
+  LineObstacle& operator=(const LineObstacle&) = delete;
+
+  bool is_intersecting(const RclSensorPose& sp, double max_dist_in) const;
+
+  static std::vector<LineObstacle*> obstacle_collection;
+
+ private:
+  RclLine line_;
+};
+
 // ─────────────────────────────────────────────────────────────────────────────
 /**
  * @brief A single distance sensor configured for Ray-Casting Localization.
@@ -146,6 +168,8 @@ class RclSensor {
  *   // Global declarations (devices.cpp or similar)
  *   RclSensor rcl_right(&rightDistance, 4.875, 0.0,    90.0);
  *   RclSensor rcl_back (&backDistance,  0.0,  -4.53, 180.0);
+ *   // Optional line obstacle registration (devices.cpp or similar)
+ *   // LineObstacle stake_barrier(10.0, -20.0, 10.0, 20.0);
  *   RclTracking rcl(&chassis, 25, true);
  *
  *   // Inside initialize()
