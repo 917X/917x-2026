@@ -71,7 +71,7 @@ void autonomous() {
 	chassis.odom_xyt_set(0_in, 0_in,
 						 0_deg); // Reset odometry position to 0,0,0
 	chassis.drive_brake_set(MOTOR_BRAKE_HOLD); // Set motors to hold position
-	
+
     //liftPiston.set(true);
     // intake.set(Intake::IntakeState::INTAKE,127);
     // pros::delay(500);
@@ -83,13 +83,13 @@ void autonomous() {
     // loaderPiston.set(true);
     // chassis.drive_set(0,0);
     // left_elims();
-	// skills(); 
+	skills(); 
 	//left_side_9_ball();
 	// solo_awp();
 	// move_forward();
 	// right_elims();
 	// right_elims_mid_ball();
-    skills();
+    // skills();
     // left_elims();
 	// ez::as::auton_selector.selected_auton_call(); // Calls selected auton	
 }

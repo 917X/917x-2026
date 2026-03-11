@@ -46,7 +46,7 @@ void Intake::set(IntakeState state, int topSpeed, int bottomSpeed) {
     this->bottomSpeed = bottomSpeed;
 }
 
-void Intake::waitUntilColor(int hue1, int hue2, double saturation, int proximity, int timeout) {
+void Intake::waitUntilColor(int hue1, int hue2, double saturation, int proximity, int timeout,int delay) {
     if (colorSensor == nullptr) { return; }
     okapi::Timer timer;
     while (timer.getDtFromStart() < timeout * okapi::millisecond) {
@@ -56,6 +56,6 @@ void Intake::waitUntilColor(int hue1, int hue2, double saturation, int proximity
         if (sat >= saturation && (hue >= hue1 && hue <= hue2) && prox >= proximity) {
             return;  // All conditions met
         }
-        pros::delay(50);
+        pros::delay(delay);
     }
 }

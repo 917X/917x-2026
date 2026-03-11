@@ -732,7 +732,7 @@ void skills(){
     loaderPiston.set(false);
 	chassis.pid_wait_quick_chain(2);
     // chassis.pid_turn_set({40_in,46_in},rev,90);
-	chassis.pid_odom_ptp_set({{40,41.5},rev,75}, true);
+	chassis.pid_odom_ptp_set({{40,40.5},rev,75}, true);
     chassis.pid_wait_quick();
 	chassis.pid_turn_set(90,90);
 	chassis.pid_wait_quick();
@@ -790,7 +790,7 @@ void skills(){
 	//Clearing Park
 	// chassis.pid_drive_set(32_in,80,false,false);
 	chassis.drive_set(73,73);  //67,67
-	pros::delay(60);
+	pros::delay(100);
 	loaderPiston.set(false);
 	pros::delay(770);
 	chassis.drive_set(0,0);
@@ -827,14 +827,18 @@ void skills(){
 
 	chassis.pid_drive_set(-3,100,40,false,false);
 	chassis.pid_wait_quick_chain(2);
+	chassis.pid_swing_exit_condition_set(90_ms, 2_deg, 250_ms, 7_deg, 100_ms,
+										 100_ms);
 	chassis.pid_swing_set(ez::RIGHT_SWING,-90,90);
 	chassis.pid_wait_quick();
+	chassis.pid_swing_exit_condition_set(90_ms, 2_deg, 250_ms, 7_deg, 500_ms,
+										 500_ms);
 	// chassis.odom_theta_set(-90_deg); // REMOVE ONCE DONE TESTING REST OF CODE
 	// //REMOVE BELOW FOR TIME SAVING (ONLY. IF. NECESSARY.)
 	chassis.pid_drive_set(5,90,true,true,-90);
 	chassis.pid_wait_quick();
 	
-	std::vector<okapi::QLength> l = localizer.get_park_clear_localization(Localizer::Corner::BL,5);
+	std::vector<okapi::QLength> l = localizer.get_park_clear_localization(Localizer::Corner::BL,3);
 	x = l[0];
 	y = l[1];
 
@@ -843,12 +847,7 @@ void skills(){
 	chassis.odom_xy_set(x,y);
 	
     // chassis.pid_drive_set(7,80, false);    ADD BACK FOR OLD RESET
-    chassis.pid_wait_quick();
-	chassis.pid_swing_exit_condition_set(90_ms, 2_deg, 250_ms, 7_deg, 100_ms,
-										 100_ms);
 	chassis.pid_swing_set(ez::LEFT_SWING,-30,90);
-	chassis.pid_swing_exit_condition_set(90_ms, 2_deg, 250_ms, 7_deg, 500_ms,
-										 500_ms);
 
 	// get one extra ball in addition to park balls for redundancy
     chassis.pid_odom_ptp_set({{42,-15},fwd,90}, true);
@@ -883,7 +882,9 @@ void skills(){
 	intake.set(Intake::SCORE,-40,-20); //edging in the middle
 	pros::delay(100);
     intake.set(Intake::SCORE,40,80);
-    intake.waitUntilColor(190, 260, 0.3, 0, 2500);
+	pros::delay(1000);
+    intake.set(Intake::SCORE,35,75);
+    intake.waitUntilColor(190, 260, 0.3, 0, 1500);
     intake.set(Intake::IntakeState::SCORE, -50, 50);
 	liftPiston.set(false);
     //chassis.pid_drive_set(1.3_in,60, 40, false);
@@ -901,17 +902,18 @@ void skills(){
 
 	//score 3
 	chassis.pid_odom_ptp_set({{24,-49},rev,70},true);
-	pros::delay(700);
+	pros::delay(400);
 	intake.set(Intake::SCORE,127);
 	chassis.pid_wait_quick();
 	loaderPiston.set(true);
-	pros::delay(700);
+	pros::delay(500);
 	
 	
 	//Intake Third Matchloader
 	chassis.pid_turn_set({60,-48},fwd,90);
 	chassis.pid_wait_quick();
-	chassis.pid_drive_set(30.5_in,55,true, true, 90);
+	chassis.pid_drive_set(31_in,50,true, true, 90);
+	chassis.pid_wait_until(7_in);
     intake.set(Intake::IntakeState::INTAKE,127);
 	chassis.pid_wait();
 	pros::delay(500);
@@ -929,7 +931,7 @@ void skills(){
 	chassis.pid_turn_set({-23,-54},rev,90);
 	chassis.pid_wait_quick_chain();
 
-	chassis.pid_odom_ptp_set({{-23,-53},rev,85}, true);
+	chassis.pid_odom_ptp_set({{-23,-52.5},rev,85}, true);
     chassis.pid_wait_until(-43_in);
     loaderPiston.set(false);
 	chassis.pid_wait_quick_chain(3);
@@ -937,7 +939,7 @@ void skills(){
 	chassis.pid_odom_ptp_set({{-41.7,-39.5},rev,80}, true);
     chassis.pid_wait_quick();
 	chassis.pid_turn_set(-90,90);
-	chassis.pid_wait_quick();
+	chassis.pid_wait_quick_chain();
     //wallreset
     x = chassis.odom_x_get()*1_in;
     y = localizer.get_localized_coordinate(Localizer::Corner::BL);
@@ -953,8 +955,8 @@ void skills(){
     intake.set(Intake::IntakeState::INTAKE,127);
 
 	//Get last matchloader and score
-	chassis.pid_turn_set({-60,-46.5},fwd,-90);
-	chassis.pid_drive_set(30_in,50,true,true, -90);
+	chassis.pid_turn_set({-60,-46},fwd,-90);
+	chassis.pid_drive_set(30.5_in,50,true,true, -90);
 	chassis.pid_wait();
 	x = (-71 + 14.3125)*1_in;
 	y = localizer.get_localized_coordinate(Localizer::Corner::BL);

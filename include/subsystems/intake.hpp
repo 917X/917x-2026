@@ -43,7 +43,7 @@ class Intake {
      */
     void set(IntakeState state, int topSpeed, int bottomSpeed);
 
-    void waitUntilColor(int hue1, int hue2, double saturation, int proximity, int timeout);
+    void waitUntilColor(int hue1, int hue2, double saturation, int proximity, int timeout, int delay = 50);
 
      pros::Optical *colorSensor;
   private:
