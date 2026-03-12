@@ -914,7 +914,7 @@ void skills(){
     pros::delay(100);
 
 	//chassis.pid_drive_set(30.5_in,42,true, true, 90);
-    chassis.pid_drive_set(16.5_in,42,true, true, 90);
+    chassis.pid_drive_set(17_in,42,true, true, 90);
 	chassis.pid_wait_until(7_in);
     intake.set(Intake::IntakeState::INTAKE,127);
 	chassis.pid_wait();
