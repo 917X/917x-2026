@@ -178,7 +178,7 @@ void solo_awp() {
 
     loaderPiston.set(true);
     pros::delay(400);
-    chassis.pid_drive_set(14_in,100,false, true, -90);
+    chassis.pid_drive_set(13.7_in,100,false, true, -90);
     chassis.pid_wait_quick();
 
     // score second batch
@@ -713,7 +713,7 @@ void skills(){
 	x = (-71 + 14.3125)*1_in;
 	y = localizer.get_localized_coordinate(Localizer::Corner::TL);
 	chassis.odom_xy_set(x,y);
-	pros::delay(550);
+	pros::delay(700);
 
 
 	//Go to other side to score
