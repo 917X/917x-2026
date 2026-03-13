@@ -9,3 +9,4 @@ void left_side_9_ball();
 void right_elims();
 void right_elims_mid_ball();
 void skills();
+void left_7_rush();

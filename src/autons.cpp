@@ -1,3 +1,4 @@
+#include "autons.hpp"
 #include "EZ-Template/util.hpp"
 #include "devices.hpp"
 #include "main.h"
@@ -304,6 +305,22 @@ void left_side_9_ball(){
 	chassis.pid_drive_set(5_in, 80, true);
 	chassis.pid_wait_quick();
 	chassis.pid_turn_set(95, 80);
+}
+
+void left_7_rush(){
+	chassis.pid_drive_exit_condition_set(90_ms, 1_in, 250_ms, 3_in, 85_ms,
+										 250_ms);
+	flapperPiston.set(true);
+	
+	intake.set(Intake::IntakeState::INTAKE, 127);
+
+	chassis.odom_xyt_set(-46.5_in, 6_in, 90_deg);
+	chassis.pid_odom_ptp_set({{-30,11},fwd,127},true); //-9.5,35
+	chassis.pid_wait_quick_chain(2);
+	chassis.pid_swing_set(ez::RIGHT_SWING, -50_deg, 100, true);
+	pros::delay(200);
+	loaderPiston.set(true);
+	chassis.pid_wait_quick_chain();
 }
 
 void move_forward(){
