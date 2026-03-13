@@ -3,7 +3,7 @@
 #include "devices.hpp"
 #include "pros/misc.h"
 
-bool skillsActive = false;
+bool skillsActive = true;
 
 /**
  * @brief debug task for displaying robot status
@@ -85,11 +85,11 @@ void autonomous() {
     // left_elims();
 	// skills(); 
 	//left_side_9_ball();
-	 solo_awp();
+	// solo_awp();
 	// move_forward();
 	// right_elims();
 	// right_elims_mid_ball();
-    // skills();
+     skills();
     // left_elims();
 	// ez::as::auton_selector.selected_auton_call(); // Calls selected auton	
 }
