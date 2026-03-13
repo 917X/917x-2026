@@ -317,7 +317,7 @@ void left_7_rush(){
 	chassis.odom_xyt_set(-46.5_in, 6_in, 90_deg);
 	chassis.pid_odom_ptp_set({{-30,11},fwd,127},true); //-9.5,35
 	chassis.pid_wait_quick_chain(2);
-	chassis.pid_swing_set(ez::RIGHT_SWING, -50_deg, 100, true);
+	chassis.pid_swing_set(ez::RIGHT_SWING, -50_deg, 100, 5, true);
 	pros::delay(200);
 	loaderPiston.set(true);
 	chassis.pid_wait_quick_chain();
