@@ -857,8 +857,8 @@ void skills(){
 	// get one extra ball in addition to park balls for redundancy
     chassis.pid_odom_ptp_set({{42,-15},fwd,90}, true);
 	chassis.pid_wait_quick_chain(3);
-	chassis.pid_odom_ptp_set({{24,-27.5},fwd,60}, true,12,25); //25.7,-28.5
-	chassis.pid_wait_until({30,-16});
+	chassis.pid_odom_ptp_set({{23.2,-26.5},fwd,60}, true,12,25); //25.7,-28.5
+	chassis.pid_wait_until({31,-15});
     pros::delay(100);
     intake.set(Intake::STOP);
 	chassis.pid_wait_quick();
@@ -869,6 +869,7 @@ void skills(){
 	//score 7 of same color in middle SCORING FOR MID
 	// chassis.pid_drive_set(3.8_in,60,true);
 	chassis.pid_turn_set(132,40, ez::e_angle_behavior::cw, true);
+	pros::delay(500);
 	intake.set(Intake::IntakeState::INTAKE,60);
 	chassis.pid_wait_quick();
 	liftPiston.set(true);
@@ -886,7 +887,7 @@ void skills(){
     intake.set(Intake::SCORE,40,80);
 	pros::delay(1000);
     intake.set(Intake::SCORE,36,75);
-    intake.waitUntilColor(190, 260, 0.3, 0, 1700);
+    intake.waitUntilColor(190, 260, 0.3, 0, 1900);
     intake.set(Intake::IntakeState::SCORE, -20, 50);
 	liftPiston.set(false);
     //chassis.pid_drive_set(1.3_in,60, 40, false);
@@ -894,7 +895,7 @@ void skills(){
 
 	//moving to score 3
 	pros::delay(200);
-	chassis.pid_odom_ptp_set({{35_in,-45.5_in},fwd,80},true); //46,46
+	chassis.pid_odom_ptp_set({{35_in,-46_in},fwd,80},true); //46,46
 	pros::delay(300);
 	intake.set(Intake::IntakeState::SCORE,127);
     
@@ -975,10 +976,10 @@ void skills(){
 	pros::delay(750);
 	chassis.pid_odom_ptp_set({{-27.5,-46.5},rev,90},true);
     chassis.pid_wait_until({-32_in, -46_in});
-    intake.set(Intake::IntakeState::SCORE,127);
+    intake.set(Intake::IntakeState::SCORE,80);
 	pros::delay(800);
-	intake.set(Intake::IntakeState::SCORE,80,80);
-	pros::delay(900);
+	intake.set(Intake::IntakeState::SCORE,80);
+	pros::delay(1200);
     chassis.pid_wait_quick();
 	loaderPiston.set(false);
 	intake.set(Intake::INTAKE,127);
@@ -1000,7 +1001,7 @@ void skills(){
 
 	//Clearing Park
 	// chassis.pid_drive_set(39_in,127,43,false,false);
-	chassis.drive_set(80,80);
+	chassis.drive_set(82,82);
 	pros::delay(380);
 	loaderPiston.set(false);
 	pros::delay(500);
