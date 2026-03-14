@@ -85,8 +85,8 @@ void autonomous() {
     // left_elims();
 	// skills(); 
 	// left_side_9_ball();
-	// left_7_rush();
-	solo_awp();
+	left_7_rush();
+	// solo_awp();
 	// move_forward();
 	// right_elims();
 	// right_elims_mid_ball();
