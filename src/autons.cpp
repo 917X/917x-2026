@@ -323,23 +323,22 @@ void left_side_9_ball(){
 }
 
 void left_7_rush(){
-	chassis.pid_drive_exit_condition_set(90_ms, 1_in, 250_ms, 3_in, 70_ms,
-										 250_ms);
+	chassis.pid_drive_exit_condition_set(90_ms, 1_in, 250_ms, 3_in, 60_ms,
+										 100_ms);
 	flapperPiston.set(true);
 	
 	intake.set(Intake::IntakeState::INTAKE, 127);
 
 	chassis.odom_xyt_set(-46.5_in, 6_in, 90_deg);
-	chassis.pid_odom_ptp_set({{-31.5,11},fwd,127},true); //-9.5,35
-	chassis.pid_wait_quick_chain(3);
-	chassis.pid_swing_set(ez::RIGHT_SWING, -10_deg, 100, 5, true);
-	pros::delay(200);
+	chassis.pid_odom_ptp_set({{-29,17},fwd,127},true); //-9.5,35
+	chassis.pid_wait_until(10);
 	loaderPiston.set(true);
-	chassis.pid_wait_until(-5_deg);
-	chassis.pid_speed_max_set(127);
+	chassis.pid_wait_quick_chain(3);
+	// chassis.pid_swing_set(ez::RIGHT_SWING, -20_deg, 100, 5, true);
+	chassis.pid_turn_set(0,100);
 	chassis.pid_wait_quick_chain(20);
 
-	chassis.pid_odom_ptp_set({{-43,41.5},fwd,127},true); //-9.5,35
+	chassis.pid_odom_ptp_set({{-42,41.7},fwd,127},true); //-9.5,35
 	loaderPiston.set(false);
 	chassis.pid_wait_quick_chain(5);
 	chassis.pid_turn_set(-90,100);
@@ -347,8 +346,8 @@ void left_7_rush(){
 	chassis.pid_wait_quick_chain();
 	chassis.pid_drive_set(11.5_in,127,false, true, -90);
 	chassis.pid_wait_quick_chain();
-	chassis.pid_odom_ptp_set({{-28,48},rev,127},true);
-	chassis.pid_wait_until({-35,48});
+	chassis.pid_odom_ptp_set({{-27.5,48.5},rev,127},true);
+	chassis.pid_wait_until({-37,48});
 	intake.set(Intake::IntakeState::SCORE,127);
 	chassis.pid_wait_quick_chain(4);
 	loaderPiston.set(false);
