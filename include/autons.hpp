@@ -9,3 +9,8 @@ void left_side_9_ball();
 void right_elims();
 void right_elims_mid_ball();
 void skills();
+void left_7_rush();
+void right_7_rush();
+void left_4_rush();
+void right_4_rush();
+void old_solo_awp();

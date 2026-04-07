@@ -3,7 +3,7 @@
 #include "devices.hpp"
 #include "pros/misc.h"
 
-bool skillsActive = true;
+bool skillsActive = false;
 
 /**
  * @brief debug task for displaying robot status
@@ -84,14 +84,21 @@ void autonomous() {
     // chassis.drive_set(0,0);
     // left_elims();
 	// skills(); 
-	//left_side_9_ball();
+	// left_side_9_ball();
+	left_7_rush();
 	// solo_awp();
+	//old_solo_awp();
 	// move_forward();
 	// right_elims();
 	// right_elims_mid_ball();
-     skills();
+    // skills();
     // left_elims();
 	// ez::as::auton_selector.selected_auton_call(); // Calls selected auton	
+	// right_7_rush();
+
+	// left_4_rush();
+
+	//right_4_rush();
 }
 
 
@@ -162,15 +169,6 @@ void opcontrol() {
 		}
 
         
-		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
-			if (flapperPiston.get() == true) {
-				flapperPiston.set(false);
-			}
-		} else {
-			if (flapperPiston.get() == false) {
-				flapperPiston.set(true);
-			}
-		}
 
         
 		loaderPiston.button_toggle(master.get_digital(pros::E_CONTROLLER_DIGITAL_RIGHT));
