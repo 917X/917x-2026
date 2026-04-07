@@ -58,7 +58,7 @@ pros::Distance backDistance(BACK_DISTANCE);
 pros::Optical colorSensor(COLORSORT);
 
 // intake
-Intake intake(rollerMotor, indexerMotor, &colorSensor);
+Intake intake(rollerMotor, indexerMotor, leverProfiler, &colorSensor);
 
 // drive chassis
 ez::Drive chassis({LEFT_F, LEFT_M, LEFT_B},	   // Left Chassis Ports

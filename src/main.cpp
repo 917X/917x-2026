@@ -140,7 +140,7 @@ void opcontrol() {
 		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_Y)){
 			intake.set(Intake::IntakeState::SCORE, 80, 127);
 		} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
-			//leverProfiler.actuateProfile(65);
+			intake.set(Intake::IntakeState::SCORE, 127);
 		} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
 			intake.set(Intake::IntakeState::INTAKE, 127);
 		} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {

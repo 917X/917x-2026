@@ -23,11 +23,11 @@ class MotionProfiler {
     void setProfile(std::vector<std::pair<double, double>> profile);
 
     /**
-     * @brief compute the power output at the current position w.r.t. the defined profile. 
+     * @brief Steps the motor towards the target position using the profile
      * 
      * @param targetPosition 
      */
-    double compute(double targetPosition);
+    void stepTo(double targetPosition);
 
     /**
      * @brief gets the rotation sensor value

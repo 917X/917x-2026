@@ -5,8 +5,8 @@
 #include "pros/optical.hpp"
 #include <ctime>
 
-Intake::Intake(pros::Motor &rollerMotor, pros::Motor &indexerMotor, pros::Optical* colorSensor)
-	: rollerMotor(rollerMotor), indexerMotor(indexerMotor), colorSensor(colorSensor) {}
+Intake::Intake(pros::Motor &rollerMotor, pros::Motor &indexerMotor, MotionProfiler &leverProfiler, pros::Optical* colorSensor)
+	: rollerMotor(rollerMotor), indexerMotor(indexerMotor), leverProfiler(leverProfiler), colorSensor(colorSensor) {}
 
 void Intake::intakeControl() {
 	while (true) {
@@ -17,7 +17,13 @@ void Intake::intakeControl() {
 			break;
 		case INTAKE:
 			indexerMotor.move(-50);
-			rollerMotor.move(bottomSpeed);
+            leverProfiler.stepTo(0);
+			// Only spin roller if lever is fully lowered (within 5 degrees of 0)
+			if (leverProfiler.getRotation() <= 5.0) {
+				rollerMotor.move(bottomSpeed);
+			} else {
+				rollerMotor.move(0);  // Roller stops until lever is down
+			}
 			break;
 		case OUTTAKE:
 			indexerMotor.move(-topSpeed);
@@ -26,6 +32,7 @@ void Intake::intakeControl() {
 		case SCORE:
             indexerMotor.move(topSpeed);
             rollerMotor.move(bottomSpeed);
+            leverProfiler.stepTo(65);
             break;
 		}
         pros::delay(10);

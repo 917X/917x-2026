@@ -3,6 +3,7 @@
 #include "pros/adi.hpp"
 #include "pros/motors.hpp"
 #include "pros/optical.hpp"
+#include "subsystems/profiler.hpp"
 #include <cmath>
 
 class Intake {
@@ -12,8 +13,9 @@ class Intake {
 	 *
 	 * @param rollerMotor
 	 * @param indexerMotor
+     * @param leverProfiler
 	 */
-	Intake(pros::Motor &rollerMotor, pros::Optical* colorSensor = nullptr);
+	Intake(pros::Motor &rollerMotor, pros::Motor &indexerMotor, MotionProfiler &leverProfiler, pros::Optical* colorSensor = nullptr);
 
 	/**
 	 * @brief Enum for the different states of the intake system
@@ -50,6 +52,7 @@ class Intake {
 	// motors and sensors
 	pros::Motor &rollerMotor;
 	pros::Motor &indexerMotor;
+    MotionProfiler &leverProfiler;
    
 	// intake state variables
 	IntakeState state = STOP;
