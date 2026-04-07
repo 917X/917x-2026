@@ -13,7 +13,7 @@ class Intake {
 	 * @param rollerMotor
 	 * @param indexerMotor
 	 */
-	Intake(pros::Motor &rollerMotor, pros::Motor &indexerMotor, pros::Optical* colorSensor = nullptr);
+	Intake(pros::Motor &rollerMotor, pros::Optical* colorSensor = nullptr);
 
 	/**
 	 * @brief Enum for the different states of the intake system

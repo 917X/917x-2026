@@ -3,14 +3,17 @@
 #include "EZ-Template/api.hpp"
 #include "api.h"
 #include "subsystems/intake.hpp"
-#include "subsystems//localizer.hpp"
+#include "subsystems/localizer.hpp"
+#include "subsystems/profiler.hpp"
 
 // externs devices
 extern Drive chassis;
 extern pros::Controller controller;
+extern MotionProfiler leverProfiler;
 
 extern pros::Motor indexerMotor;
 extern pros::Motor rollerMotor;;
+extern pros::Motor leverMotor;
 extern Intake intake;
 
 extern ez::Piston loaderPiston;

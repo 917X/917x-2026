@@ -32,6 +32,7 @@ void telemetry() {
 }
 
 void initialize() {
+    leverProfiler.setProfile({{-10, 70}, {20, 75}, {30, 80}, {40, 85}, {50, 90}});
 	pros::delay(500);
     intake.colorSensor->set_led_pwm(100);
 	chassis.opcontrol_curve_buttons_toggle(false);
@@ -139,12 +140,7 @@ void opcontrol() {
 		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_Y)){
 			intake.set(Intake::IntakeState::SCORE, 80, 127);
 		} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
-			if (skillsActive && liftPiston.get() == true) {
-
-                intake.set(Intake::IntakeState::SCORE, 35, 80);
-            } else {
-                intake.set(Intake::IntakeState::SCORE, 127);
-            }
+			//leverProfiler.actuateProfile(65);
 		} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
 			intake.set(Intake::IntakeState::INTAKE, 127);
 		} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
