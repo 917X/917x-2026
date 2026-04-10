@@ -32,7 +32,7 @@ void telemetry() {
 }
 
 void initialize() {
-    leverProfiler.setProfile({{-10, 70}, {20, 75}, {30, 80}, {40, 85}, {50, 90}});
+    leverProfiler.setProfile({});
 	pros::delay(500);
     intake.colorSensor->set_led_pwm(100);
 	chassis.opcontrol_curve_buttons_toggle(false);

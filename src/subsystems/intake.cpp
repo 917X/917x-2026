@@ -17,7 +17,7 @@ void Intake::intakeControl() {
 			break;
 		case INTAKE:
 			indexerMotor.move(-50);
-            leverProfiler.stepTo(0);
+            leverTarget = 3.0;
 			// Only spin roller if lever is fully lowered (within 5 degrees of 0)
 			if (leverProfiler.getRotation() <= 5.0) {
 				rollerMotor.move(bottomSpeed);
@@ -28,13 +28,15 @@ void Intake::intakeControl() {
 		case OUTTAKE:
 			indexerMotor.move(-topSpeed);
 			rollerMotor.move(-bottomSpeed);
+            leverTarget = 5.0;
 			break;
 		case SCORE:
             indexerMotor.move(topSpeed);
             rollerMotor.move(bottomSpeed);
-            leverProfiler.stepTo(65);
+            leverTarget = 115.0;
             break;
 		}
+        leverProfiler.stepTo(leverTarget);
         pros::delay(10);
 	}
 }

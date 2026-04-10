@@ -56,6 +56,7 @@ class Intake {
    
 	// intake state variables
 	IntakeState state = STOP;
+    double leverTarget = 5.0;
 	int topSpeed = 127;
 	int bottomSpeed = 127;
 };

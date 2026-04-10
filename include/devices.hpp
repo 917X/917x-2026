@@ -2,6 +2,7 @@
 
 #include "EZ-Template/api.hpp"
 #include "api.h"
+#include "pros/rotation.hpp"
 #include "subsystems/intake.hpp"
 #include "subsystems/localizer.hpp"
 #include "subsystems/profiler.hpp"
@@ -24,6 +25,7 @@ extern pros::Imu imu;
 extern pros::Distance leftDistance;
 extern pros::Distance rightDistance;
 extern pros::Optical colorSensor;
+extern pros::Rotation leverRotation;
 
 extern Localizer localizer;
 

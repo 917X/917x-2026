@@ -16,7 +16,7 @@ constexpr int VERT_POD = 15;
 constexpr int INDEXER = 20;
 constexpr int ROLLER = 14;
 constexpr int LEVER = -8;
-constexpr int LEVER_ROTATION = 7;
+constexpr int LEVER_ROTATION = 5;
 
 constexpr int LEFT_DISTANCE = 17;
 constexpr int RIGHT_DISTANCE = 2;
@@ -46,7 +46,7 @@ pros::Motor leverMotor(LEVER);
 
 pros::Rotation leverRotation(LEVER_ROTATION);
 
-MotionProfiler leverProfiler(&leverMotor, &leverRotation, 0, 65);
+MotionProfiler leverProfiler(&leverMotor, &leverRotation, 0, 116);
 
 
 // distance sensors

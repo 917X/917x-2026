@@ -41,4 +41,7 @@ class MotionProfiler {
     double minPosition;
     double maxPosition;
     std::vector<std::pair<double, double>> profile; // pair of (position, velocity)
+    double currentTarget = -9999.0;
+    bool isSettled = false;
+    double previousError = 0.0;
 };

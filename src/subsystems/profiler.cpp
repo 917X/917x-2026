@@ -17,16 +17,35 @@ double MotionProfiler::getRotation(){
 }
 
 void MotionProfiler::stepTo(double targetPosition){
+    if (targetPosition != currentTarget) {
+        currentTarget = targetPosition;
+        isSettled = false;
+        previousError = targetPosition - this->getRotation();
+    }
+
+    if (isSettled) {
+        motor->move(0);
+        return;
+    }
+
     double currentPosition = this->getRotation();
     
     if (targetPosition < minPosition) targetPosition = minPosition;
     if (targetPosition > maxPosition) targetPosition = maxPosition;
 
     double error = targetPosition - currentPosition;
-    if (std::abs(error) < 2.0) {
+    std::cout<<"Current Position: " << currentPosition << " | Target Position: " << targetPosition << " | Error: " << error << std::endl;
+    
+    bool crossedTarget = (error > 0 && previousError < 0) || (error < 0 && previousError > 0);
+
+    if (std::abs(error) < 5.0 || crossedTarget) {
+        std::cout<<"Target reached or crossed. Stopping motor."<<std::endl;
+        isSettled = true;
         motor->move(0);
         return; 
     }
+    
+    previousError = error;
 
     double absTargetVelocity = 0.0;
     if (profile.empty()) {
