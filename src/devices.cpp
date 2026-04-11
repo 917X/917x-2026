@@ -23,8 +23,8 @@ constexpr int RIGHT_DISTANCE = 2;
 constexpr int FRONT_DISTANCE = 16;
 constexpr int BACK_DISTANCE = 4;
 
-constexpr char LOADER_PISTON = 'A';
-constexpr char FLAPPER_PISTON = 'C';
+constexpr char LOADER_PISTON = 'C';
+constexpr char FLAPPER_PISTON = 'A';
 constexpr char LIFT_PISTON = 'B';
 
 constexpr char COLORSORT = 10;

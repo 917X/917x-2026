@@ -2,6 +2,7 @@
 #include "autons.hpp"
 #include "devices.hpp"
 #include "pros/misc.h"
+#include <vector>
 
 bool skillsActive = false;
 
@@ -32,7 +33,7 @@ void telemetry() {
 }
 
 void initialize() {
-    leverProfiler.setProfile({{-10, 127},{90,45},{100,40}});
+    // leverProfiler.setProfile({{-10, 127},{90,45},{100,40}});
 	pros::delay(500);
     intake.colorSensor->set_led_pwm(100);
 	chassis.opcontrol_curve_buttons_toggle(false);
@@ -106,6 +107,10 @@ void autonomous() {
 
 
 
+std::vector<std::pair<double, double>> groupingProfile_6 = {{-10, 127},{90,45},{100,40}};
+std::vector<std::pair<double, double>> groupingProfile_4 = {{-10, 60},{80,85},{95,60},{110,38}}; //{-10, 60},{80,85},{95,60},{110,40} or 38
+std::vector<std::pair<double, double>> speedProfile = {{-10, 80},{20,100},{40,110},{60,127}};
+	
 
 void opcontrol() {
 	flapperPiston.set(true);
@@ -137,9 +142,14 @@ void opcontrol() {
 
 
 		//INTAKE LOGIC
-		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_Y)){
-			intake.set(Intake::IntakeState::SCORE, 80, 127);
+		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)){
+			leverProfiler.setProfile(speedProfile);
+			intake.set(Intake::IntakeState::SCORE, 127);
 		} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+			leverProfiler.setProfile(groupingProfile_4);
+			intake.set(Intake::IntakeState::SCORE, 127);
+		} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_Y)) {
+			leverProfiler.setProfile(groupingProfile_6);
 			intake.set(Intake::IntakeState::SCORE, 127);
 		} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
 			intake.set(Intake::IntakeState::INTAKE, 127);
