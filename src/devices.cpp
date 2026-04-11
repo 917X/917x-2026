@@ -13,8 +13,8 @@ constexpr int RIGHT_B = 13;
 
 constexpr int VERT_POD = 15;
 
-constexpr int INDEXER = 20;
-constexpr int ROLLER = 14;
+constexpr int INDEXER = 1;
+constexpr int INTAKE_MOTOR = 21;
 constexpr int LEVER = -8;
 constexpr int LEVER_ROTATION = 5;
 
@@ -41,12 +41,12 @@ ez::Piston liftPiston(LIFT_PISTON);
 
 // intake motors
 pros::Motor indexerMotor(INDEXER);
-pros::Motor rollerMotor(ROLLER);
+pros::Motor intakeMotor(INTAKE_MOTOR);
 pros::Motor leverMotor(LEVER);
 
 pros::Rotation leverRotation(LEVER_ROTATION);
 
-MotionProfiler leverProfiler(&leverMotor, &leverRotation, 0, 116);
+MotionProfiler leverProfiler(&leverMotor, &leverRotation,34.0, 0, 119);
 
 
 // distance sensors
@@ -58,7 +58,7 @@ pros::Distance backDistance(BACK_DISTANCE);
 pros::Optical colorSensor(COLORSORT);
 
 // intake
-Intake intake(rollerMotor, indexerMotor, leverProfiler, &colorSensor);
+Intake intake(intakeMotor, indexerMotor, leverProfiler, &colorSensor);
 
 // drive chassis
 ez::Drive chassis({LEFT_F, LEFT_M, LEFT_B},	   // Left Chassis Ports

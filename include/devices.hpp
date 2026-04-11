@@ -13,7 +13,7 @@ extern pros::Controller controller;
 extern MotionProfiler leverProfiler;
 
 extern pros::Motor indexerMotor;
-extern pros::Motor rollerMotor;;
+extern pros::Motor intakeMotor;
 extern pros::Motor leverMotor;
 extern Intake intake;
 

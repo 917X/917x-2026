@@ -5,35 +5,35 @@
 #include "pros/optical.hpp"
 #include <ctime>
 
-Intake::Intake(pros::Motor &rollerMotor, pros::Motor &indexerMotor, MotionProfiler &leverProfiler, pros::Optical* colorSensor)
-	: rollerMotor(rollerMotor), indexerMotor(indexerMotor), leverProfiler(leverProfiler), colorSensor(colorSensor) {}
+Intake::Intake(pros::Motor &intakeMotor, pros::Motor &indexerMotor, MotionProfiler &leverProfiler, pros::Optical* colorSensor)
+	: intakeMotor(intakeMotor), indexerMotor(indexerMotor), leverProfiler(leverProfiler), colorSensor(colorSensor) {}
 
 void Intake::intakeControl() {
 	while (true) {
 		switch (state) {
 		case STOP:
-			indexerMotor.move(-50);
-			rollerMotor.move(0);
+			intakeMotor.move(0);
+			// rollerMotor.move(0); --- IGNORE ---
 			break;
 		case INTAKE:
 			indexerMotor.move(-50);
             leverTarget = 3.0;
 			// Only spin roller if lever is fully lowered (within 5 degrees of 0)
 			if (leverProfiler.getRotation() <= 5.0) {
-				rollerMotor.move(bottomSpeed);
+				intakeMotor.move(topSpeed);
 			} else {
-				rollerMotor.move(0);  // Roller stops until lever is down
+				intakeMotor.move(0);  // Roller stops until lever is down
 			}
 			break;
 		case OUTTAKE:
-			indexerMotor.move(-topSpeed);
-			rollerMotor.move(-bottomSpeed);
+			// indexerMotor.move(-topSpeed); --- IGNORE ---
+			intakeMotor.move(-topSpeed);
             leverTarget = 5.0;
 			break;
 		case SCORE:
-            indexerMotor.move(topSpeed);
-            rollerMotor.move(bottomSpeed);
-            leverTarget = 115.0;
+            // indexerMotor.move(topSpeed); --- IGNORE ---
+            intakeMotor.move(topSpeed);
+            leverTarget = 117.0;
             break;
 		}
         leverProfiler.stepTo(leverTarget);
@@ -43,6 +43,9 @@ void Intake::intakeControl() {
 
 void Intake::set(IntakeState state, int speed) {
 	// state setting
+    if (this->state != state) { // If changing states, force the profiler to reset its settled state
+        leverProfiler.forceResume();
+    }
 	this->state = state;
 	this->topSpeed = speed;
     this->bottomSpeed = speed;
@@ -50,6 +53,9 @@ void Intake::set(IntakeState state, int speed) {
 
 void Intake::set(IntakeState state, int topSpeed, int bottomSpeed) {
     // state setting
+    if (this->state != state) {
+        leverProfiler.forceResume();
+    }
     this->state = state;
     this->topSpeed = topSpeed;
     this->bottomSpeed = bottomSpeed;

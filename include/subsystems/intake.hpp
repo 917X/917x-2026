@@ -11,11 +11,11 @@ class Intake {
 	/**
 	 * @brief Construct a new Intake object
 	 *
-	 * @param rollerMotor
+	 * @param intakeMotor
 	 * @param indexerMotor
      * @param leverProfiler
 	 */
-	Intake(pros::Motor &rollerMotor, pros::Motor &indexerMotor, MotionProfiler &leverProfiler, pros::Optical* colorSensor = nullptr);
+	Intake(pros::Motor &intakeMotor, pros::Motor &indexerMotor, MotionProfiler &leverProfiler, pros::Optical* colorSensor = nullptr);
 
 	/**
 	 * @brief Enum for the different states of the intake system
@@ -50,7 +50,7 @@ class Intake {
      pros::Optical *colorSensor;
   private:
 	// motors and sensors
-	pros::Motor &rollerMotor;
+	pros::Motor &intakeMotor;
 	pros::Motor &indexerMotor;
     MotionProfiler &leverProfiler;
    

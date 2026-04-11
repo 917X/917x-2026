@@ -14,7 +14,7 @@ class MotionProfiler {
      * @brief Constructs a new MotionProfiler object
      * 
      */
-    MotionProfiler(pros::Motor *motor, pros::Rotation *rotation, double minPosition, double maxPosition);
+    MotionProfiler(pros::Motor *motor, pros::Rotation *rotation, double raw_zero, double minPosition, double maxPosition);
 
     /**
      * @brief Sets the motion profile for the motor. The profile is a vector of pairs, where each pair consists of a position (in degrees) and a velocity (in percentage).
@@ -30,6 +30,11 @@ class MotionProfiler {
     void stepTo(double targetPosition);
 
     /**
+     * @brief Forces the profiler to re-evaluate the target and start moving again if it has drifted away
+     */
+    void forceResume();
+
+    /**
      * @brief gets the rotation sensor value
      * 
      */
@@ -38,6 +43,7 @@ class MotionProfiler {
   private:
     pros::Motor *motor = nullptr;
     pros::Rotation *rotation;
+    double raw_zero;
     double minPosition;
     double maxPosition;
     std::vector<std::pair<double, double>> profile; // pair of (position, velocity)

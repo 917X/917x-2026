@@ -1,11 +1,13 @@
 #include "subsystems/profiler.hpp"
+#include "pros/motors.h"
 
-MotionProfiler::MotionProfiler(pros::Motor *motor, pros::Rotation *rotation, double minPosition, double maxPosition) {
+MotionProfiler::MotionProfiler(pros::Motor *motor, pros::Rotation *rotation, double raw_zero,double minPosition, double maxPosition) {
     this->motor = motor;
     this->rotation = rotation;
+    this->raw_zero = raw_zero;
     this->minPosition = minPosition;
     this->maxPosition = maxPosition;
-    this->motor->set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+    this->motor->set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 }
 
 void MotionProfiler::setProfile(std::vector<std::pair<double, double>> profile) {
@@ -13,7 +15,12 @@ void MotionProfiler::setProfile(std::vector<std::pair<double, double>> profile) 
 }
 
 double MotionProfiler::getRotation(){
-    return this->rotation->get_position() / 100.0;
+    return this->rotation->get_position() / 100.0 - this->raw_zero;
+}
+
+void MotionProfiler::forceResume() {
+    isSettled = false;
+    previousError = currentTarget - this->getRotation();
 }
 
 void MotionProfiler::stepTo(double targetPosition){
