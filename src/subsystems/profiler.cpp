@@ -45,7 +45,7 @@ void MotionProfiler::stepTo(double targetPosition){
     
     bool crossedTarget = (error > 0 && previousError < 0) || (error < 0 && previousError > 0);
 
-    if (std::abs(error) < 5.0 || crossedTarget) {
+    if (std::abs(error) < 3.0 || crossedTarget) {
         std::cout<<"Target reached or crossed. Stopping motor."<<std::endl;
         isSettled = true;
         motor->move(0);
