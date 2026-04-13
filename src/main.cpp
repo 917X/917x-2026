@@ -89,7 +89,7 @@ void autonomous() {
 	// skills(); 
 	// left_side_9_ball();
 	// left_7_rush();
-	// solo_awp();
+	solo_awp();
 	//old_solo_awp();
 	// move_forward();
 	// right_elims();
@@ -104,25 +104,56 @@ void autonomous() {
 	//right_4_rush();
 
 	
-	// chassis.pid_drive_exit_condition_set(10000_ms, 1_in, 200000_ms, 3_in, 20000000_ms,
+	// chassis.pid_drive_exit_condition_set(100_ms, 1_in, 200000_ms, 3_in, 20000000_ms,
 	// 									 25000000_ms);
-	// chassis.pid_drive_constants_forward_set(10, 0.0, 0);
-	// chassis.pid_drive_set(48,90,false, false);
+	// chassis.pid_drive_constants_forward_set(12.5, 0.0,34);
+	// chassis.pid_drive_set(48,90,true, true);
 	// chassis.pid_wait();
-	// chassis.pid_drive_set(-48,90,false, false);
+	// chassis.pid_drive_set(-48,90,false, true);
 	// chassis.pid_wait();
-	
-	// chassis.pid_turn_exit_condition_set(1000_ms, 1.75_deg, 3000000_ms, 5_deg, 250000_ms,
+	// chassis.pid_drive_constants_forward_set(12.5, 0.0,34);
+	// chassis.pid_drive_set(48,90,true, true);
+	// chassis.pid_wait();
+	// chassis.pid_drive_set(-48,90,false, true);
+	// chassis.pid_wait();
+
+	// chassis.pid_turn_exit_condition_set(100_ms, 1.75_deg, 3000000_ms, 5_deg, 250000_ms,
 	// 									250000_ms);
-	// chassis.pid_turn_constants_set(4	, 0.0, 34);  //2.4,0,13.7
+	// chassis.pid_turn_constants_set(2.2, 0.0, 14.8);  //2.4,0,13.7
 	// chassis.pid_turn_set(90,127);
 	// chassis.pid_wait();
 	// chassis.pid_turn_set(0,127);
 	// chassis.pid_wait();
+	// chassis.pid_turn_set(90,127);
+	// chassis.pid_wait();
+	// chassis.pid_turn_set(0,127);
+	// chassis.pid_wait();
+	// chassis.pid_turn_set(90,127);
+	// chassis.pid_wait();
+	// chassis.pid_turn_set(0,127);
+	// chassis.pid_wait();
+
+	// chassis.pid_swing_exit_condition_set(100_ms, 2_deg, 2000050_ms, 7_deg, 5000000_ms,
+	// 									 5000000_ms);
+	// chassis.pid_swing_constants_set(4,0,23);
+	// chassis.pid_swing_set(ez::LEFT_SWING, -90_deg, 127, 0, false);
+	// chassis.pid_wait();
+	// pros::delay(500);
+	// chassis.pid_swing_set(ez::LEFT_SWING, 0_deg, 127, 0, false);
+	// chassis.pid_wait();
+	// pros::delay(500);
+	// chassis.pid_swing_set(ez::LEFT_SWING, -90_deg, 127, 0, false);
+	// chassis.pid_wait();
+	// pros::delay(500);
+	// chassis.pid_swing_set(ez::LEFT_SWING, 0_deg, 127, 0, false);
+	// chassis.pid_wait();
+	// pros::delay(500);
+	// chassis.pid_swing_set(ez::LEFT_SWING, -90_deg, 127, 0, false);
+	// chassis.pid_wait();
+	// pros::delay(500);
+	// chassis.pid_swing_set(ez::LEFT_SWING, 0_deg, 127, 0, false);
+	// chassis.pid_wait();
 }
-
-
-
 
 
 std::vector<std::pair<double, double>> groupingProfile_6 = {{-10, 127},{90,45},{100,40}};

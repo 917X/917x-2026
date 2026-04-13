@@ -80,15 +80,15 @@ void default_constants() {
     chassis.drive_width_set(10.75);
 
 	// lateral constants
-	chassis.pid_drive_constants_forward_set(6, 0.0, 11.5);
+	chassis.pid_drive_constants_forward_set(12.5, 0.0,34);
 	chassis.pid_drive_constants_backward_set(5.8, 0.0, 14);
 
 	// heading correction constants
 	chassis.pid_heading_constants_set(4, 0.0, 9); // 5 0 9
 	
 	// angular constants
-	chassis.pid_turn_constants_set(2.4, 0.0, 13.7);  //4, 0.0, 34
-	chassis.pid_swing_constants_set(3.8, 0.3, 21.25, 5);
+	chassis.pid_turn_constants_set(2.2, 0.0, 14.8);  //4, 0.0, 34
+	chassis.pid_swing_constants_set(4,0,23);
 	chassis.pid_odom_angular_constants_set(1.8, 0.0, 11, 5);
 	chassis.pid_odom_boomerang_constants_set(6, 0.0, 24);
 
