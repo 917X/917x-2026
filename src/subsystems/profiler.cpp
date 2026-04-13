@@ -23,16 +23,11 @@ void MotionProfiler::forceResume() {
     previousError = currentTarget - this->getRotation();
 }
 
-void MotionProfiler::stepTo(double targetPosition){
+void MotionProfiler::stepTo(double targetPosition, bool activeHold){
     if (targetPosition != currentTarget) {
         currentTarget = targetPosition;
         isSettled = false;
         previousError = targetPosition - this->getRotation();
-    }
-
-    if (isSettled) {
-        motor->move(0);
-        return;
     }
 
     double currentPosition = this->getRotation();
@@ -41,6 +36,16 @@ void MotionProfiler::stepTo(double targetPosition){
     if (targetPosition > maxPosition) targetPosition = maxPosition;
 
     double error = targetPosition - currentPosition;
+
+    if (isSettled) {
+        if (activeHold && std::abs(error) > 5.0) {
+            isSettled = false; // drifted away, resume moving
+        } else {
+            motor->move(0);
+            return;
+        }
+    }
+
     std::cout<<"Current Position: " << currentPosition << " | Target Position: " << targetPosition << " | Error: " << error << std::endl;
     
     bool crossedTarget = (error > 0 && previousError < 0) || (error < 0 && previousError > 0);
@@ -55,7 +60,10 @@ void MotionProfiler::stepTo(double targetPosition){
     previousError = error;
 
     double absTargetVelocity = 0.0;
-    if (profile.empty()) {
+    if (error < 0) {
+        // Going down: ignore profile and move at full speed
+        absTargetVelocity = 127.0;
+    } else if (profile.empty()) {
         absTargetVelocity = 127.0;
     } else if (currentPosition <= profile.front().first) {
         absTargetVelocity = profile.front().second;

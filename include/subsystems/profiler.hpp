@@ -15,12 +15,18 @@ class MotionProfiler {
      * 
      */
     MotionProfiler(pros::Motor *motor, pros::Rotation *rotation, double raw_zero, double minPosition, double maxPosition);
-
     /**
      * @brief Sets the motion profile for the motor. The profile is a vector of pairs, where each pair consists of a position (in degrees) and a velocity (in percentage).
      * 
      */
     void setProfile(std::vector<std::pair<double, double>> profile);
+    /**
+     * @brief Steps the motor towards the target position using the profile
+     * 
+     * @param targetPosition 
+     * @param activeHold If true, actively maintains the target position even after settling
+     */
+    void stepTo(double targetPosition, bool activeHold = false);
 
     /**
      * @brief Steps the motor towards the target position using the profile
@@ -39,6 +45,11 @@ class MotionProfiler {
      * 
      */
     double getRotation();
+
+    /**
+     * @brief returns whether the profiler believes it has settled at the target
+     */
+    bool getSettled() { return isSettled; }
 
   private:
     pros::Motor *motor = nullptr;

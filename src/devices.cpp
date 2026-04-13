@@ -3,20 +3,20 @@
 #include "EZ-Template/util.hpp"
 
 // device ports
-constexpr int LEFT_F = -20;
-constexpr int LEFT_M = 19;
-constexpr int LEFT_B = -18;
+constexpr int LEFT_F = -9;
+constexpr int LEFT_M = 8;
+constexpr int LEFT_B = -7;
 
-constexpr int RIGHT_F = 11;
-constexpr int RIGHT_M = -12;
-constexpr int RIGHT_B = 13;
+constexpr int RIGHT_F = 3;
+constexpr int RIGHT_M = -2;
+constexpr int RIGHT_B = 1;
 
-constexpr int VERT_POD = 15;
+constexpr int VERT_POD = 10;
 
 constexpr int INDEXER = 1;
 constexpr int INTAKE_MOTOR = 21;
-constexpr int LEVER = -8;
-constexpr int LEVER_ROTATION = 5;
+constexpr int LEVER = -11;
+constexpr int LEVER_ROTATION = 13;
 
 constexpr int LEFT_DISTANCE = 17;
 constexpr int RIGHT_DISTANCE = 2;
@@ -25,11 +25,12 @@ constexpr int BACK_DISTANCE = 4;
 
 constexpr char LOADER_PISTON = 'C';
 constexpr char FLAPPER_PISTON = 'A';
-constexpr char LIFT_PISTON = 'B';
+constexpr char LIFT_PISTON = 'H';
+constexpr char HOOD_PISTON = 'G';
 
 constexpr char COLORSORT = 10;
 
-constexpr char IMU = 1;
+constexpr char IMU = 12;
 
 // controller
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
@@ -38,6 +39,7 @@ pros::Controller controller(pros::E_CONTROLLER_MASTER);
 ez::Piston loaderPiston(LOADER_PISTON);
 ez::Piston flapperPiston(FLAPPER_PISTON);
 ez::Piston liftPiston(LIFT_PISTON);
+ez::Piston hoodPiston(HOOD_PISTON, false);
 
 // intake motors
 pros::Motor indexerMotor(INDEXER);
@@ -58,7 +60,7 @@ pros::Distance backDistance(BACK_DISTANCE);
 pros::Optical colorSensor(COLORSORT);
 
 // intake
-Intake intake(intakeMotor, indexerMotor, leverProfiler, &colorSensor);
+Intake intake(intakeMotor, indexerMotor, leverProfiler, hoodPiston, &colorSensor);
 
 // drive chassis
 ez::Drive chassis({LEFT_F, LEFT_M, LEFT_B},	   // Left Chassis Ports
@@ -67,7 +69,7 @@ ez::Drive chassis({LEFT_F, LEFT_M, LEFT_B},	   // Left Chassis Ports
 				  2.75,						   // Wheel Diameter
 				  600);						   // Drive RPM
 
-ez::tracking_wheel vertical_pod(VERT_POD, 2,0.25);
+ez::tracking_wheel vertical_pod(VERT_POD, 2,0);
 
 Localizer localizer(&leftDistance, &rightDistance, &backDistance, &frontDistance, 4.875, 4.875, -4.53, 7);
 
@@ -75,7 +77,7 @@ Localizer localizer(&leftDistance, &rightDistance, &backDistance, &frontDistance
 void default_constants() {
 
 	chassis.odom_tracker_right_set(&vertical_pod);
-    chassis.drive_width_set(10.5);
+    chassis.drive_width_set(10.75);
 
 	// lateral constants
 	chassis.pid_drive_constants_forward_set(6, 0.0, 11.5);
@@ -85,7 +87,7 @@ void default_constants() {
 	chassis.pid_heading_constants_set(4, 0.0, 9); // 5 0 9
 	
 	// angular constants
-	chassis.pid_turn_constants_set(2, 0.2, 11.1, 5);
+	chassis.pid_turn_constants_set(2.4, 0.0, 13.7);  //4, 0.0, 34
 	chassis.pid_swing_constants_set(3.8, 0.3, 21.25, 5);
 	chassis.pid_odom_angular_constants_set(1.8, 0.0, 11, 5);
 	chassis.pid_odom_boomerang_constants_set(6, 0.0, 24);

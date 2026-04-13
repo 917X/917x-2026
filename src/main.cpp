@@ -33,8 +33,9 @@ void telemetry() {
 }
 
 void initialize() {
-    // leverProfiler.setProfile({{-10, 127},{90,45},{100,40}});
+    leverProfiler.setProfile({});
 	pros::delay(500);
+	leverProfiler.stepTo(0, false);
     intake.colorSensor->set_led_pwm(100);
 	chassis.opcontrol_curve_buttons_toggle(false);
 	chassis.opcontrol_drive_activebrake_set(0.0);
@@ -87,7 +88,7 @@ void autonomous() {
     // left_elims();
 	// skills(); 
 	// left_side_9_ball();
-	left_7_rush();
+	// left_7_rush();
 	// solo_awp();
 	//old_solo_awp();
 	// move_forward();
@@ -101,6 +102,23 @@ void autonomous() {
 	// left_4_rush();
 
 	//right_4_rush();
+
+	
+	// chassis.pid_drive_exit_condition_set(10000_ms, 1_in, 200000_ms, 3_in, 20000000_ms,
+	// 									 25000000_ms);
+	// chassis.pid_drive_constants_forward_set(10, 0.0, 0);
+	// chassis.pid_drive_set(48,90,false, false);
+	// chassis.pid_wait();
+	// chassis.pid_drive_set(-48,90,false, false);
+	// chassis.pid_wait();
+	
+	// chassis.pid_turn_exit_condition_set(1000_ms, 1.75_deg, 3000000_ms, 5_deg, 250000_ms,
+	// 									250000_ms);
+	// chassis.pid_turn_constants_set(4	, 0.0, 34);  //2.4,0,13.7
+	// chassis.pid_turn_set(90,127);
+	// chassis.pid_wait();
+	// chassis.pid_turn_set(0,127);
+	// chassis.pid_wait();
 }
 
 
@@ -108,9 +126,8 @@ void autonomous() {
 
 
 std::vector<std::pair<double, double>> groupingProfile_6 = {{-10, 127},{90,45},{100,40}};
-std::vector<std::pair<double, double>> groupingProfile_4 = {{-10, 60},{80,85},{95,60},{110,38}}; //{-10, 60},{80,85},{95,60},{110,40} or 38
-std::vector<std::pair<double, double>> speedProfile = {{-10, 80},{20,100},{40,110},{60,127}};
-	
+std::vector<std::pair<double, double>> groupingProfile_4 = {{-10, 60},{80,75},{95,52},{110,35}}; //{-10, 60},{80,85},{95,60},{110,40} or 38
+std::vector<std::pair<double, double>> speedProfile = {{-10, 80},{20,100},{40,110},{60,127}}; //{-10, 95},{20,100},{40,110},{60,127}
 
 void opcontrol() {
 	flapperPiston.set(true);
@@ -142,13 +159,13 @@ void opcontrol() {
 
 
 		//INTAKE LOGIC
-		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)){
-			leverProfiler.setProfile(speedProfile);
+		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_Y)){
+			leverProfiler.setProfile({speedProfile});
 			intake.set(Intake::IntakeState::SCORE, 127);
 		} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
 			leverProfiler.setProfile(groupingProfile_4);
 			intake.set(Intake::IntakeState::SCORE, 127);
-		} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_Y)) {
+		} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)) {
 			leverProfiler.setProfile(groupingProfile_6);
 			intake.set(Intake::IntakeState::SCORE, 127);
 		} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {

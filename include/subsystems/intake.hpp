@@ -1,5 +1,6 @@
 #pragma once
 
+#include "EZ-Template/piston.hpp"
 #include "pros/adi.hpp"
 #include "pros/motors.hpp"
 #include "pros/optical.hpp"
@@ -14,8 +15,10 @@ class Intake {
 	 * @param intakeMotor
 	 * @param indexerMotor
      * @param leverProfiler
+	 * @param hoodPiston
+	 * @param colorSensor
 	 */
-	Intake(pros::Motor &intakeMotor, pros::Motor &indexerMotor, MotionProfiler &leverProfiler, pros::Optical* colorSensor = nullptr);
+	Intake(pros::Motor &intakeMotor, pros::Motor &indexerMotor, MotionProfiler &leverProfiler, ez::Piston &hoodPiston, pros::Optical* colorSensor = nullptr);
 
 	/**
 	 * @brief Enum for the different states of the intake system
@@ -53,10 +56,13 @@ class Intake {
 	pros::Motor &intakeMotor;
 	pros::Motor &indexerMotor;
     MotionProfiler &leverProfiler;
-   
+    ez::Piston &hoodPiston;
+
 	// intake state variables
 	IntakeState state = STOP;
-    double leverTarget = 5.0;
+    double leverTarget = 0.0;
 	int topSpeed = 127;
 	int bottomSpeed = 127;
+    bool isScoring = false;
+    uint32_t scoreSettleStartTime = 0;
 };
