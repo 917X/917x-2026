@@ -145,13 +145,10 @@ void solo_awp(){
     intake.set(Intake::IntakeState::INTAKE);
 
     // get mid balls 
-	chassis.pid_drive_set(8,80,false,false);
+	chassis.pid_drive_set(7,80,false,false);
 	chassis.pid_wait_quick();
-    // chassis.pid_swing_set(ez::LEFT_SWING, 45_deg, 100, 7, false); //59
-    // chassis.pid_wait_quick_chain();
-	chassis.pid_turn_set({-10.5,-11},fwd,90);
-	chassis.pid_wait_quick_chain();
-    chassis.pid_odom_ptp_set({{-8.5,-9},fwd,40},false);
+    chassis.pid_odom_ptp_set({{-19_in,-22_in},fwd,40},false); 
+	chassis.pid_wait_quick();
 	
 	//scoring second long
     intake.set(Intake::IntakeState::INTAKE, 127);
