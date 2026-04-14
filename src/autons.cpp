@@ -1253,23 +1253,23 @@ void skills(){
 	
 
 
-	// chassis.pid_drive_set(-3,100,40,false,false);
-	// chassis.pid_wait_quick_chain(2);
-	// chassis.pid_swing_exit_condition_set(90_ms, 2_deg, 250_ms, 7_deg, 100_ms,
-	// 									 100_ms);
-	// chassis.pid_swing_set(ez::RIGHT_SWING,-90,90);
-	// chassis.pid_wait_quick();
-	// chassis.pid_swing_exit_condition_set(90_ms, 2_deg, 250_ms, 7_deg, 500_ms,
-	// 									 500_ms);
-	// // chassis.odom_theta_set(-90_deg); // REMOVE ONCE DONE TESTING REST OF CODE
-	// // //REMOVE BELOW FOR TIME SAVING (ONLY. IF. NECESSARY.)
-	// chassis.pid_drive_set(6,90,true,true,-90);
-	// chassis.pid_wait_quick();
+	chassis.pid_drive_set(-3,100,40,false,false);
+	chassis.pid_wait_quick_chain(2);
+	chassis.pid_swing_exit_condition_set(90_ms, 2_deg, 250_ms, 7_deg, 100_ms,
+										 100_ms);
+	chassis.pid_swing_set(ez::RIGHT_SWING,-90,90);
+	chassis.pid_wait_quick();
+	chassis.pid_swing_exit_condition_set(90_ms, 2_deg, 250_ms, 7_deg, 500_ms,
+										 500_ms);
+	// chassis.odom_theta_set(-90_deg); // REMOVE ONCE DONE TESTING REST OF CODE
+	// //REMOVE BELOW FOR TIME SAVING (ONLY. IF. NECESSARY.)
+	chassis.pid_drive_set(6,90,true,true,-90);
+	chassis.pid_wait_quick();
 	
-	// std::vector<okapi::QLength> l = localizer.get_park_clear_localization(Localizer::Corner::BL,3);
-	// x = l[0];
-	// y = l[1];
-	// chassis.odom_xy_set(x,y);
+	std::vector<okapi::QLength> l = localizer.get_park_clear_localization(Localizer::Corner::BL,3);
+	x = l[0];
+	y = l[1];
+	chassis.odom_xy_set(x,y);
 
 
 	// x = (71-7.5)*1_in;                                                //REMOVE ONCE DONE TESTING REST OF CODE
