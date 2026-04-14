@@ -6,6 +6,7 @@
 #include "pros/optical.hpp"
 #include "subsystems/profiler.hpp"
 #include <cmath>
+#include <cstdint>
 
 class Intake {
   public:
@@ -65,4 +66,5 @@ class Intake {
 	int bottomSpeed = 127;
     bool isScoring = false;
     uint32_t scoreSettleStartTime = 0;
+	uint32_t intakeStartTime = 0;
 };

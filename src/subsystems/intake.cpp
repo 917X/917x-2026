@@ -13,8 +13,8 @@ void Intake::intakeControl() {
 	while (true) {
 		switch (state) {
 			case STOP:
-				if(isScoring && leverTarget == 0.0){intakeMotor.move(-40);}
-				else{intakeMotor.move(0);}
+				if(isScoring && leverTarget == 0.0){intakeMotor.move(-70);}
+				else {intakeMotor.move(0);}
 				// rollerMotor.move(0); --- IGNORE ---
 				break;
 			case INTAKE:
@@ -43,11 +43,15 @@ void Intake::intakeControl() {
 					isScoring = true;
 					leverTarget = 117.0;
 					scoreSettleStartTime = 0;
+                    // intakeStartTime = pros::millis();
 					hoodPiston.set(true);
 				}
 				break;
 		}
         if (isScoring) {
+            // if (pros::millis()-intakeStartTime > 600 && leverTarget !=0) { // delay before outtake to ensure ball dont get stuck on roller
+            //         intakeMotor.move(-40);
+            // }
             if (leverTarget == 117.0 && leverProfiler.getSettled()) {
                 if (state == SCORE) {
                     scoreSettleStartTime = pros::millis(); // wait until the user releases the button
@@ -57,7 +61,7 @@ void Intake::intakeControl() {
                     leverTarget = 0.0;
                     leverProfiler.forceResume();
                     this->state = OUTTAKE;
-                    this->topSpeed = 50;
+                    this->topSpeed = 70;
                 }
             }
             if (leverTarget == 0.0) {

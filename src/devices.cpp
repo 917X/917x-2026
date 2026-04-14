@@ -19,7 +19,7 @@ constexpr int LEVER = -11;
 constexpr int LEVER_ROTATION = 13;
 
 constexpr int LEFT_DISTANCE = 17;
-constexpr int RIGHT_DISTANCE = 2;
+constexpr int RIGHT_DISTANCE = 19;
 constexpr int FRONT_DISTANCE = 16;
 constexpr int BACK_DISTANCE = 4;
 
@@ -69,14 +69,14 @@ ez::Drive chassis({LEFT_F, LEFT_M, LEFT_B},	   // Left Chassis Ports
 				  2.75,						   // Wheel Diameter
 				  600);						   // Drive RPM
 
-ez::tracking_wheel vertical_pod(VERT_POD, 2,0);
+ez::tracking_wheel vertical_pod(VERT_POD, 2,0.375);
 
-Localizer localizer(&leftDistance, &rightDistance, &backDistance, &frontDistance, 4.875, 4.875, -4.53, 7);
+Localizer localizer(&leftDistance, &rightDistance, &backDistance, &frontDistance, 5, 5.375, -4.53, 7);
 
 // default chassis constants
 void default_constants() {
 
-	chassis.odom_tracker_right_set(&vertical_pod);
+	chassis.odom_tracker_left_set(&vertical_pod);
     chassis.drive_width_set(10.75);
 
 	// lateral constants
