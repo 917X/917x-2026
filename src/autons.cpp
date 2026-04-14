@@ -114,7 +114,6 @@ void measure_offsets() {
 	if (chassis.odom_tracker_front != nullptr)
 		chassis.odom_tracker_front->distance_to_center_set(f_offset);
 }
-
 void solo_awp(){
 	chassis.pid_drive_exit_condition_set(90_ms, 1_in, 250_ms, 3_in, 80_ms,
 										 250_ms);
@@ -187,7 +186,6 @@ void solo_awp(){
 	intake.set(Intake::IntakeState::SCORE, 90);
 	chassis.pid_wait_quick();
 }
-
 void four_goal_solo_awp() {
 	chassis.pid_drive_exit_condition_set(90_ms, 1_in, 250_ms, 3_in, 80_ms,
 										 250_ms);
@@ -274,7 +272,7 @@ void four_goal_solo_awp() {
 
 }
 
-void solo_awp_push() {
+void four_goal_solo_awp_push() {
 	chassis.pid_drive_exit_condition_set(90_ms, 1_in, 250_ms, 3_in, 80_ms,
 										 250_ms);
 

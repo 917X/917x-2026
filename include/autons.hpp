@@ -4,7 +4,7 @@ void wait_for_imu_bump(double threshold);
 void measure_offsets();
 void solo_awp();
 void four_goal_solo_awp();
-void solo_awp_push();
+void four_goal_solo_awp_push();
 void move_forward();
 void left_elims();
 void left_side_9_ball();
