@@ -318,19 +318,19 @@ void four_goal_solo_awp_push() {
     
     loaderPiston.set(true);
     pros::delay(300);
-	chassis.pid_drive_set(14_in,127,false, true, -90); 
+	chassis.pid_drive_set(7_in,127,false, true, -90); 
 	chassis.pid_wait_quick();
 
 
     // score first batch
 	// chassis.pid_drive_set(-27_in,127,false, true, -90);
-	chassis.pid_odom_ptp_set({{-27_in,-47_in},rev,80},false);
+	chassis.pid_odom_ptp_set({{-27_in,-47.5_in},rev,80},false);
 	chassis.pid_wait_until(-22.7_in);
 
     loaderPiston.set(false);
     intake.set(Intake::IntakeState::AUTON_SCORING);
 	pros::delay(500);
-    intake.set(Intake::IntakeState::INTAKE);
+    intake.set(Intake::IntakeState::INTAKE,127);
 
     // get mid balls 
 	chassis.pid_drive_set(10,80,false,false);
@@ -339,23 +339,27 @@ void four_goal_solo_awp_push() {
     // chassis.pid_wait_quick_chain();
 	chassis.pid_turn_set({-12.5,-13},fwd,90);
 	chassis.pid_wait_quick();
-    chassis.pid_odom_ptp_set({{-12.5,-13},fwd,40},false);
-	chassis.pid_wait();
+    chassis.pid_odom_ptp_set({{-12,-12},fwd,40},false);
+	chassis.pid_wait_quick();
+	chassis.pid_drive_set(-5,90,false,true);
+	chassis.pid_wait_quick();
 	intake.set(Intake::IntakeState::OUTTAKE,80);
 	std::cout<<"start delay"<<std::endl;
-	pros::delay(1000);
+	pros::delay(700);
 	std::cout<<"end delay"<<std::endl;
     
 	chassis.pid_swing_set(ez::LEFT_SWING,-10_deg, 100, 20, false);
 	chassis.pid_wait_quick_chain();
 	
 	
-	//scoring second long
     intake.set(Intake::IntakeState::INTAKE, 127);
-	chassis.pid_odom_ptp_set({{-22,28},fwd,127}, true);
-	chassis.pid_wait_quick_chain();
+	chassis.pid_odom_ptp_set({{-24_in,20_in},fwd,80},false);
+	chassis.pid_wait_until(28_in);
+    loaderPiston.set(true);
+    chassis.pid_wait_quick_chain();
 
-    chassis.pid_odom_ptp_set({{-40_in,48_in},fwd,85},true); //-40,45.2
+	//score second long goal
+    chassis.pid_odom_ptp_set({{-40_in,44_in},fwd,85},true); //-40,45.2
     chassis.pid_wait_quick();
     chassis.pid_turn_set(-90_deg,90);
     chassis.pid_wait_quick_chain(5);
@@ -370,7 +374,7 @@ void four_goal_solo_awp_push() {
 	chassis.pid_wait_quick();
 	pros::delay(200);
 	intake.set(Intake::IntakeState::INTAKE);
-	chassis.pid_drive_set(30,45,true, true, -90);
+	chassis.pid_drive_set(25,45,true, true, -90);
 	chassis.pid_wait_quick();
 	
 
@@ -381,8 +385,8 @@ void four_goal_solo_awp_push() {
 	chassis.pid_turn_set({-13,6},rev,90);
 	chassis.pid_wait_quick_chain();
 	liftPiston.set(true);
-	chassis.pid_odom_ptp_set({{-16,8},rev,90},true,15,50);
-	chassis.pid_wait_until({-17,15});
+	chassis.pid_odom_ptp_set({{-17,10},rev,90},true,15,50);
+	chassis.pid_wait_until({-18,18});
 	
 	intake.set(Intake::IntakeState::AUTON_SCORING, 90);
 	chassis.pid_wait_quick();
