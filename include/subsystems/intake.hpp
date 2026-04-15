@@ -25,7 +25,7 @@ class Intake {
 	 * @brief Enum for the different states of the intake system
 	 *
 	 */
-	enum IntakeState { STOP, INTAKE, OUTTAKE, SCORE };
+	enum IntakeState { STOP, INTAKE, OUTTAKE, SCORE, AUTON_SCORING };
 
 	/**
 	 * @brief Main control loop for the intake system
@@ -65,6 +65,7 @@ class Intake {
 	int topSpeed = 127;
 	int bottomSpeed = 127;
     bool isScoring = false;
+	bool IGNORE_HOOD = false; // Used to ignore hood piston control during auton scoring sequence
     uint32_t scoreSettleStartTime = 0;
 	uint32_t intakeStartTime = 0;
 };

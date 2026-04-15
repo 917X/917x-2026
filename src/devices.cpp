@@ -25,8 +25,8 @@ constexpr int BACK_DISTANCE = 4;
 
 constexpr char LOADER_PISTON = 'C';
 constexpr char FLAPPER_PISTON = 'A';
-constexpr char LIFT_PISTON = 'H';
-constexpr char HOOD_PISTON = 'G';
+constexpr char LIFT_PISTON = 'G';
+constexpr char HOOD_PISTON = 'H';
 
 constexpr char COLORSORT = 10;
 
@@ -38,7 +38,7 @@ pros::Controller controller(pros::E_CONTROLLER_MASTER);
 // pistons
 ez::Piston loaderPiston(LOADER_PISTON);
 ez::Piston flapperPiston(FLAPPER_PISTON);
-ez::Piston liftPiston(LIFT_PISTON);
+ez::Piston liftPiston(LIFT_PISTON,false);
 ez::Piston hoodPiston(HOOD_PISTON, false);
 
 // intake motors

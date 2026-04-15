@@ -26,7 +26,7 @@ void Intake::intakeControl() {
 				if (leverProfiler.getRotation() <= 5.0) {
 					intakeMotor.move(topSpeed);
 				} else {
-					if(isScoring){intakeMotor.move(topSpeed);}else{intakeMotor.move(0);}  // Roller stops until lever is down
+					if(isScoring){intakeMotor.move(topSpeed);}else{intakeMotor.move(-60);}  // Roller stops until lever is down
 				}
 				break;
 			case OUTTAKE:
@@ -47,6 +47,16 @@ void Intake::intakeControl() {
 					hoodPiston.set(true);
 				}
 				break;
+            case AUTON_SCORING:
+                if (!isScoring) {
+					isScoring = true;
+					leverTarget = 117.0;
+					scoreSettleStartTime = 0;
+                    hoodPiston.set(true);
+                    IGNORE_HOOD = true;
+                    this->topSpeed = 0;
+				}
+                break;
 		}
         if (isScoring) {
             // if (pros::millis()-intakeStartTime > 600 && leverTarget !=0) { // delay before outtake to ensure ball dont get stuck on roller
@@ -66,7 +76,8 @@ void Intake::intakeControl() {
             }
             if (leverTarget == 0.0) {
                 if (scoreSettleStartTime != 0 && pros::millis() - scoreSettleStartTime > 100) {
-                    hoodPiston.set(false);
+                    if (!IGNORE_HOOD) {hoodPiston.set(false);}
+                    else {IGNORE_HOOD = false;}
                 }
                 if (leverProfiler.getSettled()) {
                     isScoring = false;
