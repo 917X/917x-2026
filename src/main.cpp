@@ -121,16 +121,16 @@ void autonomous() {
 
 	// chassis.pid_turn_exit_condition_set(100_ms, 1.75_deg, 3000000_ms, 5_deg, 250000_ms,
 	// 									250000_ms);
-	// chassis.pid_turn_constants_set(2.1, 0.0, 16.9);  //2.4,0,13.7
-	// chassis.pid_turn_set(180,127);
+	// chassis.pid_turn_constants_set(2.1, 0.0, 17);  //2.4,0,13.7
+	// chassis.pid_turn_set(100,127);
 	// chassis.pid_wait();
 	// chassis.pid_turn_set(0,127);
 	// chassis.pid_wait();
-	// chassis.pid_turn_set(180,127);
+	// chassis.pid_turn_set(100,127);
 	// chassis.pid_wait();
 	// chassis.pid_turn_set(0,127);
 	// chassis.pid_wait();
-	// chassis.pid_turn_set(180,127);
+	// chassis.pid_turn_set(100,127);
 	// chassis.pid_wait();
 	// chassis.pid_turn_set(0,127);
 	// chassis.pid_wait();
