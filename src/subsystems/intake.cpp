@@ -13,7 +13,7 @@ void Intake::intakeControl() {
 	while (true) {
 		switch (state) {
 			case STOP:
-				if(isScoring && leverTarget == 0.0){intakeMotor.move(-70);}
+				if(isScoring && leverTarget == 0.0){intakeMotor.move(-90);}
 				else {intakeMotor.move(0);}
 				// rollerMotor.move(0); --- IGNORE ---
 				break;
@@ -26,7 +26,7 @@ void Intake::intakeControl() {
 				if (leverProfiler.getRotation() <= 5.0) {
 					intakeMotor.move(topSpeed);
 				} else {
-					if(isScoring){intakeMotor.move(topSpeed);}else{intakeMotor.move(-60);}  // Roller stops until lever is down
+					if(isScoring){intakeMotor.move(topSpeed);}else{intakeMotor.move(-90);}  // Roller stops until lever is down
 				}
 				break;
 			case OUTTAKE:
@@ -71,7 +71,7 @@ void Intake::intakeControl() {
                     leverTarget = 0.0;
                     leverProfiler.forceResume();
                     this->state = OUTTAKE;
-                    this->topSpeed = 70;
+                    this->topSpeed = 90;
                 }
             }
             if (leverTarget == 0.0) {

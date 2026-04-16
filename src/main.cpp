@@ -161,7 +161,7 @@ void autonomous() {
 std::vector<std::pair<double, double>> groupingProfile_6 = {{-10, 127},{90,45},{100,40}};
 std::vector<std::pair<double, double>> groupingProfile_4 = {{-10, 60},{80,75},{95,52},{110,35}}; //{-10, 60},{80,85},{95,60},{110,40} or 38
 std::vector<std::pair<double, double>> speedProfile = {{-10, 80},{20,100},{40,110},{60,127}}; //{-10, 95},{20,100},{40,110},{60,127}
-
+bool usingToggle = false;
 void opcontrol() {
 	flapperPiston.set(true);
 	chassis.pid_targets_reset();
@@ -192,10 +192,10 @@ void opcontrol() {
 
 
 		//INTAKE LOGIC
-		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_Y)){
+		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)){
 			leverProfiler.setProfile({speedProfile});
 			intake.set(Intake::IntakeState::SCORE, 127);
-		} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+		} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_Y)) {
 			leverProfiler.setProfile(groupingProfile_4);
 			intake.set(Intake::IntakeState::SCORE, 127);
 		} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)) {
@@ -214,22 +214,32 @@ void opcontrol() {
 			intake.set(Intake::IntakeState::STOP);
 		}
 
-		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
+		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1) && liftPiston.get() == false) {
 			if (flapperPiston.get() == true) {
 				flapperPiston.set(false);
 			}
-		} else {
+			usingToggle = false;
+		} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1) && liftPiston.get()) {
+			usingToggle = true;
+		} else if (liftPiston.get() == false){
 			if (flapperPiston.get() == false) {
 				flapperPiston.set(true);
 			}
 		}
+
+		if (usingToggle) { flapperPiston.button_toggle(controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)); }
 
         
 
         
 		loaderPiston.button_toggle(master.get_digital(pros::E_CONTROLLER_DIGITAL_RIGHT));
 
-		liftPiston.button_toggle(
-			master.get_digital(pros::E_CONTROLLER_DIGITAL_B));
+		liftPiston.button_toggle( master.get_digital(pros::E_CONTROLLER_DIGITAL_B));
+		if (master.get_digital(pros::E_CONTROLLER_DIGITAL_B)) {
+			if (flapperPiston.get() == true) {
+				flapperPiston.set(false);
+			}
+		}
+	
 	}
 }
