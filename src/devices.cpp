@@ -21,7 +21,7 @@ constexpr int LEVER_ROTATION = 13;
 constexpr int LEFT_DISTANCE = 17;
 constexpr int RIGHT_DISTANCE = 19;
 constexpr int FRONT_DISTANCE = 16;
-constexpr int BACK_DISTANCE = 4;
+constexpr int BACK_DISTANCE = 6;
 
 constexpr char LOADER_PISTON = 'C';
 constexpr char FLAPPER_PISTON = 'A';
@@ -71,7 +71,7 @@ ez::Drive chassis({LEFT_F, LEFT_M, LEFT_B},	   // Left Chassis Ports
 
 ez::tracking_wheel vertical_pod(VERT_POD, 2,0.375);
 
-Localizer localizer(&leftDistance, &rightDistance, &backDistance, &frontDistance, 5, 5.375, -4.53, 7);
+Localizer localizer(&leftDistance, &rightDistance, &backDistance, &frontDistance, 5, 5.375, 2.25, 7);
 
 // default chassis constants
 void default_constants() {
@@ -87,7 +87,7 @@ void default_constants() {
 	chassis.pid_heading_constants_set(4, 0.0, 9); // 5 0 9
 	
 	// angular constants
-	chassis.pid_turn_constants_set(2.2, 0.0, 14.8);  //4, 0.0, 34
+	chassis.pid_turn_constants_set(2.1, 0.0, 16.9);
 	chassis.pid_swing_constants_set(4,0,23);
 	chassis.pid_odom_angular_constants_set(1.8, 0.0, 11, 5);
 	chassis.pid_odom_boomerang_constants_set(6, 0.0, 24);

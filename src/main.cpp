@@ -90,8 +90,8 @@ void autonomous() {
 	// left_side_9_ball();
 	// left_7_rush();
 	// solo_awp();
-	// skills_83_route();
-	four_goal_solo_awp_push();
+	skills_83_route();
+	// four_goal_solo_awp_push();
 	//old_solo_awp();
 	// move_forward();
 	// right_elims();
@@ -121,16 +121,16 @@ void autonomous() {
 
 	// chassis.pid_turn_exit_condition_set(100_ms, 1.75_deg, 3000000_ms, 5_deg, 250000_ms,
 	// 									250000_ms);
-	// chassis.pid_turn_constants_set(2.2, 0.0, 14.8);  //2.4,0,13.7
-	// chassis.pid_turn_set(90,127);
+	// chassis.pid_turn_constants_set(2.1, 0.0, 16.9);  //2.4,0,13.7
+	// chassis.pid_turn_set(180,127);
 	// chassis.pid_wait();
 	// chassis.pid_turn_set(0,127);
 	// chassis.pid_wait();
-	// chassis.pid_turn_set(90,127);
+	// chassis.pid_turn_set(180,127);
 	// chassis.pid_wait();
 	// chassis.pid_turn_set(0,127);
 	// chassis.pid_wait();
-	// chassis.pid_turn_set(90,127);
+	// chassis.pid_turn_set(180,127);
 	// chassis.pid_wait();
 	// chassis.pid_turn_set(0,127);
 	// chassis.pid_wait();
