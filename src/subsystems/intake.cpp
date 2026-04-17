@@ -13,25 +13,33 @@ void Intake::intakeControl() {
 	while (true) {
 		switch (state) {
 			case STOP:
-				if(isScoring && leverTarget == 0.0){intakeMotor.move(-90);}
+				if(isScoring && leverTarget == 0.0){intakeMotor.move(-120);}
 				else {intakeMotor.move(0);}
 				// rollerMotor.move(0); --- IGNORE ---
 				break;
 			case INTAKE:
 				// indexerMotor.move(-50); --- IGNORE ---
 				intakeMotor.move(topSpeed);
+				if (isScoring) {
+					if (!IGNORE_HOOD) hoodPiston.set(false);
+					IGNORE_HOOD = false;
+				}
 				isScoring = false;
 				leverTarget = 0.0;
 				// Only spin roller if lever is fully lowered (within 5 degrees of 0)
 				if (leverProfiler.getRotation() <= 5.0) {
 					intakeMotor.move(topSpeed);
 				} else {
-					if(isScoring){intakeMotor.move(topSpeed);}else{intakeMotor.move(-90);}  // Roller stops until lever is down
+					if(isScoring){intakeMotor.move(topSpeed);}else{intakeMotor.move(-120);}  // Roller stops until lever is down
 				}
 				break;
 			case OUTTAKE:
 				// indexerMotor.move(-topSpeed); --- IGNORE ---
 				intakeMotor.move(-topSpeed);
+				if (isScoring) {
+					if (!IGNORE_HOOD) hoodPiston.set(false);
+					IGNORE_HOOD = false;
+				}
 				isScoring = false;
 				leverTarget = 0.0;
 				break;
@@ -48,6 +56,7 @@ void Intake::intakeControl() {
 				}
 				break;
             case AUTON_SCORING:
+            case AUTON_SCORING_HOLD:
                 if (!isScoring) {
 					isScoring = true;
 					leverTarget = 117.0;
@@ -63,7 +72,7 @@ void Intake::intakeControl() {
             //         intakeMotor.move(-40);
             // }
             if (leverTarget == 117.0 && leverProfiler.getSettled()) {
-                if (state == SCORE) {
+                if (state == SCORE || state == AUTON_SCORING_HOLD) {
                     scoreSettleStartTime = pros::millis(); // wait until the user releases the button
                 } else if (scoreSettleStartTime == 0) {
                     scoreSettleStartTime = pros::millis();
@@ -71,7 +80,7 @@ void Intake::intakeControl() {
                     leverTarget = 0.0;
                     leverProfiler.forceResume();
                     this->state = OUTTAKE;
-                    this->topSpeed = 90;
+                    this->topSpeed = 120;
                 }
             }
             if (leverTarget == 0.0) {
@@ -88,7 +97,7 @@ void Intake::intakeControl() {
         }
 
 
-        bool activeHold = (state == SCORE);
+        bool activeHold = (state == SCORE || state == AUTON_SCORING_HOLD);
         leverProfiler.stepTo(leverTarget, activeHold);
         pros::delay(10);
     }
@@ -97,7 +106,7 @@ void Intake::intakeControl() {
 void Intake::set(IntakeState state, int speed) {
     // state setting
     if (this->state != state) { // If changing states, force the profiler to reset its settled state
-        if (state == SCORE) isScoring = false;
+        if (state == SCORE || state == AUTON_SCORING || state == AUTON_SCORING_HOLD) isScoring = false;
         leverProfiler.forceResume();
     }
     this->state = state;
@@ -108,7 +117,7 @@ void Intake::set(IntakeState state, int speed) {
 void Intake::set(IntakeState state, int topSpeed, int bottomSpeed) {
     // state setting
     if (this->state != state) {
-        if (state == SCORE) isScoring = false;
+        if (state == SCORE || state == AUTON_SCORING || state == AUTON_SCORING_HOLD) isScoring = false;
         leverProfiler.forceResume();
     }
     this->state = state;

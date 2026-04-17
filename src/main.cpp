@@ -90,7 +90,7 @@ void autonomous() {
 	// left_side_9_ball();
 	// left_7_rush();
 	// solo_awp();
-	skills_83_route();
+	// skills_83_route();
 	// four_goal_solo_awp_push();
 	//old_solo_awp();
 	// move_forward();
@@ -103,7 +103,7 @@ void autonomous() {
 
 	// left_4_rush();
 
-	//right_4_rush();
+	right_4_rush();
 
 	
 	// chassis.pid_drive_exit_condition_set(100_ms, 1_in, 200000_ms, 3_in, 20000000_ms,
@@ -161,6 +161,9 @@ void autonomous() {
 std::vector<std::pair<double, double>> groupingProfile_6 = {{-10, 127},{90,45},{100,40}};
 std::vector<std::pair<double, double>> groupingProfile_4 = {{-10, 60},{80,75},{95,52},{110,35}}; //{-10, 60},{80,85},{95,60},{110,40} or 38
 std::vector<std::pair<double, double>> speedProfile = {{-10, 80},{20,100},{40,110},{60,127}}; //{-10, 95},{20,100},{40,110},{60,127}
+
+std::vector<std::pair<double, double>> groupingProfile_4_lowered = {{-10, 60}, {50, 50}};
+std::vector<std::pair<double, double>> speedProfile_lowered = {{-10, 90}, {50, 80}};
 bool usingToggle = false;
 void opcontrol() {
 	flapperPiston.set(true);
@@ -193,10 +196,12 @@ void opcontrol() {
 
 		//INTAKE LOGIC
 		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)){
-			leverProfiler.setProfile({speedProfile});
+			if (liftPiston.get() == false){ leverProfiler.setProfile({speedProfile}); }
+			else { leverProfiler.setProfile(speedProfile_lowered); }
 			intake.set(Intake::IntakeState::SCORE, 127);
 		} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_Y)) {
-			leverProfiler.setProfile(groupingProfile_4);
+			if (liftPiston.get() == false){ leverProfiler.setProfile({groupingProfile_4}); }
+			else { leverProfiler.setProfile(groupingProfile_4_lowered); }
 			intake.set(Intake::IntakeState::SCORE, 127);
 		} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)) {
 			leverProfiler.setProfile(groupingProfile_6);

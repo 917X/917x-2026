@@ -25,7 +25,7 @@ class Intake {
 	 * @brief Enum for the different states of the intake system
 	 *
 	 */
-	enum IntakeState { STOP, INTAKE, OUTTAKE, SCORE, AUTON_SCORING };
+	enum IntakeState { STOP, INTAKE, OUTTAKE, SCORE, AUTON_SCORING, AUTON_SCORING_HOLD };
 
 	/**
 	 * @brief Main control loop for the intake system
