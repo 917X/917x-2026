@@ -20,6 +20,7 @@ extern Intake intake;
 extern ez::Piston loaderPiston;
 extern ez::Piston flapperPiston;
 extern ez::Piston liftPiston;
+extern ez::Piston hoodPiston;
 
 extern pros::Imu imu;
 extern pros::Distance leftDistance;

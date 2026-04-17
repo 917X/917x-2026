@@ -90,7 +90,7 @@ void autonomous() {
 	// left_side_9_ball();
 	// left_7_rush();
 	// solo_awp();
-	// skills_83_route();
+	skills_83_route();
 	// four_goal_solo_awp_push();
 	//old_solo_awp();
 	// move_forward();
@@ -103,7 +103,7 @@ void autonomous() {
 
 	// left_4_rush();
 
-	right_4_rush();
+	// right_4_rush();
 
 	
 	// chassis.pid_drive_exit_condition_set(100_ms, 1_in, 200000_ms, 3_in, 20000000_ms,
