@@ -48,7 +48,7 @@ pros::Motor leverMotor(LEVER);
 
 pros::Rotation leverRotation(LEVER_ROTATION);
 
-MotionProfiler leverProfiler(&leverMotor, &leverRotation,34.0, 0, 119);
+MotionProfiler leverProfiler(&leverMotor, &leverRotation,125.0, 0, 119);
 
 
 // distance sensors
