@@ -18,8 +18,8 @@ constexpr int INTAKE_MOTOR = 21;
 constexpr int LEVER = -11;
 constexpr int LEVER_ROTATION = 13;
 
-constexpr int LEFT_DISTANCE = 17;
-constexpr int RIGHT_DISTANCE = 19;
+constexpr int LEFT_DISTANCE = 19;
+constexpr int RIGHT_DISTANCE = 17;
 constexpr int FRONT_DISTANCE = 16;
 constexpr int BACK_DISTANCE = 6;
 
