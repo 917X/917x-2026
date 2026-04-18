@@ -71,7 +71,7 @@ ez::Drive chassis({LEFT_F, LEFT_M, LEFT_B},	   // Left Chassis Ports
 
 ez::tracking_wheel vertical_pod(VERT_POD, 2,0.375);
 
-Localizer localizer(&leftDistance, &rightDistance, &backDistance, &frontDistance, 5, 5.375, 2.25, 7);
+Localizer localizer(&leftDistance, &rightDistance, &backDistance, &frontDistance, 4.0625, 4.3125, 2.25, 7);
 
 // default chassis constants
 void default_constants() {
