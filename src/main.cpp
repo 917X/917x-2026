@@ -85,11 +85,12 @@ void autonomous() {
     // wait_for_imu_bump(3);
     // loaderPiston.set(true);
     // chassis.drive_set(0,0);
+	// long_7_rush();
     // left_elims();
 	// skills(); 
 	// left_side_9_ball();
 	// left_7_rush();
-	solo_awp();
+	// solo_awp();
 	// skills_83_route();
 	// four_goal_solo_awp_push();
 	//old_solo_awp();
@@ -99,7 +100,7 @@ void autonomous() {
     // skills();
     // left_elims();
 	// ez::as::auton_selector.selected_auton_call(); // Calls selected auton	
-	// right_7_rush();
+	 right_7_rush();
 
 	// left_4_rush();
 

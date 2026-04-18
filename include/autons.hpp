@@ -17,3 +17,4 @@ void right_7_rush();
 void left_4_rush();
 void right_4_rush();
 void old_solo_awp();
+void long_7_rush();
