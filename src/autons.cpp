@@ -787,12 +787,12 @@ void left_4_rush(){
 void right_7_rush(){
 	chassis.pid_drive_exit_condition_set(90_ms, 1_in, 250_ms, 3_in, 60_ms,
 										 100_ms);
-	flapperPiston.set(true);
+	// flapperPiston.set(true);
 	
 	intake.set(Intake::IntakeState::INTAKE, 127);
-  leverProfiler.setProfile({{-10, 127},{90,45},{100,40}});
-	chassis.odom_xyt_set(-46.5_in, -6_in, 90_deg);
-	chassis.pid_odom_ptp_set({{-29,-19},fwd,100},true); //-9.5,35
+  	leverProfiler.setProfile({{-10, 127},{90,100},{100,80}});
+	chassis.odom_xyt_set(-44.5_in, -6_in, 90_deg);
+	chassis.pid_odom_ptp_set({{-27,-17.5},fwd,90},true); //-9.5,35
 	chassis.pid_wait_until(10);
 	loaderPiston.set(true);
 	chassis.pid_wait_quick_chain(3);
@@ -800,38 +800,41 @@ void right_7_rush(){
 	chassis.pid_turn_set(180,100);
 	chassis.pid_wait_quick_chain(20);
 
-	chassis.pid_odom_ptp_set({{-42,-39.7},fwd,90},true); //-9.5,35
-	loaderPiston.set(false);
-  pros::delay(200);
-  intake.set(Intake::OUTTAKE,127);
-  pros::delay(100);
-  intake.set(Intake::INTAKE,127);
+	chassis.pid_odom_ptp_set({{-40,-39.5},fwd,90},true); //-9.5,35
+	// loaderPiston.set(false);
+	intake.set(Intake::OUTTAKE,127);
+	pros::delay(100);
+	intake.set(Intake::INTAKE,127);
 	chassis.pid_wait_quick_chain(5);
   
 	// chassis.pid_turn_exit_condition_set(90_ms, 1.75_deg, 10_ms, 5_deg, 100_ms, 100_ms);
 	chassis.pid_turn_set(-90,100);
 	loaderPiston.set(true);
+	pros::delay(200);
+	chassis.pid_wait_quick_chain();
+	chassis.pid_drive_set(11.5_in,60,false, true, -90);
 	chassis.pid_wait_quick();
-	chassis.pid_drive_set(11.5_in,90,false, true, -90);
-	chassis.pid_wait_quick();
-  pros::delay(380);
-	chassis.pid_odom_ptp_set({{-27.5,-44},rev,100},true);
-  pros::delay(500);
-  intake.set(Intake::OUTTAKE,127);
-  pros::delay(50);
-  intake.set(Intake::INTAKE,127);
-	chassis.pid_wait_until({-36,-48});
-  hoodPiston.set(true);
-  pros::delay(750);
-  intake.set(Intake::OUTTAKE,127);
-  pros::delay(50);
-  intake.set(Intake::INTAKE,127);
-  pros::delay(200);
+	pros::delay(50);
+	chassis.pid_odom_ptp_set({{-27.5,-43.5},rev,127},true);
+	pros::delay(270);
+	// intake.set(Intake::STOP);
+	pros::delay(300);
+	intake.set(Intake::INTAKE,127);
+	hoodPiston.set(true);
+	pros::delay(000);
+	// intake.set(Intake::OUTTAKE,127);
+	// pros::delay(50);
+	// intake.set(Intake::INTAKE,127);
+	pros::delay(750);
+	intake.set(Intake::OUTTAKE,127);
+	pros::delay(50);
+	intake.set(Intake::INTAKE,127);
+	pros::delay(200);
 	intake.set(Intake::IntakeState::SCORE,127);
 	chassis.pid_wait_quick_chain(4);
 	pros::delay(500);
 	loaderPiston.set(false);
-  hoodPiston.set(false);
+  	hoodPiston.set(false);
 	
 }	
 
