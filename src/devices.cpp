@@ -93,7 +93,7 @@ void default_constants() {
 	chassis.pid_odom_boomerang_constants_set(6, 0.0, 24);
 
 	// exit conditions
-	chassis.pid_turn_exit_condition_set(90_ms, 1.75_deg, 300_ms, 5_deg, 250_ms,
+	chassis.pid_turn_exit_condition_set(90_ms, 1.75_deg, 300_ms, 5_deg, 150_ms,
 										250_ms);
 	chassis.pid_swing_exit_condition_set(90_ms, 2_deg, 250_ms, 7_deg, 500_ms,
 										 500_ms);

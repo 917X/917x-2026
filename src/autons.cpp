@@ -116,7 +116,7 @@ void measure_offsets() {
 }
 
 void solo_awp(){
-	chassis.pid_drive_exit_condition_set(90_ms, 1_in, 250_ms, 3_in, 150_ms,
+	chassis.pid_drive_exit_condition_set(90_ms, 1.5_in, 250_ms, 3_in, 150_ms,
 										 250_ms);
   leverProfiler.setProfile({{-10,120},{60,90}});
 	flapperPiston.set(true);
@@ -126,46 +126,43 @@ void solo_awp(){
 
 	chassis.pid_drive_set(6_in,127,false, false);
 	chassis.pid_wait_quick_chain();
-	chassis.pid_odom_ptp_set({{-45_in,-47.5_in},rev,80},false); //-46,48
+	chassis.pid_odom_ptp_set({{-42_in,-47.5_in},rev,80},false); //-46,48
 	chassis.pid_wait_quick();
 	chassis.pid_turn_set(-90,100);
 	chassis.pid_wait_quick();
 	loaderPiston.set(true);
 	pros::delay(200);
-	chassis.pid_drive_set(17_in,55,false, true, -90);
+	chassis.pid_drive_set(16.5_in,55,false, true, -90);
 	chassis.pid_wait_quick();
-	
-
 
     // score first batch
 	// chassis.pid_drive_set(-27_in,127,false, true, -90);
-	chassis.pid_odom_ptp_set({{-27_in,-49_in},rev,80},false);
-	chassis.pid_wait_until(-22.7_in);
+	chassis.pid_odom_ptp_set({{-27_in,-49.7_in},rev,80},false);
+	chassis.pid_wait_until(-24.7_in);
 
     loaderPiston.set(false);
-    intake.set(Intake::OUTTAKE,120);
-    pros::delay(100);
-    intake.set(Intake::INTAKE,127);
-    pros::delay(600);
+    pros::delay(300);
     intake.set(Intake::IntakeState::SCORE,127);
-	pros::delay(400);
+	pros::delay(600);
+    loaderPiston.set(false);
 
     // get mid balls 
 	chassis.pid_drive_set(8,80,false,false);
 	chassis.pid_wait_quick();
-	loaderPiston.set(true);
+    intake.set(Intake::IntakeState::INTAKE, 127);
 	chassis.pid_turn_set({-24,-29},fwd,90);
 	chassis.pid_wait_quick();
-    chassis.pid_odom_ptp_set({{-30_in,-29_in},fwd,80},false); 
-	chassis.pid_wait_until({-26_in,-28_in});
+    chassis.pid_odom_ptp_set({{-27_in,-31_in},fwd,80},false); 
+	chassis.pid_wait_until({-38_in,-38_in});
+    loaderPiston.set(true);
     chassis.pid_wait_quick_chain(6);
-    chassis.pid_odom_ptp_set({{-23_in,16_in},fwd,80},false);
-	chassis.pid_wait_until(28_in);
+    loaderPiston.set(false);
+    chassis.pid_odom_ptp_set({{-22_in,13.5_in},fwd,80},false);
+	chassis.pid_wait_until({-23_in,3_in});
     loaderPiston.set(true);
     chassis.pid_wait_quick();
-
-    // liftPiston.set(false);
-    intake.set(Intake::IntakeState::INTAKE, 127);
+    loaderPiston.set(false);
+    
     chassis.pid_odom_ptp_set({{-40_in,42.5_in},fwd,85},true); //-40,45.2
     chassis.pid_wait_quick();
     chassis.pid_turn_set(-90_deg,90);
