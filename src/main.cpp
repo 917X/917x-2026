@@ -100,11 +100,12 @@ void autonomous() {
     // skills();
     // left_elims();
 	// ez::as::auton_selector.selected_auton_call(); // Calls selected auton	
-	 right_7_rush();
+	//  right_7_rush();
 
 	// left_4_rush();
 
 	// right_4_rush();
+	right_4_loader_rush();
 
 	
 	// chassis.pid_drive_exit_condition_set(100_ms, 1_in, 200000_ms, 3_in, 20000000_ms,
