@@ -90,7 +90,7 @@ void autonomous() {
 	//skills(); 
 	// left_side_9_ball();
 	// left_7_rush();
-	solo_awp();
+	// solo_awp();
     // four_goal_solo_awp();
 	// skills_83_route();
 	// four_goal_solo_awp_push();
@@ -105,7 +105,7 @@ void autonomous() {
 
 	// left_4_rush();
 
-	// right_4_rush();
+	right_4_rush();
 	//right_4_loader_rush();
 
 	
