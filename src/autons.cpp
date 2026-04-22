@@ -131,8 +131,9 @@ void solo_awp(){
 	chassis.pid_wait_quick();
 	loaderPiston.set(true);
 	pros::delay(200);
-	chassis.pid_drive_set(16_in,55,false, true, -90);
+	chassis.pid_drive_set(16.3_in,52,false, true, -90);
 	chassis.pid_wait_quick();
+	pros::delay(200);
 
     // score first batch
 	// chassis.pid_drive_set(-27_in,127,false, true, -90);
@@ -151,16 +152,14 @@ void solo_awp(){
     intake.set(Intake::IntakeState::INTAKE, 127);
 	chassis.pid_turn_set({-24,-29},fwd,90);
 	chassis.pid_wait_quick();
-    chassis.pid_odom_ptp_set({{-27_in,-31_in},fwd,80},false); 
-	chassis.pid_wait_until({-38_in,-38_in});
+    chassis.pid_odom_ptp_set({{-26_in,-31_in},fwd,70},false); 
+	chassis.pid_wait_until({-42_in,-42_in});
     loaderPiston.set(true);
     chassis.pid_wait_quick_chain(6);
     loaderPiston.set(false);
-    chassis.pid_odom_ptp_set({{-23_in,13.5_in},fwd,80},false);
+    chassis.pid_odom_ptp_set({{-24_in,13.5_in},fwd,70},false);
 	chassis.pid_wait_until({-23_in,3_in});
-    loaderPiston.set(true);
     chassis.pid_wait_quick();
-    loaderPiston.set(false);
     
     chassis.pid_odom_ptp_set({{-40_in,42_in},fwd,85},true); //-40,45.2
     chassis.pid_wait_quick();
@@ -178,21 +177,25 @@ void solo_awp(){
 	pros::delay(400);
   loaderPiston.set(true);
 	intake.set(Intake::IntakeState::INTAKE);
-	chassis.pid_drive_set(30,53,true, true, -90);
+	chassis.pid_drive_set(30.5,50,true, true, -90);
+	hoodPiston.set(false);
 	chassis.pid_wait_quick();
-	
+	pros::delay(200);
 
 	//Score middle goal
 	chassis.pid_drive_set(-6,120,true);
-  flapperPiston.set(false);
+    flapperPiston.set(false);
 	chassis.pid_wait_quick_chain();
 	loaderPiston.set(false);
-	chassis.pid_turn_set({-13,6},rev,90);
-	chassis.pid_wait_quick_chain();
+	hoodPiston.set(false);
+	chassis.pid_turn_set({-17.8,8},rev,90);
 	liftPiston.set(true);
-	leverProfiler.setProfile({{-10, 60}, {50, 50}});
-	chassis.pid_odom_ptp_set({{-16,8},rev,90},true,15,50);
-	chassis.pid_wait_until({-15,15});
+	chassis.pid_wait_quick_chain();
+	leverProfiler.setProfile({{-10, 60}, {50, 60}});
+	chassis.pid_odom_ptp_set({{-15.3,7},rev,90},true,15,50);
+	pros::delay(1000);
+	hoodPiston.set(true);
+	chassis.pid_wait_until({-13,13});
 	
 	intake.set(Intake::IntakeState::AUTON_SCORING_HOLD, 90);
 	chassis.pid_wait_quick();

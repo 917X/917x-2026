@@ -96,7 +96,7 @@ void autonomous() {
 	// four_goal_solo_awp_push();
 	//old_solo_awp();
 	// move_forward();
-	// right_elims();
+	right_elims();
 	// right_elims_mid_ball();
     // skills();
     // left_elims();
@@ -105,7 +105,7 @@ void autonomous() {
 
 	// left_4_rush();
 
-	right_4_rush();
+	// right_4_rush();
 	//right_4_loader_rush();
 
 	
