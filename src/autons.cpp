@@ -1030,7 +1030,7 @@ void skills_83_route() {
     chassis.pid_wait_until(-10_in);
     intake.set(Intake::IntakeState::AUTON_SCORING,127,80);
     chassis.pid_wait_quick();
-	chassis.drive_set(-90,-90);
+	chassis.drive_set(-20,-20);
 	pros::delay(200);
 	chassis.drive_set(0,0);
 
@@ -1089,7 +1089,7 @@ void skills_83_route() {
 	chassis.pid_wait_until({26_in, 46_in});
 	intake.set(Intake::IntakeState::AUTON_SCORING,127);
     chassis.pid_wait_quick();
-    chassis.drive_set(-90, -90);
+    chassis.drive_set(-20, -20);
     loaderPiston.set(true);
     pros::delay(600);
     chassis.drive_set(0, 0);
@@ -1109,7 +1109,7 @@ void skills_83_route() {
 	intake.set(Intake::AUTON_SCORING,127);
 	chassis.pid_wait_quick();
 	std::cout<<chassis.odom_x_get()<<","<<chassis.odom_y_get()<<", "<<chassis.odom_theta_get()<<std::endl;
-    chassis.drive_set(-90, -90);
+    chassis.drive_set(-20, -20);
     pros::delay(700);
     chassis.drive_set(0, 0);
 	pros::delay(300);
@@ -1129,7 +1129,7 @@ void skills_83_route() {
 	chassis.pid_odom_ptp_set({{49,41},fwd,80}, true);
 	chassis.pid_wait_quick_chain(4);
 	chassis.pid_odom_ptp_set({{60.4,21.5},fwd,80}, true); //61.5,21
-	pros::delay(370);
+	pros::delay(230);
 	hoodPiston.set(false);
 	loaderPiston.set(true);
 	chassis.pid_wait_quick_chain(3);
@@ -1194,7 +1194,7 @@ void skills_83_route() {
 	chassis.pid_wait_quick();
 	pros::delay(500);
 	intake.set(Intake::IntakeState::AUTON_SCORING,127);
-	chassis.drive_set(-120,-120);
+	chassis.drive_set(-20,-20);
 	pros::delay(700);
 	chassis.drive_set(0,0);
 	//localizing
@@ -1221,6 +1221,9 @@ void skills_83_route() {
 	chassis.pid_odom_ptp_set({{35,-60},rev,80}, true);
 	chassis.pid_wait_quick_chain(4);
 	chassis.pid_turn_set({-23,-54.7},rev,90);
+    intake.set(Intake::IntakeState::OUTTAKE);
+    pros::delay(50);
+    intake.set(Intake::IntakeState::INTAKE);
 	chassis.pid_wait_quick_chain();
 
 	chassis.pid_odom_ptp_set({{-23,-54},rev,85}, true);
@@ -1244,7 +1247,7 @@ void skills_83_route() {
 	pros::delay(400);
 	intake.set(Intake::IntakeState::AUTON_SCORING,127);
     loaderPiston.set(true);
-    chassis.drive_set(-120, -120);
+    chassis.drive_set(-20, -20);
     pros::delay(1200);
     chassis.drive_set(0, 0);
     intake.set(Intake::IntakeState::INTAKE,127);
@@ -1269,7 +1272,7 @@ void skills_83_route() {
 	pros::delay(500);
     leverProfiler.setProfile({{-10, 80},{50,40}});
     intake.set(Intake::IntakeState::AUTON_SCORING,127);
-	chassis.drive_set(-90,-90);
+	chassis.drive_set(-20,-20);
 	pros::delay(1000);
 	chassis.drive_set(0,0);
 
