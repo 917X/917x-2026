@@ -50,9 +50,9 @@ class MotionProfiler {
      * @brief returns whether the profiler believes it has settled at the target
      */
     bool getSettled() { return isSettled; }
+    pros::Motor *motor = nullptr;
 
   private:
-    pros::Motor *motor = nullptr;
     pros::Rotation *rotation;
     double raw_zero;
     double minPosition;

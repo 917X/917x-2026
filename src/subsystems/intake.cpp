@@ -66,6 +66,9 @@ void Intake::intakeControl() {
                     this->topSpeed = 0;
 				}
                 break;
+            case RAW:
+                leverProfiler.motor->move(this->topSpeed);
+                intakeMotor.move(-127);
 		}
         if (isScoring) {
             // if (pros::millis()-intakeStartTime > 600 && leverTarget !=0) { // delay before outtake to ensure ball dont get stuck on roller
