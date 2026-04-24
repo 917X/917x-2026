@@ -90,15 +90,15 @@ void autonomous() {
 	//skills(); 
 	// left_side_9_ball();
 	// left_7_rush();
-	solo_awp();
+	// solo_awp();
     // four_goal_solo_awp();
 	// skills_83_route();
 	// four_goal_solo_awp_push();
 	//old_solo_awp();
 	// move_forward();
-	// right_elims();
+	right_elims();
 	// right_elims_mid_ball();
-    // skills();
+    //skills();
     // left_elims();
 	// ez::as::auton_selector.selected_auton_call(); // Calls selected auton	
 	//  right_7_rush();

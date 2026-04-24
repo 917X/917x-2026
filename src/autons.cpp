@@ -189,9 +189,9 @@ void solo_awp(){
 	chassis.pid_turn_set({-18,8},rev,90);
 	liftPiston.set(true);
 	chassis.pid_wait_quick_chain();
-	leverProfiler.setProfile({{-10, 60}, {50, 60}});
-	chassis.pid_odom_ptp_set({{-16.7,8},rev,90},true,15,50);
-	pros::delay(1050);
+	leverProfiler.setProfile({{-10, 60}, {50, 50}});
+	chassis.pid_odom_ptp_set({{-16.7+4,8-3},rev,90},true,15,50);
+	chassis.pid_wait_until({-23, 15});
 	hoodPiston.set(true);
 	chassis.pid_wait_until({-11,13});
 	
@@ -967,14 +967,14 @@ void right_elims_mid_ball() {
 	pros::delay(500);
 	intake.set(Intake::IntakeState::INTAKE,127);
 	pros::delay(500);
-	intake.set(Intake::IntakeState::OUTTAKE,70);
+	intake.set(Intake::IntakeState::OUTTAKE,65);
 	pros::delay(1000);
 	liftPiston.set(false);
 	pros::delay(800);
 	
 	chassis.pid_drive_set(-5,127);
 	chassis.pid_wait_quick_chain();
-	chassis.pid_odom_ptp_set({{-33_in,-31.5_in},rev,100},false);
+	chassis.pid_odom_ptp_set({{-33_in,-32.5_in},rev,100},false);
 	chassis.pid_wait_quick_chain();
 	chassis.pid_swing_set(ez::LEFT_SWING,-80,127);
 	chassis.pid_wait_quick();
