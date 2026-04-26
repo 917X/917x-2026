@@ -866,7 +866,7 @@ void move_forward(){
 }
 
 void right_elims() {
-  leverProfiler.setProfile({{-10, 127},{60,80},{100,67}});
+  leverProfiler.setProfile({{-10, 127},{60,90},{100,67}});
     // get matchloads
 	flapperPiston.set(true);
 	intake.set(Intake::IntakeState::INTAKE,127);
@@ -909,13 +909,15 @@ void right_elims() {
 
 	// chassis.pid_drive_set(-5,127);
 	// chassis.pid_wait_quick_chain();
-	chassis.pid_odom_ptp_set({{-33_in,-41.7_in},rev,100},false);
+	intake.set(Intake::STOP);
+	chassis.pid_odom_ptp_set({{-33_in,-41.9_in},rev,100},false);
 	chassis.pid_wait_quick_chain();
 	chassis.pid_swing_set(ez::LEFT_SWING,-80,127);
 	chassis.pid_wait_quick();
 	flapperPiston.set(false);
 	chassis.pid_drive_set(-15,127,false);
-	
+	chassis.pid_wait_quick();
+	chassis.pid_swing_set(ez::RIGHT_SWING, -110, 127, -10, true);
 
 
 
